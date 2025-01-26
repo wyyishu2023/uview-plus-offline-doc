@@ -16,7 +16,293 @@
       <ul id="menu"></ul>
     </div>
     <div class="main-content">
-      <!-- 这里放组件的具体文档 -->
+      <h2>Album 相册</h2>
+      <p>
+        本组件提供一个类似相册的功能，让开发者开发起来更加得心应手，减少重复的模板代码。
+      </p>
+
+      <h3>平台差异说明</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <p>
+        通过 <code>urls</code> 设置相册的图片地址，搭配
+        <code>image</code> 等做出更棒的效果！
+      </p>
+      <pre class="language-html">
+        <code>
+&lt;template&gt;
+    &lt;view class="u-page"&gt;
+        &lt;view class="u-demo-block"&gt;
+            &lt;text class="u-demo-block__title"&gt;多图模式&lt;/text&gt;
+            &lt;view class="u-demo-block__content"&gt;
+                &lt;view class="album"&gt;
+                    &lt;view class="album__avatar"&gt;
+                        &lt;image
+                            src="/static/uview/common/logo.png"
+                            mode=""
+                            style="width: 32px;height: 32px;"
+                        &gt;&lt;/image&gt;
+                    &lt;/view&gt;
+                    &lt;view class="album__content"&gt;
+                        &lt;up-text
+                                text="uview-plus UI"
+                                type="primary"
+                                bold
+                                size="17"
+                        &gt;&lt;/up-text&gt;
+                        &lt;up-text
+                                margin="0 0 8px 0"
+                                text="全面的组件和便捷的工具会让您信手拈来，如鱼得水"
+                        &gt;&lt;/up-text&gt;
+                        &lt;up-album :urls="urls1" keyName="src2"&gt;&lt;/up-album&gt;
+                    &lt;/view&gt;
+                &lt;/view&gt;
+            &lt;/view&gt;
+        &lt;/view&gt;
+    &lt;/view&gt;
+&lt;/template&gt;
+&lt;script setup&gt;  
+import { ref } from 'vue';  
+  
+// 响应式数据  
+const albumWidth = ref(0);  
+const urls1 = ref([{  
+    src2: 'https://uview-plus.jiangruyi.com/uview-plus/album/1.jpg',  
+}]);  
+&lt;/script&gt;
+&lt;style lang="scss"&gt;
+   .album {
+        @include flex;
+        align-items: flex-start;
+
+        &__avatar {
+             background-color: $up-bg-color;
+             padding: 5px;
+             border-radius: 3px;
+         }
+    
+        &__content {
+             margin-left: 10px;
+             flex: 1;
+         }
+    }
+&lt;/style&gt;
+        </code>
+      </pre>
+
+      <h3>多图模式</h3>
+      <p>通过 <code>urls</code> 传入更多的图片地址形成图片列表</p>
+      <pre class="language-html">
+        <code>
+&lt;template&gt;
+  &lt;view class="u-page"&gt;
+    &lt;view class="u-demo-block"&gt;
+      &lt;text class="u-demo-block__title"&gt;多图模式&lt;/text&gt;
+      &lt;view class="u-demo-block__content"&gt;
+        &lt;view class="album"&gt;
+          &lt;view class="album__avatar"&gt;
+            &lt;image
+              src="/static/uview/common/logo.png"
+              mode=""
+              style="width: 32px;height: 32px;"
+            &gt;&lt;/image&gt;
+          &lt;/view&gt;
+          &lt;view class="album__content"&gt;
+            &lt;up-text
+              text="uview-plus UI"
+              type="primary"
+              bold
+              size="17"
+            &gt;&lt;/up-text&gt;
+            &lt;up-text
+              margin="0 0 8px 0"
+              text="全面的组件和便捷的工具会让您信手拈来，如鱼得水"
+            &gt;&lt;/up-text&gt;
+            &lt;up-album :urls="urls2"&gt;&lt;/up-album&gt;
+          &lt;/view&gt;
+        &lt;/view&gt;
+      &lt;/view&gt;
+    &lt;/view&gt;
+  &lt;/view&gt;
+&lt;/template&gt;
+&lt;script setup&gt;  
+import { ref } from 'vue';  
+  
+// 响应式数据  
+const albumWidth = ref(0);  
+const urls2 = ref([  
+    'https://uview-plus.jiangruyi.com/uview-plus/album/1.jpg',  
+    'https://uview-plus.jiangruyi.com/uview-plus/album/2.jpg',  
+    'https://uview-plus.jiangruyi.com/uview-plus/album/3.jpg',  
+    'https://uview-plus.jiangruyi.com/uview-plus/album/4.jpg',  
+    'https://uview-plus.jiangruyi.com/uview-plus/album/5.jpg',  
+    'https://uview-plus.jiangruyi.com/uview-plus/album/6.jpg',  
+    'https://uview-plus.jiangruyi.com/uview-plus/album/7.jpg',  
+    'https://uview-plus.jiangruyi.com/uview-plus/album/8.jpg',  
+    'https://uview-plus.jiangruyi.com/uview-plus/album/9.jpg',  
+    'https://uview-plus.jiangruyi.com/uview-plus/album/10.jpg',  
+]);  
+&lt;/script&gt;
+&lt;style lang="scss"&gt;
+   .album {
+        @include flex;
+        align-items: flex-start;
+
+        &__avatar {
+             background-color: $up-bg-color;
+             padding: 5px;
+             border-radius: 3px;
+         }
+    
+        &__content {
+             margin-left: 10px;
+             flex: 1;
+         }
+    }
+&lt;/style&gt;
+        </code>
+      </pre>
+
+      <h3>API</h3>
+      <h4>Props</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">urls</div>
+          <div class="table-cell">
+            图片地址列表 支持 Array&lt;String&gt; | Array&lt;Object&gt;形式
+          </div>
+          <div class="table-cell">Array</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">keyName</div>
+          <div class="table-cell">
+            指定从数组的对象元素中读取哪个属性作为图片地址
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">singleSize</div>
+          <div class="table-cell">单图时，图片长边的长度</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">180</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">multipleSize</div>
+          <div class="table-cell">多图时，图片边长</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">70</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">space</div>
+          <div class="table-cell">多图时，图片水平和垂直之间的间隔</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">6</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">singleMode</div>
+          <div class="table-cell">单图时，图片缩放裁剪的模式</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">scaleToFill</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">multipleMode</div>
+          <div class="table-cell">多图时，图片缩放裁剪的模式</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">aspectFill</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">maxCount</div>
+          <div class="table-cell">
+            最多展示的图片数量，超出时最后一个位置将会显示剩余图片数量
+          </div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">9</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">previewFullImage</div>
+          <div class="table-cell">是否可以预览图片</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">rowCount</div>
+          <div class="table-cell">
+            每行展示图片数量，如设置，singleSize和multipleSize将会无效
+          </div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">3</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">showMore</div>
+          <div class="table-cell">超出maxCount时是否显示查看更多的提示</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">autoWrap</div>
+          <div class="table-cell">自适应换行模式，不受rowCount限制。</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">unit</div>
+          <div class="table-cell">图片宽度单位</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">px</div>
+          <div class="table-cell">rpx</div>
+        </div>
+      </div>
+
+      <h4>Event</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">albumWidth</div>
+          <div class="table-cell">
+            某些特殊的情况下，需要让文字与相册的宽度相等，这里事件的形式对外发送
+          </div>
+          <div class="table-cell">width</div>
+        </div>
+      </div>
     </div>
     <div class="right-phone">
       <div class="right-phone-inner">
