@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h2>ActionSheet 操作菜单</h2>
+      <p>
+        本组件用于从底部弹出一个操作菜单，供用户选择并返回结果。本组件功能类似于
+        uni 的 uni.showActionSheet API，配置更加灵活，所有平台都表现一致。
+      </p>
+
+      <h3>平台差异说明</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">平台</div>
+          <div class="table-cell">支持情况</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">√</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">√</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">H5</div>
+          <div class="table-cell">√</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">小程序</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <p>
+        通过
+        <code>title</code
+        >（设置标题），<code>cancelText</code>（取消按钮的文字，不为空时显示按钮），<code>description</code>（选项上方的描述信息）。通过
+        <code>actions</code>
+        设置需要显示的菜单，该值为一个数组，元素为对象，对象至少要提供
+        <code>name</code> 属性，另外可选的有
+        <code>subname</code
+        >（描述），<code>disabled</code>（是否禁用），<code>loading</code>（加载动画），
+        <code>color</code>（字体颜色），<code>fontSize</code>（字体大小）。通过
+        <code>show</code> 绑定一个值为布尔值的变量控制组件的弹出与收起，<code
+          >show</code
+        >
+        的值是双向绑定的。
+      </p>
+      <pre class="language-html">
+        <code>
+    &lt;template&gt;
+      &lt;view&gt;
+        &lt;up-action-sheet :actions="list" :title="title" :show="show"&gt;&lt;/up-action-sheet&gt;
+        &lt;up-button @click="show = true"&gt;打开ActionSheet&lt;/up-button&gt;
+      &lt;/view&gt;
+    &lt;/template&gt;
+    &lt;script setup&gt;  
+    import { ref } from 'vue';  
+      
+    // 使用 ref 创建响应式数据  
+    const title = ref('标题');  
+    const list = ref([  
+      {  
+        name: '选项一',  
+        subname: "选项一描述",  
+        color: '#ffaa7f',  
+        fontSize: '20'  
+      },  
+      {  
+        name: '选项二禁用',  
+        disabled: true  
+      },  
+      {  
+        name: '开启load加载', // 开启后文字不显示  
+        loading: true  
+      }  
+    ]);  
+    const show = ref(false);  
+    &lt;/script&gt;
+        </code>
+      </pre>
+
+      <h3>配置点击遮罩关闭和点击某个菜单项时关闭弹窗</h3>
+      <p>
+        通过
+        <code>closeOnClickAction</code>
+        参数来配置点击某个菜单项时是否关闭弹窗。通过
+        <code>closeOnClickOverlay</code>
+        参数配置点击遮罩是否允许关闭（注意：关闭事件需要自行处理，只会在开启
+        <code>closeOnClickOverlay</code> 后点击遮罩层执行
+        <code>close</code> 回调）。
+      </p>
+      <pre class="language-html">
+        <code>
+    &lt;template&gt;
+      &lt;view&gt;
+        &lt;up-action-sheet :actions="list" :closeOnClickOverlay="true" :closeOnClickAction="true"  :title="title" :show="show"&gt;&lt;/up-action-sheet&gt;
+        &lt;up-button @click="show = true"&gt;打开ActionSheet&lt;/up-button&gt;
+      &lt;/view&gt;
+    &lt;/template&gt;
+    &lt;script setup&gt;  
+    import { ref, onMounted } from 'vue';  
+      
+    const title = ref('标题');  
+    const list = ref([  
+      { name: '选项一' },  
+      { name: '选项二' }  
+    ]);  
+    const show = ref(false);  
+      
+    &lt;/script&gt;
+        </code>
+      </pre>
+
+      <h3>点击获取所点击选项 name</h3>
+      <p>
+        <code>select</code> 回调事件带有一个 object 值，这个索引值为传递的
+        <code>select</code> 数组的
+        <code>name</code> 值，根据回调事件，能获得点击了该项的内容。
+      </p>
+      <pre class="language-html">
+        <code>
+    &lt;template&gt;
+      &lt;view&gt;
+        &lt;up-action-sheet :actions="list" @select="selectClick" :title="title" :show="show"&gt;&lt;/up-action-sheet&gt;
+        &lt;up-button @click="show = true"&gt;打开ActionSheet&lt;/up-button&gt;
+      &lt;/view&gt;
+    &lt;/template&gt;
+    &lt;script setup&gt;  
+    import { ref, onMounted } from 'vue';  
+      
+    // 响应式数据  
+    const title = ref('标题');  
+    const list = ref([  
+      { name: '选项一' },  
+      { name: '选项二' }  
+    ]);  
+    const show = ref(false);
+      
+    // 方法  
+    const selectClick = (index) => {  
+      console.log(index);  
+    };  
+    &lt;/script&gt;
+        </code>
+      </pre>
+
+      <h3>右侧演示页面源代码地址</h3>
+      <p>点击以下链接以查看右侧演示页面的源码。</p>
+      <ul>
+        <li><a href="github">github</a></li>
+        <li><a href="github gitee">github gitee</a></li>
+      </ul>
+
+      <h3>API</h3>
+
+      <h4>Props</h4>
+      <p>
+        <strong>注意：</strong>props
+        中没有控制组件弹出与收起的参数，因为这是通过
+        <code>show</code> 绑定变量实现的，见上方说明。
+      </p>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">show</div>
+          <div class="table-cell">是否展示</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">title</div>
+          <div class="table-cell">设置标题</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">description</div>
+          <div class="table-cell">选项上方的描述信息，见上方文档示例</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">actions</div>
+          <div class="table-cell">按钮的文字数组，见上方文档示例</div>
+          <div class="table-cell">Array&lt;Object></div>
+          <div class="table-cell">[]</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">cancelText</div>
+          <div class="table-cell">取消按钮的文字，不为空时显示按钮</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">closeOnClickAction</div>
+          <div class="table-cell">
+            点击某个菜单项时是否关闭弹窗，见上方文档示例
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">safeAreaInsetBottom</div>
+          <div class="table-cell">是否开启底部安全区适配</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">openType</div>
+          <div class="table-cell">小程序的打开方式</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">closeOnClickOverlay</div>
+          <div class="table-cell">
+            点击遮罩是否允许关闭，见上方文档示例（注意：关闭事件需要自行处理，只会在开启
+            closeOnClickOverlay 后点击遮罩层执行 close 回调）
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">round</div>
+          <div class="table-cell">圆角值，默认无圆角</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">wrapMaxHeight</div>
+          <div class="table-cell">选项列表区域最大高度，支持列表过长滚动。</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">600px</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">lang</div>
+          <div class="table-cell">
+            指定返回用户信息的语言，zh_CN 简体中文，zh_TW 繁体中文，en 英文
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">en</div>
+          <div class="table-cell">zh_CN | zh_TW | en</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">sessionFrom</div>
+          <div class="table-cell">
+            会话来源，open-type="contact"时有效。只微信小程序有效
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">sendMessageTitle</div>
+          <div class="table-cell">
+            会话内消息卡片标题，openType="contact"时有效
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">sendMessagePath</div>
+          <div class="table-cell">
+            会话内消息卡片点击跳转小程序路径，openType="contact"时有效
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">sendMessageImg</div>
+          <div class="table-cell">
+            会话内消息卡片图片，openType="contact"时有效
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">showMessageCard</div>
+          <div class="table-cell">
+            是否显示会话内消息卡片，设置此参数为
+            true，用户进入客服会话会在右下角显示"可能要发送的小程序"提示，用户点击后可以快速发送小程序消息，openType="contact"时有效
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">appParameter</div>
+          <div class="table-cell">
+            打开 APP 时，向 APP 传递的参数，openType=launchApp 时有效
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>Event</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+          <div class="table-cell">版本</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">select</div>
+          <div class="table-cell">点击 ActionSheet 列表项时触发</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">close</div>
+          <div class="table-cell">点击取消按钮时触发</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">getuserinfo</div>
+          <div class="table-cell">
+            用户点击该按钮时，会返回获取到的用户信息，回调的 detail 数据与
+            wx.getUserInfo 返回的一致，openType="getUserInfo"时有效
+          </div>
+          <div class="table-cell">detail</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">contact</div>
+          <div class="table-cell">客服消息回调，openType="contact"时有效</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">getphonenumber</div>
+          <div class="table-cell">
+            获取用户手机号回调，openType="getPhoneNumber"时有效
+          </div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">error</div>
+          <div class="table-cell">
+            当使用开放能力时，发生错误的回调，openType="error"时有效
+          </div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">launchapp</div>
+          <div class="table-cell">
+            打开 APP 成功的回调，openType="launchApp"时有效
+          </div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">opensetting</div>
+          <div class="table-cell">
+            在打开授权设置页后回调，openType="openSetting"时有效
+          </div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

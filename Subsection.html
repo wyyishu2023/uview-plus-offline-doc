@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h2>Subsection 分段器</h2>
+      <p>该分段器一般用于用户从几个选项中选择某一个的场景。</p>
+
+      <h3>平台差异说明</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <p>
+        通过list数组参数传递分段的选项，数组元素可为字符串，或者通过keyName参数传入对象(默认为name)，通过current指定初始化时激活的选项。
+      </p>
+      <pre><code class="language-html">&lt;template&gt;
+      &lt;up-subsection :list="list" :current="1"&gt;&lt;/up-subsection&gt;
+    &lt;/template&gt;
+    &lt;script setup&gt;  
+    import { ref } from 'vue';  
+      
+    const list = ref(['未付款', '待评价', '已付款']);  
+    // 或者如果您想要使用对象数组  
+    // const list = ref([  
+    //   { name: '未付款' },  
+    //   { name: '待评价' },  
+    //   { name: '已付款' }  
+    // ]);  
+      
+    const current = ref(1);  
+    &lt;/script&gt;</code></pre>
+
+      <h3>模式选择</h3>
+      <p>通过mode设置分段器的模式：</p>
+      <ul>
+        <li>值为button时为按钮类型</li>
+        <li>值为subsection时为分段器形式</li>
+      </ul>
+      <pre><code class="language-html">&lt;up-subsection :list="list" mode="subsection" :current="1"&gt;&lt;/up-subsection&gt;</code></pre>
+
+      <h3>颜色配置</h3>
+      <p>
+        通过activeColor配置激活选项的文字颜色，通过inactiveColor配置未激活选项的文字颜色，通过bgColor配置背景颜色，mode为button时有效（默认
+        '#eeeeef' ）。
+      </p>
+      <pre><code class="language-html">&lt;up-subsection activeColor="#f56c6c"&gt;&lt;/up-subsection&gt;</code></pre>
+
+      <h3>注意事项</h3>
+      <p>
+        如果想通过一个变量绑定current值，需要在change事件回调中修改此值，否则可能会由于props的限制，前后两次设置current为相同的值，
+        而导致无法通过修改current值触发分段器的变化。
+      </p>
+      <pre><code class="language-html">&lt;template&gt;
+        &lt;up-subsection :list="list" :current="curNow" @change="sectionChange"&gt;&lt;/up-subsection&gt;
+    &lt;/template&gt;
+    &lt;script setup&gt;  
+    import { ref } from 'vue';  
+      
+    // 创建响应式引用  
+    const list = ref(['未付款', '待评价', '已付款']);  
+    const curNow = ref(0);  
+      
+    // 定义方法，注意在 setup 中不需要 this，直接访问响应式引用  
+    function sectionChange(index) {  
+      curNow.value = index;  
+    }  
+    &lt;/script&gt;</code></pre>
+
+      <h3>API</h3>
+      <h4>Props</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">list</div>
+          <div class="table-cell">选项的数组，形式见上方"基本使用"</div>
+          <div class="table-cell">Array</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">current</div>
+          <div class="table-cell">初始化时默认选中的选项索引值</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">activeColor</div>
+          <div class="table-cell">激活时的颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#3c9cff</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">inactiveColor</div>
+          <div class="table-cell">未激活时的颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#303133</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">mode</div>
+          <div class="table-cell">模式选择，见上方"模式选择"说明</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">button</div>
+          <div class="table-cell">subsection</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">fontSize</div>
+          <div class="table-cell">字体大小，单位px</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">12</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">bold</div>
+          <div class="table-cell">激活选项的字体是否加粗</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">bgColor</div>
+          <div class="table-cell">组件背景颜色，mode为button时有效</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#eeeeef</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">keyName</div>
+          <div class="table-cell">从list元素对象中读取的键名</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">name</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>Events</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">change</div>
+          <div class="table-cell">分段器选项发生改变时触发</div>
+          <div class="table-cell">index：选项的index索引值，从0开始</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

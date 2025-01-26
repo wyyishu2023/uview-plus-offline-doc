@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h2>ScrollList 横向滚动列表</h2>
+      <p>
+        该组件一般用于同时展示多个商品、分类的场景，也可以完成左右滑动的列表。
+      </p>
+
+      <h3>平台差异说明</h3>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <p>通过 slot 传入内容</p>
+      <pre><code class="language-html">
+  &lt;template&gt;
+      &lt;up-scroll-list&gt;
+          &lt;view v-for="(item, index) in list" :key="index"&gt;
+              &lt;image :src="item.thumb"&gt;&lt;/image&gt;
+          &lt;/view&gt;
+      &lt;/up-scroll-list&gt;
+  &lt;/template&gt;
+  
+  &lt;script setup&gt;  
+  import { reactive } from 'vue';  
+    
+  const list = reactive([  
+      {  
+          thumb: "https://cdn.uviewui.com/uview/goods/1.jpg"  
+      },  
+      {  
+          thumb: "https://cdn.uviewui.com/uview/goods/2.jpg"  
+      },  
+      {  
+          thumb: "https://cdn.uviewui.com/uview/goods/3.jpg"  
+      },  
+      {  
+          thumb: "https://cdn.uviewui.com/uview/goods/4.jpg"  
+      },  
+      {  
+          thumb: "https://cdn.uviewui.com/uview/goods/5.jpg"  
+      }  
+  ]);  
+  &lt;/script&gt;
+      </code></pre>
+
+      <h3>指示器的使用</h3>
+      <p>
+        indicator 用于控制指示器是否显示<br />
+        indicatorWidth 用于控制指示器整体的宽度<br />
+        indicatorBarWidth 用于控制指示器滑块的宽度<br />
+        indicatorColor 指示器的颜色<br />
+        indicatorActiveColor 滑块的颜色<br />
+        indicatorStyle 指示器的位置/样式控制
+      </p>
+      <pre><code class="language-html">
+  &lt;template&gt;
+      &lt;up-scroll-list :indicator="indicator" indicatorColor="#fff0f0" indicatorActiveColor="#f56c6c"&gt;
+          &lt;view v-for="(item, index) in list" :key="index"&gt;
+              &lt;image :src="item.thumb"&gt;&lt;/image&gt;
+          &lt;/view&gt;
+      &lt;/up-scroll-list&gt;
+  &lt;/template&gt;
+  &lt;script setup&gt;  
+  import { reactive } from 'vue';  
+    
+  const list = reactive([  
+      {  
+          thumb: "https://cdn.uviewui.com/uview/goods/1.jpg"  
+      },  
+      {  
+          thumb: "https://cdn.uviewui.com/uview/goods/2.jpg"  
+      },  
+      {  
+          thumb: "https://cdn.uviewui.com/uview/goods/3.jpg"  
+      },  
+      {  
+          thumb: "https://cdn.uviewui.com/uview/goods/4.jpg"  
+      },  
+      {  
+          thumb: "https://cdn.uviewui.com/uview/goods/5.jpg"  
+      }  
+  ]);  
+  &lt;/script&gt;
+      </code></pre>
+
+      <h3>兼容性与性能</h3>
+      <p>
+        此组件是在 nvue 中引入 bindingx，此库类似于微信小程序 wxs，目的是让 js
+        运行在视图层，减少视图层和逻辑层的通信折损，在 nvue
+        中会有更好的体验。此组件是在 APP - VUE、H5、小程序中使用的是
+        wxs。其他平台则使用 js 完成。
+      </p>
+      <p>
+        当滑动到最左边/最右边时，uview - plus 提供了事件 left 和 right
+        可供调用，用于对列表滑动到端点处的业务实现。
+      </p>
+      <pre><code class="language-html">
+  &lt;template&gt;
+      &lt;up-scroll-list @right="right" @left="left"&gt;
+          &lt;view class="scroll-list" style="flex-direction: row;"&gt;
+              &lt;view
+                  class="scroll-list__goods-item"
+                  v-for="(item, index) in list"
+                  :key="index"
+                  :class="[(index === 9) &amp;&amp; 'scroll-list__goods-item--no-margin-right']"
+              &gt;
+                  &lt;image class="scroll-list__goods-item__image" :src="item.thumb"&gt;&lt;/image&gt;
+                  &lt;text class="scroll-list__goods-item__text"&gt;￥{{ item.price }}&lt;/text&gt;
+              &lt;/view&gt;
+              &lt;view class="scroll-list__show-more"&gt;
+                  &lt;text class="scroll-list__show-more__text"&gt;查看更多&lt;/text&gt;
+                  &lt;up-icon name="arrow-leftward" color="#f56c6c" size="12"&gt;&lt;/up-icon&gt;
+              &lt;/view&gt;
+          &lt;/view&gt;
+      &lt;/up-scroll-list&gt;
+  &lt;/template&gt;
+  &lt;script setup&gt;  
+  import { ref } from 'vue';  
+    
+  // 响应式数据  
+  const list = ref([  
+    {  
+      price: '230.5',  
+      thumb: 'https://cdn.uviewui.com/uview/goods/1.jpg'  
+    },  
+    {  
+      price: '74.1',  
+      thumb: 'https://cdn.uviewui.com/uview/goods/2.jpg'  
+    },  
+    // ... 其他对象  
+    {  
+      price: '251.5',  
+      thumb: 'https://cdn.uviewui.com/uview/goods/1.jpg'  
+    }  
+  ]);  
+    
+  // 方法  
+  function left() {  
+    console.log('left');  
+  }  
+    
+  function right() {  
+    console.log('right');  
+  }  
+  &lt;/script&gt;
+  &lt;style lang="scss"&gt;
+  .scroll-list {
+      @include flex(column);
+  
+      &__goods-item {
+          margin-right: 20px;
+  
+          &__image {
+              width: 60px;
+              height: 60px;
+              border-radius: 4px;
+          }
+  
+          &__text {
+              color: #f56c6c;
+              text-align: center;
+              font-size: 12px;
+              margin-top: 5px;
+          }
+      }
+  
+      &__show-more {
+          background-color: #fff0f0;
+          border-radius: 3px;
+          padding: 3px 6px;
+          @include flex(column);
+          align-items: center;
+  
+          &__text {
+              font-size: 12px;
+              width: 12px;
+              color: #f56c6c;
+              line-height: 16px;
+          }
+      }
+  }
+  &lt;/style&gt;
+      </code></pre>
+
+      <h3>API</h3>
+
+      <h4>Props</h4>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">indicatorWidth</div>
+          <div class="table-cell">指示器的整体宽度</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">50</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">indicatorBarWidth</div>
+          <div class="table-cell">滑块的宽度</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">20</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">indicator</div>
+          <div class="table-cell">是否显示面板指示器</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">indicatorColor</div>
+          <div class="table-cell">指示器非激活颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#f2f2f2</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">indicatorActiveColor</div>
+          <div class="table-cell">指示器滑块颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#3c9cff</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">indicatorStyle</div>
+          <div class="table-cell">
+            指示器样式，可通过 bottom，left，right 进行定位
+          </div>
+          <div class="table-cell">String | Object</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>Events</h4>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">left</div>
+          <div class="table-cell">滑动到左边时触发</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">right</div>
+          <div class="table-cell">滑动到右边时触发</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

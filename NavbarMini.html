@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h2>NavbarMini 迷你导航栏</h2>
+      <p>此组件一般用于在全屏页面中，典型的比如微信小程序左上角。</p>
+
+      <h3>平台差异说明</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <p>
+        默认情况下，该组件只有向左的箭头及返回主页的按钮，点击向左的箭头可以返回上一页。
+      </p>
+      <p>通过 <code>fixed</code> 配置是否将导航栏固定在顶部。</p>
+      <h4>说明</h4>
+      <p>非常适合在小程序全屏页面中，避开导航栏右侧的胶囊位置。</p>
+      <pre><code class="language-html">
+  &lt;template&gt;
+      &lt;view&gt;
+          &lt;!-- 2.0.19支持autoBack，默认为false --&gt;
+          &lt;up-navbar-mini
+              @leftClick="leftClick"
+              :autoBack="true"
+              homeUrl="/pages/index/index"
+          &gt;
+          &lt;/up-navbar-mini&gt;
+      &lt;/view&gt;
+  &lt;/template&gt;
+  &lt;script setup&gt;  
+  // 定义方法
+  const leftClick = () =&gt; {  
+      console.log('leftClick');  
+  };  
+  &lt;/script&gt;
+      </code></pre>
+
+      <h3>注意事项</h3>
+      <p>
+        既然是要自定义导航栏，那么首先就要取消系统自带的导航栏，需要在uni-app目的根目录的"pages.json"中设置，同时在此设置状态栏字体的颜色（H5无效）。自定义导航栏后，如果想通过"uni.setNavigationBarColor"动态设置导航栏颜色相关参数，是可能会出问题的，请勿使用此方式。
+      </p>
+      <pre><code class="language-json">
+  // pages.json
+  "pages": [
+      // navbar-自定义导航栏
+      {
+          "path": "/pages/navbar/index",
+          "style": {
+              "navigationStyle": "custom",// 隐藏系统导航栏
+              "navigationBarTextStyle": "white" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
+          }
+      }
+  ]
+      </code></pre>
+
+      <h3>导航栏高度</h3>
+      <p>组件内部会自动加上状态栏的高度，并填充状态栏的占位区域。</p>
+
+      <h3>自定义导航栏内容</h3>
+      <p>通过自定义slot传入的内容。</p>
+      <pre><code class="language-html">
+  &lt;template&gt;
+      &lt;view&gt;
+          &lt;up-navbar-mini
+              :safeAreaInsetTop="false"
+          &gt;
+              &lt;template #left&gt;
+                  &lt;up-icon
+                      name="arrow-left"
+                      size="19"
+                  &gt;&lt;/up-icon&gt;
+              &lt;/template&gt;
+          &lt;/up-navbar-mini&gt;
+      &lt;/view&gt;
+  &lt;/template&gt;
+      </code></pre>
+
+      <h3>自定义导航栏背景颜色</h3>
+      <p>
+        uview-plus提供了一个
+        <code>bgColor</code> 参数，可以自定义导航栏的背景颜色。
+      </p>
+      <pre><code class="language-html">
+  &lt;template&gt;
+      &lt;view&gt;
+          &lt;up-navbar-mini fixed :bgColor="bgColor"&gt;
+          &lt;/up-navbar-mini&gt;
+          &lt;view class="content"&gt;
+              &lt;!-- 正文内容 --&gt;
+          &lt;/view&gt;
+      &lt;/view&gt;
+  &lt;/template&gt;
+  &lt;script setup&gt;  
+  import { ref } from 'vue';  
+  // 创建响应式数据  
+  const bgColor = ref('#001f3f');  
+  &lt;/script&gt;
+      </code></pre>
+
+      <h3>API</h3>
+      <h4>Props</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">safeAreaInsetTop</div>
+          <div class="table-cell">是否开启顶部安全区适配</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">fixed</div>
+          <div class="table-cell">导航栏是否固定在顶部</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">leftIcon</div>
+          <div class="table-cell">
+            左边返回图标的名称，只能为uview-plus自带的图标
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">arrow-left</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">bgColor</div>
+          <div class="table-cell">导航栏背景设置</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#ffffff</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">height</div>
+          <div class="table-cell">
+            导航栏高度(不包括状态栏高度在内，内部自动加上)，单位px
+          </div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">44px</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">iconSize</div>
+          <div class="table-cell">左侧返回图标的大小</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">20px</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">iconColor</div>
+          <div class="table-cell">左侧返回图标的颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#303133</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">autoBack</div>
+          <div class="table-cell">
+            点击左侧区域(返回图标)，是否自动返回上一页
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+      </div>
+
+      <h4>Event</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">名称</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">leftClick</div>
+          <div class="table-cell">点击左侧区域</div>
+          <div class="table-cell">Handler</div>
+        </div>
+      </div>
+
+      <h4>Slot</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">名称</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">left</div>
+          <div class="table-cell">自定义左侧部分内容</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">center</div>
+          <div class="table-cell">自定义中部内容</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h2>Overlay 遮罩层</h2>
+      <p>
+        创建一个遮罩层，用于强调特定的页面元素，并阻止用户对遮罩下层的内容进行操作，一般用于弹窗场景
+      </p>
+
+      <h3>平台差异说明</h3>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <p>
+        通过 show 参数配置是否显示遮罩。遮罩被点击时，会发送一个 click
+        事件，如不需要此事件，请设置 mask - click - able 参数为 false
+      </p>
+      <pre><code class="language-html">
+  &lt;template&gt;
+      &lt;up-overlay :show="show" @click="show = false"&gt;&lt;/up-overlay&gt;
+  &lt;/template&gt;
+  &lt;script setup&gt;
+  import { ref } from 'vue';
+  
+  const show = ref(true);
+  &lt;/script&gt;
+      </code></pre>
+
+      <h3>嵌入内容</h3>
+      <p>
+        通过默认插槽可以在遮罩层上嵌入任意内容。注意：如果不想让 slot
+        插槽内容的点击事件冒泡到遮罩，请给指定元素添加上 @tap.stop
+      </p>
+      <pre><code class="language-html">
+  &lt;template&gt;
+      &lt;up-overlay :show="show" @click="show = false"&gt;
+          &lt;view class="warp"&gt;
+              &lt;view class="rect" @tap.stop&gt;&lt;/view&gt;
+          &lt;/view&gt;
+      &lt;/up-overlay&gt;
+  &lt;/template&gt;
+  &lt;script setup&gt;
+  import { ref } from 'vue';
+  
+  const show = ref(true);
+  &lt;/script&gt;
+  &lt;style scoped&gt;
+      .warp {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 100%;
+      }
+  
+      .rect {
+          width: 120px;
+          height: 120px;
+          background-color: #fff;
+      }
+  &lt;/style&gt;
+      </code></pre>
+
+      <h3>遮罩样式</h3>
+      <p>通过 duration 设置遮罩淡入淡出的时长，单位 ms</p>
+      <pre><code class="language-html">
+  &lt;up-overlay :show="show" :duration="400" :z - index ="999" :opacity="0.3"&gt;&lt;/up-overlay&gt;
+      </code></pre>
+
+      <h3>API</h3>
+
+      <h4>Props</h4>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">show</div>
+          <div class="table-cell">是否显示遮罩</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">zIndex</div>
+          <div class="table-cell">z - index 层级</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">10070</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">duration</div>
+          <div class="table-cell">动画时长，单位毫秒</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">300</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">opacity</div>
+          <div class="table-cell">不透明度值，当做 rgba 的第四个参数</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">0.5</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>Events</h4>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">click</div>
+          <div class="table-cell">点击遮罩发送此事件</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>Slot</h4>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">名称</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">default</div>
+          <div class="table-cell">默认插槽，用于在遮罩层上方嵌入内容</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

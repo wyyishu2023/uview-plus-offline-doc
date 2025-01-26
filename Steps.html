@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h2>Steps 步骤条</h2>
+      <p>该组件一般用于完成一个任务要分几个步骤，标识目前处于第几步的场景。</p>
+
+      <h3>平台差异说明</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <h4>说明</h4>
+      <p>
+        由于安卓nvue下，<code>overflow</code>属性不支持<code>visible</code>值，故此组件暂不支持安卓nvue环境。
+      </p>
+      <p>通过<code>current</code>参数标识目前处于第几步，从0开始。</p>
+      <pre><code class="language-html">
+  &lt;template&gt;
+      &lt;up-steps current="0"&gt;
+          &lt;up-steps-item title="已下单" desc="10:30"&gt;
+          &lt;/up-steps-item&gt;
+          &lt;up-steps-item title="已出库" desc="10:35" &gt;&lt;/up-steps-item&gt;
+          &lt;up-steps-item title="运输中" desc="11:40"&gt;&lt;/up-steps-item&gt;
+      &lt;/up-steps&gt;
+  &lt;/template&gt;
+      </code></pre>
+
+      <h3>错误状态</h3>
+      <p>
+        如果设置<code>up-steps-item</code>的<code>error</code>参数为<code>true</code>的话，当前步骤将会为“失败”的状态。
+      </p>
+      <pre><code class="language-html">
+  &lt;up-steps current="1"&gt;
+      &lt;up-steps-item title="已下单" desc="10:30"&gt;&lt;/up-steps-item&gt;
+      &lt;up-steps-item error title="仓库着火" desc="10:35"&gt;&lt;/up-steps-item&gt;
+      &lt;up-steps-item title="破产清算" desc="11:40"&gt;&lt;/up-steps-item&gt;
+  &lt;/up-steps&gt;
+      </code></pre>
+
+      <h3>步骤条模式</h3>
+      <p>
+        <code>up-steps</code
+        >的<code>dot</code>参数设置为<code>true</code>的话，将会以点状的形式展示步骤条样式。
+      </p>
+      <pre><code class="language-html">
+  &lt;up-steps current="1" dot&gt;
+      &lt;up-steps-item title="已下单" desc="10:30"&gt;&lt;/up-steps-item&gt;
+      &lt;up-steps-item title="已出库" desc="10:35"&gt;&lt;/up-steps-item&gt;
+      &lt;up-steps-item title="运输中" desc="11:40"&gt;&lt;/up-steps-item&gt;
+  &lt;/up-steps&gt;
+      </code></pre>
+
+      <h3>竖向模式</h3>
+      <p>
+        <code>up-steps</code
+        >的<code>direction</code>参数设置为<code>column</code>的话，组件将会以竖向的形式展示步骤条内容。
+      </p>
+      <pre><code class="language-html">
+  &lt;template&gt;
+      &lt;up-steps current="1" direction="column"&gt;
+          &lt;up-steps-item title="已下单" desc="10:30"&gt;
+          &lt;/up-steps-item&gt;
+          &lt;up-steps-item title="已出库" desc="10:35"&gt;
+          &lt;/up-steps-item&gt;
+          &lt;up-steps-item title="运输中" desc="11:40"&gt;&lt;/up-steps-item&gt;
+      &lt;/up-steps&gt;
+  &lt;/template&gt;
+      </code></pre>
+
+      <h3>自定义图标</h3>
+      <p>通过<code>activeIcon</code>可以设置激活状态的图标。</p>
+      <p>通过<code>inactiveIcon</code>可以设置非激活状态的图标。</p>
+      <pre><code class="language-html">
+  &lt;up-steps
+      current="1" activeIcon="checkmark" inactiveIcon="arrow-right"&gt;
+      &lt;up-steps-item title="已下单" desc="10:30"&gt;&lt;/up-steps-item&gt;
+      &lt;up-steps-item title="已出库" desc="10:35"&gt;&lt;/up-steps-item&gt;
+      &lt;up-steps-item title="运输中" desc="11:40"&gt;&lt;/up-steps-item&gt;
+  &lt;/up-steps&gt;
+      </code></pre>
+
+      <h3>通过插槽自定义样式</h3>
+      <p>通过默认插槽，可以自定义某个步骤当前状态的特殊标识。</p>
+      <pre><code class="language-html">
+  &lt;up-steps :current="1"&gt;
+      &lt;up-steps-item title="已下单" desc="10:30"&gt;&lt;/up-steps-item&gt;
+      &lt;up-steps-item title="已出库" desc="10:35"&gt;&lt;/up-steps-item&gt;
+      &lt;up-steps-item title="运输中" desc="11:40"&gt;
+          &lt;template #icon&gt;
+              &lt;text class="slot-icon"&gt;运&lt;/text&gt;
+          &lt;/template&gt;
+      &lt;/up-steps-item&gt;
+  &lt;/up-steps&gt;
+  
+  &lt;style lang="scss"&gt;
+    .slot-icon {
+          width: 21px;
+          height: 21px;
+          background-color: $up-warning;
+          border-radius: 100px;
+          font-size: 12px;
+          color: #fff;
+          line-height: 21px;
+          text-align: center;
+      }
+  &lt;/style&gt;
+      </code></pre>
+
+      <h3>API</h3>
+      <h4>Steps Props</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">direction</div>
+          <div class="table-cell">row-横向，column-竖向</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">row</div>
+          <div class="table-cell">column</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">current</div>
+          <div class="table-cell">设置当前处于第几步</div>
+          <div class="table-cell">Number | String</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">activeColor</div>
+          <div class="table-cell">激活状态颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#3c9cff</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">inactiveColor</div>
+          <div class="table-cell">未激活状态颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#969799</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">activeIcon</div>
+          <div class="table-cell">激活状态的图标</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">inactiveIcon</div>
+          <div class="table-cell">未激活状态图标</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">dot</div>
+          <div class="table-cell">是否显示点类型</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+      </div>
+
+      <h4>Steps Item Props</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">title</div>
+          <div class="table-cell">标题文字</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">current</div>
+          <div class="table-cell">描述文本</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">iconSize</div>
+          <div class="table-cell">图标大小</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">17</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">error</div>
+          <div class="table-cell">当前步骤是否处于失败状态</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">itemStyle</div>
+          <div class="table-cell">当前步骤自定义样式</div>
+          <div class="table-cell">Objct</div>
+          <div class="table-cell">{}</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>Slot</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">名称</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">-</div>
+          <div class="table-cell">自定步骤状态内容</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

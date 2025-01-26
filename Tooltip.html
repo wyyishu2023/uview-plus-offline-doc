@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h2>Tooltip 长按提示</h2>
+      <p>Tooltip 组件主要用于长按操作，类似微信的长按气泡。</p>
+
+      <h3>平台差异说明</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">平台</div>
+          <div class="table-cell">支持情况</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">√</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">√</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">H5</div>
+          <div class="table-cell">√</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">小程序</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <p>
+        <strong>说明</strong>：由于安卓 nvue 下，overflow 属性不支持 visible
+        值，故此组件暂不支持安卓 nvue 环境。
+      </p>
+      <pre class="language-html">
+        <code>
+    &lt;template&gt;
+        &lt;up-tooltip text="复制" overlay&gt;&lt;/up-tooltip&gt;
+    &lt;/template&gt;
+        </code>
+      </pre>
+
+      <h4>下方显示</h4>
+      <pre class="language-html">
+        <code>
+    &lt;template&gt;
+        &lt;up-tooltip text="下方显示" direction="bottom"&gt;&lt;/up-tooltip&gt;
+    &lt;/template&gt;
+        </code>
+      </pre>
+
+      <h4>扩展按钮</h4>
+      <pre class="language-html">
+        <code>
+    &lt;template&gt;
+        &lt;up-tooltip text="扩展显示" :buttons="['扩展']"&gt;&lt;/up-tooltip&gt;
+    &lt;/template&gt;
+        </code>
+      </pre>
+
+      <h4>高亮选中文本背景色</h4>
+      <pre class="language-html">
+        <code>
+    &lt;template&gt;
+        &lt;up-tooltip text="高亮选中文本背景色" :buttons="['扩展']" bgColor="#e3e4e6"&gt;&lt;/up-tooltip&gt;
+    &lt;/template&gt;
+        </code>
+      </pre>
+
+      <h3>右侧演示页面源代码地址</h3>
+      <p>点击以下链接以查看右侧演示页面的源码。</p>
+      <ul>
+        <li><a href="github">github</a></li>
+        <li><a href="github gitee">github gitee</a></li>
+      </ul>
+
+      <h3>API</h3>
+
+      <h4>Tooltip Props</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">text</div>
+          <div class="table-cell">需要显示的提示文字</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">copyText</div>
+          <div class="table-cell">
+            点击复制按钮时，复制的文本，为空则使用 text 值
+          </div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">size</div>
+          <div class="table-cell">文本大小</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">14</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">color</div>
+          <div class="table-cell">字体颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#606266</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">bgColor</div>
+          <div class="table-cell">弹出提示框时，文本的背景色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">transparent</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">direction</div>
+          <div class="table-cell">
+            弹出提示的方向，top - 上方，bottom - 下方
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">top</div>
+          <div class="table-cell">bottom</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">zIndex</div>
+          <div class="table-cell">弹出提示的 z - index，nvue 无效</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">10071</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">showCopy</div>
+          <div class="table-cell">是否显示复制按钮</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">buttons</div>
+          <div class="table-cell">扩展的按钮组</div>
+          <div class="table-cell">Array</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">overlay</div>
+          <div class="table-cell">是否显示透明遮罩以防止触摸穿透</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">showToast</div>
+          <div class="table-cell">是否显示复制成功或者失败的 toast</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+      </div>
+
+      <h4>Tooltip Events</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">click</div>
+          <div class="table-cell">点击触发事件</div>
+          <div class="table-cell">index，被点击按钮的索引</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

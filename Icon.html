@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+    <style>
+      .right-phone {
+        width: 22rem;
+      }
+      .main-content{
+        margin-right: calc(22rem + 40px);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+        <h1>Icon 图标</h1>
+        <p>uview-plus的Icon图标组件基于字体图标集，满足多数常见场景图标需求，可在App（vue）、App（nvue）、H5、小程序等多平台使用。不过在nvue环境下，自定义图标功能暂未推出。</p>
+    
+        <h2>平台支持情况</h2>
+        <div class="table-container">
+          <div class="table-row table-header">
+            <div class="table-cell">App（vue）</div>
+            <div class="table-cell">App（nvue）</div>
+            <div class="table-cell">H5</div>
+            <div class="table-cell">小程序</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">√</div>
+            <div class="table-cell">√</div>
+            <div class="table-cell">√</div>
+            <div class="table-cell">√</div>
+          </div>
+        </div>
+    
+        <h2>基本使用</h2>
+        <p>使用`<up-icon>`标签，通过设置`name`参数为图标名展示图标，如：</p>
+        <pre><code class="language-html">&lt;up-icon name="photo"&gt;&lt;/up-icon&gt;</code></pre>
+        <p><strong>注意</strong>：nvue下自定义图标功能暂缓推出。图标资源可从uview-plus官方资源渠道获取（文档未明确具体下载地址）。</p>
+    
+        <h2>修改图标的样式</h2>
+        <h3>修改颜色</h3>
+        <p>通过`color`参数修改图标颜色，示例：</p>
+        <pre><code class="language-html">&lt;up-icon name="photo" color="#2979ff"&gt;&lt;/up-icon&gt;</code></pre>
+        <h3>修改大小</h3>
+        <p>利用`size`参数调整图标大小，单位为`px`，示例：</p>
+        <pre><code class="language-html">&lt;up-icon name="photo" size="28"&gt;&lt;/up-icon&gt;</code></pre>
+    
+        <h2>图片图标</h2>
+        <p>当`name`参数值带有`/`斜杠符号，组件将其识别为图片图标。此时`size`参数设为图片图标的宽度，`color`等参数对图片图标无效。</p>
+        <p>示例代码：</p>
+        <pre><code class="language-html">&lt;up-icon label="uview-plus" size="40" name="https://cdn.uviewui.com/uview/example/button.png"&gt;&lt;/up-icon&gt;</code></pre>
+        <p>图片图标建议为`png`格式正方形图标，主要替代字体图标起“icon”作用，不适用于大尺寸图片展示场景。</p>
+    
+        <h2>API文档</h2>
+        <h3>Props</h3>
+        <div class="table-container">
+            <div class="table-row table-header">
+                <div class="table-cell">参数</div>
+                <div class="table-cell">说明</div>
+                <div class="table-cell">类型</div>
+                <div class="table-cell">默认值</div>
+                <div class="table-cell">可选值</div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell">name</div>
+                <div class="table-cell">图标名称，见示例图标集，名称带`/`视为图片图标</div>
+                <div class="table-cell">String</div>
+                <div class="table-cell">-</div>
+                <div class="table-cell">-</div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell">color</div>
+                <div class="table-cell">图标颜色</div>
+                <div class="table-cell">String</div>
+                <div class="table-cell">color['up-content-color']</div>
+                <div class="table-cell">-</div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell">size</div>
+                <div class="table-cell">图标字体大小，单位默认`px`</div>
+                <div class="table-cell">String | Number</div>
+                <div class="table-cell">16px</div>
+                <div class="table-cell">-</div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell">bold</div>
+                <div class="table-cell">是否显示粗体</div>
+                <div class="table-cell">Boolean</div>
+                <div class="table-cell">false</div>
+                <div class="table-cell">-</div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell">index</div>
+                <div class="table-cell">区分多个图标的值，点击图标时通过`click`事件传出</div>
+                <div class="table-cell">String | Number</div>
+                <div class="table-cell">-</div>
+                <div class="table-cell">-</div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell">hoverClass</div>
+                <div class="table-cell">图标按下去的样式类，用法同uni的`view`组件的`hover-class`参数</div>
+                <div class="table-cell">String</div>
+                <div class="table-cell">-</div>
+                <div class="table-cell">-</div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell">customPrefix（暂不可用）</div>
+                <div class="table-cell">自定义字体图标库时需填写的值</div>
+                <div class="table-cell">String</div>
+                <div class="table-cell">uicon</div>
+                <div class="table-cell">-</div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell">label</div>
+                <div class="table-cell">图标右侧/下方的label文字</div>
+                <div class="table-cell">String | Number</div>
+                <div class="table-cell">-</div>
+                <div class="table-cell">-</div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell">labelPos</div>
+                <div class="table-cell">`label`相对于图标的位置</div>
+                <div class="table-cell">String</div>
+                <div class="table-cell">right</div>
+                <div class="table-cell">bottom / top / left</div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell">labelSize</div>
+                <div class="table-cell">`label`字体大小，单位默认`px`</div>
+                <div class="table-cell">String | Number</div>
+                <div class="table-cell">15px</div>
+                <div class="table-cell">-</div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell">labelColor</div>
+                <div class="table-cell">`label`字体颜色</div>
+                <div class="table-cell">String</div>
+                <div class="table-cell">color['up-content-color']</div>
+                <div class="table-cell">-</div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell">space</div>
+                <div class="table-cell">`label`与图标的距离，单位默认`px`</div>
+                <div class="table-cell">String | Number</div>
+                <div class="table-cell">3px</div>
+                <div class="table-cell">-</div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell">imgMode</div>
+                <div class="table-cell">图片裁剪、缩放的模式，`image`组件原生属性</div>
+                <div class="table-cell">String</div>
+                <div class="table-cell">-</div>
+                <div class="table-cell">-</div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell">width</div>
+                <div class="table-cell">`name`为图片路径时图片的宽度，单位默认`px`</div>
+                <div class="table-cell">String | Number</div>
+                <div class="table-cell">-</div>
+                <div class="table-cell">-</div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell">height</div>
+                <div class="table-cell">`name`为图片路径时图片的高度，单位默认`px`</div>
+                <div class="table-cell">String | Number</div>
+                <div class="table-cell">-</div>
+                <div class="table-cell">-</div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell">top</div>
+                <div class="table-cell">图标到顶部的距离，用于调整图标垂直位置，单位默认`px`</div>
+                <div class="table-cell">String | Number</div>
+                <div class="table-cell">0</div>
+                <div class="table-cell">-</div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell">stop</div>
+                <div class="table-cell">是否阻止事件传播</div>
+                <div class="table-cell">Boolean</div>
+                <div class="table-cell">false</div>
+                <div class="table-cell">-</div>
+            </div>
+        </div>
+    
+        <h3>Events</h3>
+        <div class="table-container">
+            <div class="table-row table-header">
+                <div class="table-cell">事件名</div>
+                <div class="table-cell">说明</div>
+                <div class="table-cell">回调参数</div>
+                <div class="table-cell">版本</div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell">click</div>
+                <div class="table-cell">点击图标时触发</div>
+                <div class="table-cell">`index`: 通过`props`传递的`index`值</div>
+                <div class="table-cell">-</div>
+            </div>
+        </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FloatButton 悬浮按钮组件</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h1>uview - plus色彩体系</h1>
+      <p>
+        uview -
+        plus精心构建了一套全面且实用的调色板，旨在为各类组件提供统一且鲜明的视觉风格，助力打造风格一致的用户界面。该调色板在App（vue）、App（nvue）、H5以及小程序等多个平台上均能实现稳定且一致的色彩呈现。
+      </p>
+      <h2>使用前提</h2>
+      <p>
+        uview - plus依赖scss预处理器来优化CSS样式的编写。在使用uview -
+        plus之前，请确保您已在Hbuilder
+        X中安装scss/sass编译插件。若尚未安装，可通过Hbuilder X的“工具” ->
+        “插件安装”路径，搜索并安装该插件。安装完成后，若样式未生效，请尝试重启Hbuilder
+        X。
+      </p>
+      <h2>平台支持情况</h2>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+      <h2>颜色分类及使用</h2>
+      <h3>主题色</h3>
+      <p>
+        uview -
+        plus定义了`primary`（蓝色）、`success`（绿色）、`error`（红色）、`warning`（黄色）、`info`（灰色）作为主题色，这些主题色分别对应不同的视觉感受与业务场景。并且每个主题色都具备`disabled`（禁止）、`dark`（加深）和`light`（变浅）三种状态。
+      </p>
+      <p>
+        以`button`组件为例，当`type`参数设置为`primary`时，按钮呈现蓝色；按钮按下时，会应用`primary`的加深颜色（`dark`状态）；当按钮设置为镂空状态（`plain`为`true`）时，背景色变为`primary`的变浅颜色（`light`状态）；而当按钮处于禁止状态时，会使用`primary`的稍浅颜色（`disabled`状态）。
+      </p>
+      <p>在全局样式中，通过scss提供了对应的颜色变量名（4.x版本），例如：</p>
+      <pre><code class="language - scss">
+    // 变量的定义，该部分uview - plus已全局引入，无需您编写
+    $up - primary: #3c9cff;
+    $up - warning: #f9ae3d;
+    $up - success: #5ac725;
+    $up - error: #f56c6c;
+    $up - info: #909399;
+    
+    // 在您编写css的地方使用这些变量
+    .title {
+        color: $up - primary;
+        // 其他样式属性
+    }
+    </code></pre>
+      <h3>主色 - 蓝色</h3>
+      <p>
+        蓝色作为uview -
+        plus的主色调，传达出鲜明、积极的态度。其具体颜色值及对应状态如下：
+      </p>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">颜色状态</div>
+          <div class="table-cell">颜色值</div>
+          <div class="table-cell">变量名（4.x版本）</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">Primary</div>
+          <div class="table-cell">#2979ff</div>
+          <div class="table-cell">$up - primary</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">Dark</div>
+          <div class="table-cell">#2b85e4</div>
+          <div class="table-cell">$up - primary - dark</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">Disabled</div>
+          <div class="table-cell">#a0cfff</div>
+          <div class="table-cell">$up - primary - disabled</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">Light</div>
+          <div class="table-cell">#ecf5ff</div>
+          <div class="table-cell">$up - primary - light</div>
+        </div>
+      </div>
+      <h3>辅助色</h3>
+      <p>
+        辅助色适用于不同的业务场景，如绿色表示成功，红色表示错误，黄色表示警示。每种辅助色同样拥有`disabled`、`dark`和`light`状态，具体颜色值及在scss中的变量定义如下：
+      </p>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">颜色名称</div>
+          <div class="table-cell">颜色状态</div>
+          <div class="table-cell">颜色值</div>
+          <div class="table-cell">变量名（4.x版本）</div>
+        </div>
+        <div class="table-row">
+          <td rowspan="4" class="table-cell">Error</td>
+          <td class="table-cell">原色</td>
+          <td class="table-cell">#fa3534</td>
+          <td class="table-cell">$up - error</td>
+        </div>
+        <div class="table-row">
+          <td class="table-cell">Dark</td>
+          <td class="table-cell">#dd6161</td>
+          <td class="table-cell">$up - error - dark</td>
+        </div>
+        <div class="table-row">
+          <td class="table-cell">Disabled</td>
+          <td class="table-cell">#fab6b6</td>
+          <td class="table-cell">$up - error - disabled</td>
+        </div>
+        <div class="table-row">
+          <td class="table-cell">Light</td>
+          <td class="table-cell">#fef0f0</td>
+          <td class="table-cell">$up - error - light</td>
+        </div>
+        <div class="table-row">
+          <td rowspan="4" class="table-cell">Warning</td>
+          <td class="table-cell">原色</td>
+          <td class="table-cell">#ff9900</td>
+          <td class="table-cell">$up - warning</td>
+        </div>
+        <div class="table-row">
+          <td class="table-cell">Dark</td>
+          <td class="table-cell">#f29100</td>
+          <td class="table-cell">$up - warning - dark</td>
+        </div>
+        <div class="table-row">
+          <td class="table-cell">Disabled</td>
+          <td class="table-cell">#fcbd71</td>
+          <td class="table-cell">$up - warning - disabled</td>
+        </div>
+        <div class="table-row">
+          <td class="table-cell">Light</td>
+          <td class="table-cell">#fdf6ec</td>
+          <td class="table-cell">$up - warning - light</td>
+        </div>
+        <div class="table-row">
+          <td rowspan="4" class="table-cell">Success</td>
+          <td class="table-cell">原色</td>
+          <td class="table-cell">#19be6b</td>
+          <td class="table-cell">$up - success</td>
+        </div>
+        <div class="table-row">
+          <td class="table-cell">Dark</td>
+          <td class="table-cell">#18b566</td>
+          <td class="table-cell">$up - success - dark</td>
+        </div>
+        <div class="table-row">
+          <td class="table-cell">Disabled</td>
+          <td class="table-cell">#71d5a1</td>
+          <td class="table-cell">$up - success - disabled</td>
+        </div>
+        <div class="table-row">
+          <td class="table-cell">Light</td>
+          <td class="table-cell">#dbf1e1</td>
+          <td class="table-cell">$up - success - light</td>
+        </div>
+        <div class="table-row">
+          <td rowspan="4" class="table-cell">Info</td>
+          <td class="table-cell">原色</td>
+          <td class="table-cell">#909399</td>
+          <td class="table-cell">$up - info</td>
+        </div>
+        <div class="table-row">
+          <td class="table-cell">Dark</td>
+          <td class="table-cell">#82848a</td>
+          <td class="table-cell">$up - info - dark</td>
+        </div>
+        <div class="table-row">
+          <td class="table-cell">Disabled</td>
+          <td class="table-cell">#c8c9cc</td>
+          <td class="table-cell">$up - info - disabled</td>
+        </div>
+        <div class="table-row">
+          <td class="table-cell">Light</td>
+          <td class="table-cell">#f4f4f5</td>
+          <td class="table-cell">$up - info - light</td>
+        </div>
+      </div>
+      <h3>文字颜色</h3>
+      <p>uview - plus提炼出4种文字颜色，适用于不同的文本展示场景：</p>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">文字颜色类型</div>
+          <div class="table-cell">颜色值</div>
+          <div class="table-cell">变量名（4.x版本）</div>
+          <div class="table-cell">应用场景</div>
+        </div>
+        <div class="table-row">
+          <td class="table-cell">主要文字</td>
+          <td class="table-cell">#303133</td>
+          <td class="table-cell">$up - main - color</td>
+          <td class="table-cell">内容的标题，如新闻列表的标题</td>
+        </div>
+        <div class="table-row">
+          <td class="table-cell">常规文字</td>
+          <td class="table-cell">#606266</td>
+          <td class="table-cell">$up - content - color</td>
+          <td class="table-cell">内容的主体，如新闻列表的概要</td>
+        </div>
+        <div class="table-row">
+          <td class="table-cell">次要文字</td>
+          <td class="table-cell">#909399</td>
+          <td class="table-cell">$up - tips - color</td>
+          <td class="table-cell">
+            内容的提示部分，如新闻列表底部的时间、评论数量提示文字
+          </td>
+        </div>
+        <div class="table-row">
+          <td class="table-cell">占位文字</td>
+          <td class="table-cell">#c0c4cc</td>
+          <td class="table-cell">$up - light - color</td>
+          <td class="table-cell">更浅的灰色，根据场景选择使用</td>
+        </div>
+      </div>
+      <h3>背景颜色</h3>
+      <p>
+        uview - plus定义的背景颜色为#f3f4f6，在scss中对应的变量名为`$up - bg -
+        color`，可在编写CSS时调用：
+      </p>
+      <pre><code class="language - scss">
+    // 变量的定义，该部分uview - plus已全局引入，无需您编写
+    $up - bg - color: #f3f4f6;
+    
+    // 在您编写css的地方使用这个变量
+    .title {
+        background - color: $up - bg - color;
+    }
+    </code></pre>
+      <h3>边框颜色</h3>
+      <p>
+        uview - plus自定义的边框颜色值为#e4e7ed，在scss中对应的变量名为`$up -
+        border - color`，使用示例如下：
+      </p>
+      <pre><code class="language - scss">
+    // 变量的定义，该部分uview - plus已全局引入，无需您编写
+    $up - border - color: #e4e7ed;
+    
+    // 在您编写css的地方使用这个变量
+    .item {
+        border: 1px solid $up - border - color;
+    }
+    </code></pre>
+      <h2>版本差异</h2>
+      <p>
+        在使用颜色变量时，需留意版本差异。4.x版本的颜色变量无前缀或前缀为`$up
+        -`，而3.x版本前缀为`$u
+        -`。在项目升级或维护过程中，请务必根据实际版本正确调整颜色变量的使用，以确保颜色的正确显示和样式的一致性。
+      </p>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h2>CountDown 倒计时</h2>
+      <p>
+        该组件一般使用于某个活动的截止时间上，通过数字的变化，给用户明确的时间感受，提示用户进行某一个行为操作。
+      </p>
+      <h3>平台差异说明</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+      <h3>基本使用</h3>
+      <p>通过 <code>time</code> 参数设置倒计时间，单位为 <code>ms</code>。</p>
+      <pre class="language-html"><code>&lt;template&gt;
+      &lt;up-count-down :time="30 * 60 * 60 * 1000" format="HH:mm:ss"&gt;&lt;/up-count-down&gt;
+  &lt;/template&gt;</code></pre>
+      <h3>自定义格式</h3>
+      <p>说明：通过绑定 <code>change</code> 回调的值，进行自定义格式。</p>
+      <pre class="language-html"><code>&lt;template&gt;
+      &lt;up-count-down
+          :time="30 * 60 * 60 * 1000"
+          format="DD:HH:mm:ss"
+          autoStart
+          millisecond
+          @change="onChange"
+      &gt;
+          &lt;view class="time"&gt;
+              &lt;text class="time__item"&gt;{{ timeData.days }}&nbsp;天&lt;/text&gt;
+              &lt;text class="time__item"&gt;{{ timeData.hours&gt;10?timeData.hours:'0'+timeData.hours}}&nbsp;时&lt;/text&gt;
+              &lt;text class="time__item"&gt;{{ timeData.minutes }}&nbsp;分&lt;/text&gt;
+              &lt;text class="time__item"&gt;{{ timeData.seconds }}&nbsp;秒&lt;/text&gt;
+          &lt;/view&gt;
+      &lt;/up-count-down&gt;
+  &lt;/template&gt;
+  &lt;script setup&gt;  
+  import { ref } from 'vue';  
+  
+  // 使用 reactive 创建响应式对象  
+  const timeData = ref({});  
+  
+  // 定义 onChange 方法  
+  const onChange = (e) =&gt; {  
+      timeData.value = e;  
+  };  
+  &lt;/script&gt;
+  &lt;style lang="scss"&gt;
+  .time {
+      @include flex;
+      align-items: center;
+  
+      &__item {
+          color: #fff;
+          font-size: 12px;
+          text-align: center;
+      }
+  }
+  &lt;/style&gt;</code></pre>
+      <h3>毫秒级渲染</h3>
+      <p>通过配置 <code>millisecond</code> 来开启毫秒级倒计时。</p>
+      <pre
+        class="language-html"
+      ><code>&lt;up-count-down :time="30 * 60 * 60 * 1000" format="HH:mm:ss:SSS" autoStart millisecond&gt;&lt;/up-count-down&gt;</code></pre>
+      <h3>自定义样式</h3>
+      <p>说明：通过绑定 <code>change</code> 回调的值，进行自定义格式。</p>
+      <pre class="language-html"><code>&lt;template&gt;
+      &lt;up-count-down
+              :time="30 * 60 * 60 * 1000"
+              format="HH:mm:ss"
+              autoStart
+              millisecond
+              @change="onChange"
+      &gt;
+          &lt;view class="time"&gt;
+              &lt;view class="time__custom"&gt;
+                  &lt;text class="time__custom__item"&gt;{{ timeData.hours&gt;10?timeData.hours:'0'+timeData.hours}}&lt;/text&gt;
+              &lt;/view&gt;
+              &lt;text class="time__doc"&gt;:&lt;/text&gt;
+              &lt;view class="time__custom"&gt;
+                  &lt;text class="time__custom__item"&gt;{{ timeData.minutes }}&lt;/text&gt;
+              &lt;/view&gt;
+              &lt;text class="time__doc"&gt;:&lt;/text&gt;
+              &lt;view class="time__custom"&gt;
+                  &lt;text class="time__custom__item"&gt;{{ timeData.seconds }}&lt;/text&gt;
+              &lt;/view&gt;
+          &lt;/view&gt;
+      &lt;/up-count-down&gt;
+  &lt;/template&gt;
+  &lt;script setup&gt;  
+  import { ref } from 'vue';  
+  
+  // 使用 reactive 创建响应式对象  
+  const timeData = ref({});  
+  
+  // 定义 onChange 方法  
+  const onChange = (e) =&gt; {  
+      timeData.value = e;  
+  };  
+  &lt;/script&gt;
+  &lt;style lang="scss"&gt;
+  .time {
+      @include flex;
+      align-items: center;
+  
+      &__custom {
+          margin-top: 4px;
+          width: 22px;
+          height: 22px;
+          background-color: $up-primary;
+          border-radius: 4px;
+          /* #ifndef APP-NVUE */
+          display: flex;
+          /* #endif */
+          justify-content: center;
+          align-items: center;
+  
+          &__item {
+              color: #fff;
+              font-size: 12px;
+              text-align: center;
+          }
+      }
+  
+      &__doc {
+          color: $up-primary;
+          padding: 0px 4px;
+      }
+  
+      &__item {
+          color: #606266;
+          font-size: 15px;
+          margin-right: 4px;
+      }
+  }
+  &lt;/style&gt;</code></pre>
+      <h3>手动控制</h3>
+      <p>说明：通过绑定 <code>ref</code> 进行手动控制重置、开始、暂停。</p>
+      <pre class="language-html"><code>&lt;template&gt;
+      &lt;up-count-down
+          ref="countDown"
+          :time="3* 1000"
+          format="ss:SSS"
+          :autoStart="false"
+          millisecond
+          @change="onChange"
+      &gt;
+      &lt;/up-count-down&gt;
+      &lt;up-button text="重置" size="normal" type="info" @click="reset"&gt;&lt;/up-button&gt;
+      &lt;up-button text="开始" size="normal" type="success" @click="start"&gt;&lt;/up-button&gt;
+      &lt;up-button text="暂停" size="normal" type="error" @click="pause"&gt;&lt;/up-button&gt;
+  &lt;/template&gt;
+  &lt;script setup&gt;  
+  import { ref, onMounted, onUnmounted } from 'vue';  
+  
+  // 假设 countDown 是一个子组件，并且它在模板中有 ref="countDown"  
+  const countDownRef = ref(null);  
+  
+  // data  
+  const timeData = ref({});  
+  
+  // methods  
+  const start = () =&gt; {  
+      if (countDownRef.value) {  
+          countDownRef.value.start();  
+      }  
+  };  
+  
+  const pause = () =&gt; {  
+      if (countDownRef.value) {  
+          countDownRef.value.pause();  
+      }  
+  };  
+  
+  const reset = () =&gt; {  
+      if (countDownRef.value) {  
+          countDownRef.value.reset();  
+      }  
+  };  
+  
+  const onChange = (e) =&gt; {  
+      timeData.value = e;  
+  };  
+  
+  // 在组件挂载后设置 ref，确保子组件已经渲染  
+  onMounted(() =&gt; {  
+      // 确保 countDownRef 已经指向了一个组件实例  
+      if (countDownRef.value) {  
+          // 你可以在这里做一些初始化操作，如果需要的话  
+      }  
+  });  
+  
+  // 在组件卸载时清理，如果有必要的话  
+  onUnmounted(() =&gt; {  
+      // 清理操作  
+  });  
+  &lt;/script&gt;</code></pre>
+
+      <h3>API</h3>
+      <h4>Props</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">time</div>
+          <div class="table-cell">倒计时时长，单位 <code>ms</code></div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">format</div>
+          <div class="table-cell">
+            时间格式，<code>DD</code> - 日，<code>HH</code> - 时，<code
+              >mm</code
+            >
+            - 分，<code>ss</code> - 秒，<code>SSS</code> - 毫秒
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">HH:mm:ss</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">autoStart</div>
+          <div class="table-cell">是否自动开始倒计时</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">millisecond</div>
+          <div class="table-cell">是否展示毫秒倒计时</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+      </div>
+      <h4>Events</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">change</div>
+          <div class="table-cell">过程中，倒计时变化时触发</div>
+          <div class="table-cell">time: 剩余的时间</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">finish</div>
+          <div class="table-cell">倒计时结束</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+      <h4>Methods</h4>
+      <p>需要通过 <code>ref</code> 获取倒计时组件才能调用。</p>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">名称</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">start</div>
+          <div class="table-cell">开始倒计时</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">pause</div>
+          <div class="table-cell">暂停倒计时</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">reset</div>
+          <div class="table-cell">重置倒计时</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

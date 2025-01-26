@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h1>Skeleton 骨架屏</h1>
+      <p>
+        骨架屏一般用于页面在请求远程数据尚未完成时，页面用灰色块预显示本来的页面结构，给用户更好的体验。
+      </p>
+
+      <h2>说明</h2>
+      <p>
+        由于 VUE 和 NVUE 的特性不同，组件动画在 VUE 上为由左到右形式，在 NVUE
+        上为明暗显隐的形式。
+      </p>
+
+      <h2>平台差异说明</h2>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h2>基本使用</h2>
+      <p>
+        组件由标题，段落和头像组件组件，其中段落需要通过 rows
+        参数配置才显示，可以通过 title 和 avatar
+        是否显示标题和头像。该组件的使用，有几个需要注意的点，如下：
+      </p>
+      <ul>
+        <li>
+          title(可选)，是否显示标题占位行，该占位行不布满全屏宽度，同时与段落的距离较大以做明显区分
+        </li>
+        <li>avatar(可选)，是否在左上角位置显示圆形的头像占位区域</li>
+        <li>rows(可选)，段落的行数</li>
+        <li>
+          loading(必选)，是否加载中状态，如果为
+          <code>true</code> 则显示骨架屏组件占位，否则显示插槽中的内容
+        </li>
+        <li>数据请求完成后，将 loading 设置为 false，会隐藏骨架组件</li>
+      </ul>
+      <pre class="language-html">
+        <code>
+    &lt;template&gt;
+      &lt;up-skeleton
+          rows="3"
+          title
+          loading
+      &gt;&lt;/up-skeleton&gt;
+    &lt;/template&gt;
+        </code>
+      </pre>
+
+      <h2>加载中动画</h2>
+      <p>
+        设置 animate 为
+        true，加载中的骨架块将会有一个动画效果，用以加强视觉效果。
+      </p>
+      <pre class="language-html">
+        <code>
+    &lt;up-skeleton :loading="true" :animate="true"&gt;&lt;/up-skeleton&gt;
+        </code>
+      </pre>
+
+      <h2>显示头像</h2>
+      <pre class="language-html">
+        <code>
+    &lt;up-skeleton :loading="true" avatar rows="1"&gt;&lt;/up-skeleton&gt;
+        </code>
+      </pre>
+
+      <h2>插槽内容</h2>
+      <p>
+        可以通过插槽写入展示的内容，当请求结束，将 loading 设置为
+        false，此时会隐藏骨架组件，同时展示插槽内容。
+      </p>
+      <pre class="language-html">
+        <code>
+    &lt;template&gt;
+      &lt;up-skeleton
+          rows="2"
+          :loading="loading"
+          avatar
+          :title="false"
+      &gt;
+        &lt;up-text&gt;loading 为 false 时，将会展示此处插槽内容&lt;/up-text&gt;
+      &lt;/up-skeleton&gt;
+    &lt;/template&gt;
+    &lt;script setup&gt;  
+    import { ref, onMounted } from 'vue';  
+    import {
+      onLoad,
+      onShow
+    } from "@dcloudio/uni-app";
+    
+    // 响应式数据  
+    const loading = ref(true);  
+      
+    onLoad(() => {  
+      // 延时 2 秒钟  
+      uni.$u.sleep(2000).then(() => {  
+        loading.value = false;  
+      });  
+    });  
+    &lt;/script&gt;
+        </code>
+      </pre>
+
+      <h2>API</h2>
+      <h3>Props</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">loading</div>
+          <div class="table-cell">
+            是否显示骨架占位图，设置为 false 将会展示子组件内容
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">animate</div>
+          <div class="table-cell">是否开启动画效果</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">rows</div>
+          <div class="table-cell">段落占位图行数</div>
+          <div class="table-cell">Number | String</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">rowsWidth</div>
+          <div class="table-cell">
+            段落占位图的宽度，可以为百分比，数值，带单位字符串等，可通过数组传入指定每个段落行的宽度
+          </div>
+          <div class="table-cell">String | Array | Number</div>
+          <div class="table-cell">100%</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">rowsHeight</div>
+          <div class="table-cell">段落的高度</div>
+          <div class="table-cell">String | Array | Number</div>
+          <div class="table-cell">18</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">title</div>
+          <div class="table-cell">是否展示标题占位图</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">titleWidth</div>
+          <div class="table-cell">标题的宽度</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">50%</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">titleHeight</div>
+          <div class="table-cell">标题的高度</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">18</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">avatar</div>
+          <div class="table-cell">是否展示头像占位图</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">avatarSize</div>
+          <div class="table-cell">头像占位图大小</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">32</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">avatarShape</div>
+          <div class="table-cell">
+            头像占位图的形状，circle - 圆形，square - 方形
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">circle</div>
+          <div class="table-cell">square</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

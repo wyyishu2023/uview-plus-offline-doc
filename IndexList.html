@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h2>IndexList 索引列表</h2>
+      <p>通过折叠面板收纳内容区域。</p>
+
+      <h3>平台差异说明</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <p>
+        外层包裹一个 <code>index-list</code> 组件，锚点通过
+        <code>index-anchor</code> 组件传入，自定义列表内容通过
+        <code>index-item</code> 嵌套使用。
+      </p>
+      <p>
+        nvue 需要将 <code>index-anchor</code> 写在
+        <code>index-item</code> 的外部。
+      </p>
+      <p>
+        非 nvue 需要将 <code>index-anchor</code> 嵌套在
+        <code>index-item</code> 的内部。
+      </p>
+      <p>可以通过 <code>index-list</code> 参数自定义索引字符列表。</p>
+      <p>
+        需要监听页面的 <code>onPageScroll</code> 事件，将当前滚动条高度传入
+        <code>index-list</code> 组件。
+      </p>
+      <pre><code class="language-html">
+&lt;template&gt;
+  &lt;up-index-list :index-list="indexList"&gt;
+      &lt;template v-for="(item, index) in itemArr"&gt;
+          &lt;!-- #ifdef APP-NVUE --&gt;
+          &lt;up-index-anchor :text="indexList[index]"&gt;&lt;/up-index-anchor&gt;
+          &lt;!-- #endif --&gt;
+          &lt;up-index-item&gt;
+              &lt;!-- #ifndef APP-NVUE --&gt;
+              &lt;up-index-anchor :text="indexList[index]"&gt;&lt;/up-index-anchor&gt;
+              &lt;!-- #endif --&gt;
+              &lt;view class="list-cell" v-for="(cell, index) in item"&gt;
+                  {{cell}}
+              &lt;/view&gt;
+          &lt;/up-index-item&gt;
+      &lt;/template&gt;
+  &lt;/up-index-list&gt;
+&lt;/template&gt;
+&lt;script setup&gt;  
+import { ref } from 'vue';  
+
+// 创建响应式数据  
+const indexList = ref(["A", "B", "C"]);  
+const itemArr = ref([  
+['列表A1', '列表A2', '列表A3'],  
+['列表B1', '列表B2', '列表B3'],  
+['列表C1', '列表C2', '列表C3']  
+]);  
+&lt;/script&gt;
+&lt;style lang="scss" scoped&gt;
+  .list-cell {
+      display: flex;
+      box-sizing: border-box;
+      width: 100%;
+      padding: 10px 24rpx;
+      overflow: hidden;
+      color: #323233;
+      font-size: 14px;
+      line-height: 24px;
+      background-color: #fff;
+  }
+&lt;/style&gt;
+      </code></pre>
+
+      <h3>自定义导航栏</h3>
+      <p>
+        默认情况下，组件的锚点是吸附在导航栏下方的，如果您修改了导航栏，比如取消导航栏、或者自定义了导航栏，就需要指定吸顶的高度，也就是
+        <code>custom-nav-height</code> 的值，注意这个值的单位为 px：
+      </p>
+      <p>
+        如果自定义了导航栏，需要
+        <code>custom-nav-height</code> 设置为导航栏的高度。
+      </p>
+
+      <h3>API</h3>
+      <h4>IndexBar Props</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">inactiveColor</div>
+          <div class="table-cell">右边锚点状态非激活时的颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#606266</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">activeColor</div>
+          <div class="table-cell">右边锚点状态激活时的颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#5677fc</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">indexList</div>
+          <div class="table-cell">索引字符列表，数组</div>
+          <div class="table-cell">Array[string | number]</div>
+          <div class="table-cell">A - Z</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">sticky</div>
+          <div class="table-cell">是否开启锚点自动吸顶</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">customNavHeight</div>
+          <div class="table-cell">自定义导航栏的高度，单位默认 px</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>IndexAnchor Props</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">text</div>
+          <div class="table-cell">列表锚点文本内容</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">color</div>
+          <div class="table-cell">列表锚点文字颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#606266</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">size</div>
+          <div class="table-cell">列表锚点文字大小，单位默认 px</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">14</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">bgColor</div>
+          <div class="table-cell">列表锚点背景颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#dedede</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">height</div>
+          <div class="table-cell">列表锚点高度，单位默认 px</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">32</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>IndexBar Events</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+          <div class="table-cell">版本</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">select</div>
+          <div class="table-cell">选中右边索引字符时触发</div>
+          <div class="table-cell">index: 索引字符</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>IndexItem Slots</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">名称</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">default</div>
+          <div class="table-cell">自定义列表内容</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

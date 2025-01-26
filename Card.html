@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h2>Card 卡片</h2>
+      <p>卡片组件一般用于多个列表条目，且风格统一的场景。</p>
+
+      <h3>平台差异说明</h3>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">App</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">微信小程序</div>
+          <div class="table-cell">支付宝小程序</div>
+          <div class="table-cell">百度小程序</div>
+          <div class="table-cell">头条小程序</div>
+          <div class="table-cell">QQ小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <p>
+        组件的头部信息可以通过参数配置，其他主体和底部的信息，需要通过 slot
+        传入。
+      </p>
+      <ul>
+        <li>title 配置标题</li>
+        <li>sub-title 配置副标题</li>
+      </ul>
+      <pre><code class="language-html">
+  &lt;template&gt;
+      &lt;up-card :title="title" :sub-title="subTitle" :thumb="thumb"&gt;
+          &lt;template #body&gt;
+              &lt;view class="" slot="body"&gt;
+                  &lt;view class="u-body-item u-flex u-border-bottom u-col-between u-p-t-0"&gt;
+                      &lt;view class="u-body-item-title u-line-2"&gt;瓶身描绘的牡丹一如你初妆，冉冉檀香透过窗心事我了然，宣纸上走笔至此搁一半&lt;/view&gt;
+                      &lt;image src="https://img11.360buyimg.com/n7/jfs/t1/94448/29/2734/524808/5dd4cc16E990dfb6b/59c256f85a8c3757.jpg" mode="aspectFill"&gt;&lt;/image&gt;
+                  &lt;/view&gt;
+                  &lt;view class="u-body-item u-flex u-row-between u-p-b-0"&gt;
+                      &lt;view class="u-body-item-title u-line-2"&gt;釉色渲染仕女图韵味被私藏，而你嫣然的一笑如含苞待放&lt;/view&gt;
+                      &lt;image src="https://img12.360buyimg.com/n7/jfs/t1/102191/19/9072/330688/5e0af7cfE17698872/c91c00d713bf729a.jpg" mode="aspectFill"&gt;&lt;/image&gt;
+                  &lt;/view&gt;
+              &lt;/view&gt;
+          &lt;/template&gt;
+          &lt;template #foot&gt;
+              &lt;view&gt;
+                  &lt;up-icon name="chat-fill" size="34" color="" label="30评论"&gt;&lt;/up-icon&gt;
+              &lt;/view&gt;
+          &lt;/template&gt;
+      &lt;/up-card&gt;
+  &lt;/template&gt;
+  
+  &lt;script&gt;
+  export default {
+      data() {
+          return {
+              title: '素胚勾勒出青花，笔锋浓转淡',
+              subTitle: '2020-05-15',
+              thumb: 'http://pic2.sc.chinaz.com/Files/pic/pic9/202002/hpic2119_s.jpg',
+          };
+      }
+  };
+  &lt;/script&gt;
+  
+  &lt;style scoped lang="scss"&gt;
+      .u-card-wrap { 
+          background-color: $up-bg-color;
+          padding: 1px;
+      }
+      
+      .u-body-item {
+          font-size: 32rpx;
+          color: #333;
+          padding: 20rpx 10rpx;
+      }
+          
+      .u-body-item image {
+          width: 120rpx;
+          flex: 0 0 120rpx;
+          height: 120rpx;
+          border-radius: 8rpx;
+          margin-left: 12rpx;
+      }
+  &lt;/style&gt;
+      </code></pre>
+
+      <h3>配置卡片间距</h3>
+      <p>
+        可以通过 margin
+        参数配置卡片与屏幕左右的边距，以及上下卡片之间的距离，如: 20rpx
+        30rpx、20rpx 30rpx 30rpx 20rpx。
+      </p>
+      <p>
+        注意：当设置 full 参数为 true
+        的时候，也就是卡片占据屏幕总宽度的时候，通过 margin
+        配置的左右边距会失效。
+      </p>
+      <pre><code class="language-html">
+  &lt;up-card margin="30rpx"&gt;&lt;/up-card&gt;
+      </code></pre>
+
+      <h3>配置卡片左上角的缩略图</h3>
+      <p>
+        这个缩略图是可选的，显示在卡片的左上角位置，如果配置了 thumb
+        参数(图片路径)，就会显示图片。
+      </p>
+      <ul>
+        <li>thumb 缩略图路径</li>
+        <li>thumb-width 缩略图宽度，高等于宽</li>
+        <li>thumb-circle 缩略图是否为圆形</li>
+      </ul>
+      <pre><code class="language-html">
+  &lt;up-card thumb="xxx.jpg" thumb-width="60"&gt;&lt;/up-card&gt;
+      </code></pre>
+
+      <h3>配置卡片边框</h3>
+      <p>这里说的边框，有 3 个：</p>
+      <ul>
+        <li>border 配置是否显示整个卡片的外边框</li>
+        <li>head-border-bottom 配置是否显示卡片内部头部的下边框</li>
+        <li>foot-border-top 配置是否显示卡片内部底部的上边框</li>
+      </ul>
+      <pre><code class="language-html">
+  &lt;up-card :border="false" :foot-border-top="false"&gt;&lt;/up-card&gt;
+      </code></pre>
+
+      <h3>设置内边距</h3>
+      <p>
+        默认下，卡片内部的头部，主体，底部都有一个内边距，可以通过配置 padding
+        参数去覆盖：
+      </p>
+      <pre><code class="language-html">
+  &lt;up-card padding="30"&gt;&lt;/up-card&gt;
+      </code></pre>
+
+      <h3>API</h3>
+
+      <h4>Props</h4>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">full</div>
+          <div class="table-cell">卡片与屏幕两侧是否留空隙</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">title</div>
+          <div class="table-cell">头部左边的标题</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">title-color</div>
+          <div class="table-cell">标题颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#303133</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">title-size</div>
+          <div class="table-cell">标题字体大小，单位 rpx</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">30</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">sub-title</div>
+          <div class="table-cell">头部右边的副标题</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">sub-title-color</div>
+          <div class="table-cell">副标题颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#909399</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">sub-title-size</div>
+          <div class="table-cell">副标题字体大小</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">26</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">border</div>
+          <div class="table-cell">是否显示边框</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">index</div>
+          <div class="table-cell">用于标识点击了第几个卡片</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">margin</div>
+          <div class="table-cell">
+            卡片与屏幕两边和上下元素的间距，需带单位，如"30rpx
+            20rpx"，见上方说明
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">30rpx</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">border-radius</div>
+          <div class="table-cell">卡片整体的圆角值，单位 rpx</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">16</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">head-style</div>
+          <div class="table-cell">头部自定义样式，对象形式</div>
+          <div class="table-cell">Object</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">body-style</div>
+          <div class="table-cell">主体自定义样式，对象形式</div>
+          <div class="table-cell">Object</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">foot-style</div>
+          <div class="table-cell">底部自定义样式，对象形式</div>
+          <div class="table-cell">Object</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">head-border-bottom</div>
+          <div class="table-cell">是否显示头部的下边框</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">foot-border-top</div>
+          <div class="table-cell">是否显示底部的上边框</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">thumb</div>
+          <div class="table-cell">
+            缩略图路径，如设置将显示在标题的左边，不建议使用相对路径
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">thumb-width</div>
+          <div class="table-cell">缩略图的宽度，高等于宽，单位 rpx</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">60</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">thumb-circle</div>
+          <div class="table-cell">缩略图是否为圆形</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">padding</div>
+          <div class="table-cell">
+            给 head，body，foot 部的内边距，见上方说明，单位 rpx
+          </div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">30</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">show-head</div>
+          <div class="table-cell">是否显示头部（1.3.5 版本新增）</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">show-foot</div>
+          <div class="table-cell">是否显示尾部（1.3.5 版本新增）</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">box-shadow</div>
+          <div class="table-cell">
+            卡片外围阴影，字符串形式（1.6.2 版本新增）
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">none</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>Slot</h4>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">名称</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">head</div>
+          <div class="table-cell">自定义卡片头部内容</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">body</div>
+          <div class="table-cell">自定义卡片主体部分内容</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">foot</div>
+          <div class="table-cell">自定义卡片底部部分内容</div>
+        </div>
+      </div>
+
+      <h4>Event</h4>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">click</div>
+          <div class="table-cell">整个卡片任意位置被点击时触发</div>
+          <div class="table-cell">index: 用户传递的标识符</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">head-click</div>
+          <div class="table-cell">卡片头部被点击时触发</div>
+          <div class="table-cell">index: 用户传递的标识符</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">body-click</div>
+          <div class="table-cell">卡片主体部分被点击时触发</div>
+          <div class="table-cell">index: 用户传递的标识符</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">foot-click</div>
+          <div class="table-cell">卡片底部部分被点击时触发</div>
+          <div class="table-cell">index: 用户传递的标识符</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

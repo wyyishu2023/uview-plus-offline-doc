@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h2>Alert 警告提示</h2>
+      <p>警告提示，展现需要关注的信息。</p>
+
+      <h3>使用场景</h3>
+      <p>
+        当某个页面需要向用户显示警告的信息时。非浮层的静态展现形式，始终展现，不会自动消失，用户可以点击关闭。
+      </p>
+
+      <h3>平台差异说明</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">平台</div>
+          <div class="table-cell">支持情况</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">√</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">√</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">H5</div>
+          <div class="table-cell">√</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">小程序</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <p>
+        通过 <code>title</code> 和
+        <code>description</code> 设置组件的标题和描述内容。通过
+        <code>type</code> 设置主题类型，有 <code>primary</code>,
+        <code>success</code>, <code>error</code>, <code>warning</code>,
+        <code>info</code> 可选值。通过
+        <code>effect</code> 设置主题浅或深色调，有
+        <code>light(浅色 默认)</code>, <code>dark(深色)</code> 可选值。
+      </p>
+      <pre class="language-html">
+        <code>
+    &lt;template&gt;
+      &lt;view&gt;
+        &lt;up-alert :title="title" type = "warning" :description = "description"&gt;&lt;/up-alert&gt;
+        &lt;up-alert :title="title" type = "warning" effect="dark" :description = "description"&gt;&lt;/up-alert&gt;
+      &lt;/view&gt;
+    &lt;/template&gt;
+    &lt;script setup&gt;  
+    import { ref } from 'vue';  
+      
+    // 响应式数据  
+    const title = ref('uview-plus的目标是成为uni-app生态最优秀的UI框架');  
+    const description = ref('uview-plus是uni-app生态专用的UI框架');  
+    
+    &lt;/script&gt;
+        </code>
+      </pre>
+
+      <h3>图标</h3>
+      <p>
+        通过 <code>showIcon</code> 设置是否显示图标，作用是让信息类型更加醒目。
+      </p>
+      <p>
+        <strong>注意：</strong>当前版本图标为 uview-plus 内置图标，根据
+        <code>type</code> 参数显示不同的图标，无法自定义。
+      </p>
+      <pre class="language-html">
+        <code>
+    &lt;up-alert type="warning" :show-icon="true"&gt;&lt;/up-alert&gt;
+        </code>
+      </pre>
+
+      <h3>可关闭的警告提示</h3>
+      <p>
+        显示关闭按钮，点击可关闭警告提示。<code>closable</code>
+        参数配置是否可关闭。
+      </p>
+      <pre class="language-html">
+        <code>
+    &lt;template&gt;
+      &lt;view&gt;
+        &lt;up-alert :title="title"  type = "warning" :closable="closable" :description = "description"&gt;&lt;/up-alert&gt;
+      &lt;/view&gt;
+    &lt;/template&gt;
+    &lt;script setup&gt;  
+    import { ref } from 'vue';  
+    import { onLoad, onShow } from '@dcloudio/uni-app';  
+      
+    // 定义响应式数据  
+    const title = ref('uview-plus的目标是成为uni-app生态最优秀的UI框架');  
+    const description = ref('uview-plus是uni-app生态专用的UI框架');  
+    const closable = ref(true);  
+      
+    // 使用 uni-app 的 onLoad 生命周期钩子  
+    onLoad(() => {  
+      // 组件加载时执行的逻辑  
+      console.log('组件加载了');  
+    });  
+      
+    // 使用 uni-app 的 onShow 生命周期钩子  
+    onShow(() => {  
+      // 组件显示时执行的逻辑  
+      console.log('组件显示了');  
+    });  
+    &lt;/script&gt;
+        </code>
+      </pre>
+
+      <h3>右侧演示页面源代码地址</h3>
+      <p>点击以下链接以查看右侧演示页面的源码。</p>
+      <ul>
+        <li><a href="github">github</a></li>
+        <li><a href="github gitee">github gitee</a></li>
+      </ul>
+
+      <h3>API</h3>
+
+      <h4>Props</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">title</div>
+          <div class="table-cell">显示的文字</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">type</div>
+          <div class="table-cell">使用预设的颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">warning</div>
+          <div class="table-cell">success | primary | error | info</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">description</div>
+          <div class="table-cell">
+            辅助性文字，颜色比 title 浅一点，字号也小一点，可选
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">closable</div>
+          <div class="table-cell">关闭按钮(默认为叉号 icon 图标)</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">showIcon</div>
+          <div class="table-cell">是否显示左边的辅助图标</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">effect</div>
+          <div class="table-cell">多图时，图片缩放裁剪的模式</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">light(浅色)</div>
+          <div class="table-cell">dark(深色)</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">center</div>
+          <div class="table-cell">文字是否居中</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">fontSize</div>
+          <div class="table-cell">字体大小</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">14</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>Events</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">click</div>
+          <div class="table-cell">点击组件时触发</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

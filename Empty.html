@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h2>Empty 内容为空</h2>
+      <p>
+        该组件用于需要加载内容，但是加载的第一页数据就为空，提示一个"没有内容"的场景，
+        我们精心挑选了十几个场景的图标，方便您使用。
+      </p>
+
+      <h3>平台差异说明</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <h4>提示</h4>
+      <p>
+        我们的专业设计师精心为您准备了一套精美默认图，带有图片和Sketch文件，您可以下载或修改后再使用：<a
+          href="#"
+          >资源下载</a
+        >
+      </p>
+      <p>
+        通过text参数配置提示的文字内容，通过mode(默认为data)参数配置要显示的图标。
+      </p>
+      <pre><code class="language-html">&lt;up-empty
+            mode="car"
+            icon="http://cdn.uviewui.com/uview/empty/car.png"
+    &gt;
+    &lt;/up-empty&gt;</code></pre>
+
+      <h3>内置图标</h3>
+      <p>这些图标已内置，直接通过mode参数引用即可</p>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">名称</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">car</div>
+          <div class="table-cell">购物车为空</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">page</div>
+          <div class="table-cell">页面不存在</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">search</div>
+          <div class="table-cell">没有搜索结果</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">address</div>
+          <div class="table-cell">没有收货地址</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">wifi</div>
+          <div class="table-cell">没有WiFi</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">order</div>
+          <div class="table-cell">订单为空</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">coupon</div>
+          <div class="table-cell">没有优惠券</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">favor</div>
+          <div class="table-cell">无收藏</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">permission</div>
+          <div class="table-cell">无权限</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">history</div>
+          <div class="table-cell">无历史记录</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">news</div>
+          <div class="table-cell">无新闻列表</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">message</div>
+          <div class="table-cell">消息列表为空</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">list</div>
+          <div class="table-cell">列表为空(通用)</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">data</div>
+          <div class="table-cell">数据为空(默认，通用)</div>
+        </div>
+      </div>
+
+      <h3>API</h3>
+      <h4>Props</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">icon</div>
+          <div class="table-cell">内置图标名称，或图片路径，建议绝对路径</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">text</div>
+          <div class="table-cell">文字提示</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">textColor</div>
+          <div class="table-cell">文字颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#c0c4cc</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">textSize</div>
+          <div class="table-cell">文字大小</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">14</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">iconColor</div>
+          <div class="table-cell">图标的颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#c0c4cc</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">iconSize</div>
+          <div class="table-cell">图标的大小</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">90</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">mode</div>
+          <div class="table-cell">内置的图标，见上方说明</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">data</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">width</div>
+          <div class="table-cell">图标的宽度，单位px</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">160</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">height</div>
+          <div class="table-cell">图标的高度，单位px</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">160</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">show</div>
+          <div class="table-cell">是否显示组件</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">marginTop</div>
+          <div class="table-cell">组件到上一个元素的间距,单位px</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>Slot</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">名称</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">-</div>
+          <div class="table-cell">给组件底部传入slot内容</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

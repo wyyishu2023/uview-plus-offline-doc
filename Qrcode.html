@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h2>Qrcode 二维码 <span style="color: red">3.1.51</span></h2>
+      <p>根据提供的字符串，可使用前端 JS 生成二维码并进行展示。</p>
+      <h3>注意</h3>
+      <p>需要 uview-plus 版本 v3.1.50 以上版本。</p>
+      <h3>使用场景</h3>
+      <p>展示二维码场景</p>
+      <h3>平台差异说明</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+      <h3>基本使用</h3>
+      <p>
+        通过 <code>size</code> 和 <code>val</code> 设置二维码的大小和内容，通过
+        <code>background</code> 和 <code>foreground</code> 设置二维码颜色，通过
+        <code>icon</code> 设置二维码中间的 logo 图片。
+      </p>
+      <pre class="language-html"><code>&lt;template&gt;
+      &lt;view&gt;
+          &lt;!-- 基本二维码 --&gt;
+          &lt;up-qrcode :size="200" val="uview-plus"&gt;&lt;/up-qrcode&gt;
+          &lt;!-- 带中间 logo 的二维码 --&gt;
+          &lt;up-qrcode :size="200" val="uview-plus" icon="https://uview-plus.jiangruyi.com/uview-plus/common/logo.png"&gt;&lt;/up-qrcode&gt;
+          &lt;!-- 自定义颜色的二维码 --&gt;
+          &lt;up-qrcode :size="200" val="uview-plus" background="red" foreground="blue"&gt;&lt;/up-qrcode&gt;
+      &lt;/view&gt;
+  &lt;/template&gt;</code></pre>
+      <h3>加载状态</h3>
+      <p>
+        由于二维码使用前端 JS 计算生成，因此会有一个计算时间。<code
+          >showLoading</code
+        >
+        参数可配置是否显示加载状态。
+      </p>
+      <pre class="language-html"><code>&lt;template&gt;
+      &lt;view&gt;
+          &lt;!-- 显示加载状态的二维码 --&gt;
+          &lt;up-qrcode :size="200" val="uview-plus" showLoading loadingText="loading..."&gt;&lt;/up-qrcode&gt;
+      &lt;/view&gt;
+  &lt;/template&gt;</code></pre>
+
+      <h3>API</h3>
+      <h4>Props</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">cid</div>
+          <div class="table-cell">实例 ID 字符串(必须)</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell"></div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">size</div>
+          <div class="table-cell">二维码大小</div>
+          <div class="table-cell">Integer</div>
+          <div class="table-cell">200</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">val</div>
+          <div class="table-cell">二维码内容</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell"></div>
+          <div class="table-cell"></div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">background</div>
+          <div class="table-cell">背景色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#ffffff</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">foreground</div>
+          <div class="table-cell">前景色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#000000</div>
+          <div class="table-cell"></div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">icon</div>
+          <div class="table-cell">二维码中间图标</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell"></div>
+          <div class="table-cell"></div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">showLoading</div>
+          <div class="table-cell">显示加载状态</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">loadingText</div>
+          <div class="table-cell">加载中提示语</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">二维码生成中</div>
+          <div class="table-cell"></div>
+        </div>
+      </div>
+      <h4>Events</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">result</div>
+          <div class="table-cell">二维码生成成功</div>
+          <div class="table-cell"></div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">longpress</div>
+          <div class="table-cell">长按事件</div>
+          <div class="table-cell"></div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

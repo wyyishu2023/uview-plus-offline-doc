@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h2>Cell 单元格</h2>
+      <p>cell 单元格一般用于一组列表的情况，比如个人中心页，设置页等。</p>
+
+      <h2>平台支持情况</h2>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基础功能</h3>
+      <p>
+        该组件需要搭配
+        <code>cell-group</code>
+        使用，并由它实现列表组的上下边框，如不需要上下边框，配置
+        <code>cellGroup</code> 的 <code>border</code> 参数为
+        <code>false</code> 即可。
+      </p>
+      <p>
+        通过 <code>title</code> 设置左侧标题， <code>value</code> 设置右侧内容。
+      </p>
+      <p>
+        通过
+        <code>icon</code>
+        字段设置图标，或者图片链接(本地文件建议使用绝对地址)。
+      </p>
+      <p>
+        注意： 由于 <code>cell</code> 组件需要由
+        <code>cellGroup</code>
+        组件提供参数值，这些父子组件间通过Vue的"provide/inject"特性注入依赖，
+        所以您必须使用 <code>cellGroup</code> 包裹
+        <code>cell</code> 组件才能正常使用。
+      </p>
+      <pre><code class="language-html">&lt;template&gt;
+      &lt;up-cell-group&gt;
+        &lt;up-cell icon="setting-fill" title="个人设置"&gt;&lt;/up-cell&gt;
+        &lt;up-cell icon="integral-fill" title="会员等级" value="新版本"&gt;&lt;/up-cell&gt;
+      &lt;/up-cell-group&gt;
+    &lt;/template&gt;</code></pre>
+
+      <h3>自定义内容</h3>
+      <p>通过插槽 <code>icon</code> 可以自定义图标，内容会替换左边图标位置</p>
+      <p>通过插槽 <code>title</code> 定义左边标题部分</p>
+      <p>通过插槽 <code>right-icon</code> 定义右边内容部分</p>
+      <pre><code class="language-html">&lt;up-cell-group&gt;
+      &lt;up-cell  title="夕阳无限好" arrow-direction="down"&gt;
+        &lt;template #icon&gt;
+          &lt;up-icon size="32" name="search"&gt;&lt;/up-icon&gt;
+        &lt;/template&gt;
+        &lt;!-- &lt;up-badge count="99" :absolute="false" slot="right-icon"&gt;&lt;/up-badge&gt; --&gt;
+        &lt;template #right-icon&gt;
+          &lt;up-switch v-model="checked"&gt;&lt;/up-switch&gt;
+        &lt;/template&gt;
+      &lt;/up-cell&gt;
+      &lt;up-cell icon="setting-fill" title="只是近黄昏"&gt;&lt;/up-cell&gt;
+    &lt;/up-cell-group&gt;</code></pre>
+      <p>
+        如上所示，可以给 <code>cell</code> 组件通过
+        <code>slot="right-icon"</code> 设定右边uview-plus自带的
+        <code>badge</code> 或者 <code>switch</code> 组件：
+      </p>
+      <p>
+        如果搭配的是 <code>badge</code> 组件，注意设置
+        <code>absolute</code> 参数为
+        <code>false</code>
+        去掉绝对定位，否则其位于右侧的恰当位置，详见Badge 徽标数。
+      </p>
+      <p>
+        如果搭配的是 <code>switch</code> 组件，注意要通过
+        <code>v-model</code> 绑定一个内容为布尔值的变量，否则无法操作
+        <code>switch</code>，详见Switch 开关选择器。
+      </p>
+
+      <h3>自定义大小</h3>
+      <p>设置 <code>size</code> 可自定义大小</p>
+      <pre><code class="language-html">&lt;up-cell-group&gt;
+      &lt;up-cell
+          size="large"
+          title="单元格"
+          value="内容"
+          isLink
+      &gt;&lt;/up-cell&gt;
+      &lt;up-cell
+          size="large"
+          title="单元格"
+          value="内容"
+          label="描述信息"
+      &gt;&lt;/up-cell&gt;
+    &lt;/up-cell-group&gt;</code></pre>
+
+      <h3>展示右箭头</h3>
+      <p>
+        设置 <code>isLink</code> 为
+        <code>true</code>
+        ，将会显示右侧的箭头，可以通过arrow-direction控制箭头的方向
+      </p>
+      <pre><code class="language-html">&lt;up-cell-group&gt;
+      &lt;up-cell icon="share" title="停车坐爱枫林晚" :isLink="true" arrow-direction="down"&gt;&lt;/up-cell&gt;
+      &lt;up-cell icon="map" title="霜叶红于二月花" :isLink="false"&gt;&lt;/up-cell&gt;
+    &lt;/up-cell-group&gt;</code></pre>
+
+      <h3>跳转页面</h3>
+      <p>
+        设置 <code>isLink</code> 为
+        <code>true</code> ，单元格点击可跳转页面,传入
+        <code>url</code> 设置跳转地址
+      </p>
+      <pre><code class="language-html">&lt;up-cell-group&gt;
+      &lt;up-cell
+          title="打开标签页"
+          isLink
+          url="/pages/componentsB/tag/tag"
+      &gt;&lt;/up-cell&gt;
+      &lt;up-cell
+          title="打开徽标页"
+          isLink
+          url="/pages/componentsB/badge/badge"
+      &gt;&lt;/up-cell&gt;
+    &lt;/up-cell-group&gt;</code></pre>
+
+      <h3>右侧内容垂直居中</h3>
+      <p>
+        设置 <code>center</code> 为 <code>true</code> ，可将右侧内容垂直居中
+      </p>
+      <pre><code class="language-html">&lt;up-cell-group&gt;
+        &lt;up-cell
+            title="单元格"
+            value="内容"
+            label="描述信息"
+            center
+        &gt;&lt;/up-cell&gt;
+    &lt;/up-cell-group&gt;</code></pre>
+
+      <h3>自定义插槽</h3>
+      <p>
+        设置 <code>slot</code> 为 <code>title</code> ，可自定义左侧区域内容 设置
+        <code>slot</code> 为 <code>value</code> ，可自定义右侧区域内容
+      </p>
+      <pre><code class="language-html">&lt;up-cell-group&gt;
+        &lt;up-cell value="内容"&gt;
+            &lt;template #title&gt;
+                &lt;view
+                    class="u-slot-title"
+                &gt;
+                    &lt;text class="u-cell-text"&gt;单元格&lt;/text&gt;
+                    &lt;up-tag
+                        text="标签"
+                        plain
+                        size="mini"
+                        type="warning"
+                    &gt;
+                    &lt;/up-tag&gt;
+                &lt;/view&gt;
+            &lt;/template&gt;
+        &lt;/up-cell&gt;
+        &lt;up-cell
+            title="单元格"
+            isLink
+        &gt;
+            &lt;template #value&gt;
+                &lt;text
+                        class="u-slot-value"
+                    &gt;99&lt;/text&gt;
+            &lt;/template&gt;
+        &lt;/up-cell&gt;
+    &lt;/up-cell-group&gt;</code></pre>
+      <pre><code class="language-css">/* App.vue */
+    .cell-hover-class {
+        background-color: rgb(235, 237, 238);
+    }
+    
+    /* 或者单是设置透明度 */
+    .cell-hover-class {
+        opacity: 0.5;
+    }
+    </code></pre>
+
+      <h3>API</h3>
+      <h4>CellGroup Props</h4>
+      <div class="table">
+        <div class="table-row">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">title</div>
+          <div class="table-cell">分组标题</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">border</div>
+          <div class="table-cell">是否显示外边框</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">customStyle</div>
+          <div class="table-cell">
+            用户自定义外部样式，对象形式，如{'font - size': '12px'} 或
+            {'fontSize': '12px'}
+          </div>
+          <div class="table-cell">object</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>Cell Props</h4>
+      <div class="table">
+        <div class="table-row">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">title</div>
+          <div class="table-cell">左侧标题</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">label</div>
+          <div class="table-cell">标题下方的描述信息</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">value</div>
+          <div class="table-cell">右侧的内容</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">icon</div>
+          <div class="table-cell">
+            左侧图标名称，或者图片链接(本地文件建议使用绝对地址)
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">disabled</div>
+          <div class="table-cell">是否禁用cell</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">border</div>
+          <div class="table-cell">是否显示下边框</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">center</div>
+          <div class="table-cell">
+            内容是否垂直居中(主要是针对右侧的value部分)
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">url</div>
+          <div class="table-cell">点击后跳转的URL地址</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">linkType</div>
+          <div class="table-cell">
+            链接跳转的方式，内部使用的是uview -
+            plus封装的route方法，可能会进行拦截操作
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">navigateTo</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">clickable</div>
+          <div class="table-cell">
+            是否开启点击反馈(表现为点击时加上灰色背景)
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">isLink</div>
+          <div class="table-cell">是否展示右侧箭头并开启点击反馈</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">required</div>
+          <div class="table-cell">
+            是否显示表单状态下的必填星号(此组件可能会内嵌入input组件)
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">rightIcon</div>
+          <div class="table-cell">右侧的图标箭头</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">arrow - right</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">arrowDirection</div>
+          <div class="table-cell">右侧箭头的方向，可选值为：left，up，down</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">right</div>
+          <div class="table-cell">left|up|down</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">iconStyle</div>
+          <div class="table-cell">左侧图标样式</div>
+          <div class="table-cell">Object | String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">rightIconStyle</div>
+          <div class="table-cell">右侧箭头图标的样式</div>
+          <div class="table-cell">Object | String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">titleStyle</div>
+          <div class="table-cell">标题的样式</div>
+          <div class="table-cell">Object | String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">size</div>
+          <div class="table-cell">单位元的大小，可选值为large</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">stop</div>
+          <div class="table-cell">点击cell是否阻止事件传播</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">name</div>
+          <div class="table-cell">标识符，用于在 `click` 事件中进行返回</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>Cell Slot</h4>
+      <div class="table">
+        <div class="table-row">
+          <div class="table-cell">名称</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">title</div>
+          <div class="table-cell">
+            自定义左侧标题部分的内容，如需使用，请勿定义 `title` 参数，或赋值
+            `null` 即可
+          </div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">value</div>
+          <div class="table-cell">
+            自定义右侧标题部分的内容，如需使用，请勿定义 `value` 参数，或赋值
+            `null` 即可
+          </div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">icon</div>
+          <div class="table-cell">自定义左侧的图标</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">right - icon</div>
+          <div class="table-cell">
+            自定义右侧图标内容，需设置 `arrow` 为 `false` 才起作用
+          </div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">label</div>
+          <div class="table-cell">自定义 `label` 内容</div>
+        </div>
+      </div>
+
+      <h4>Cell Event</h4>
+      <div class="table">
+        <div class="table-row">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">click</div>
+          <div class="table-cell">点击cell列表时触发</div>
+          <div class="table-cell">name: `props` 的 `name` 参数标识符</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h1>uview-plus Layout布局组件</h1>
+      <p>
+        uview-plus的Layout布局组件基于12分栏系统，方便开发者快速创建布局。若需宫格布局，建议使用功能更完善灵活的uview-plus
+        Grid宫格组件。
+      </p>
+
+      <h2>平台支持情况</h2>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h2>基本使用</h2>
+      <p>通过`col`组件的`span`属性设置分栏比例。示例代码如下：</p>
+      <pre><code class="language-html">&lt;template&gt;
+      &lt;view class="u-page"&gt;
+          &lt;view class="u-demo-block"&gt;
+              &lt;text class="u-demo-block__title"&gt;基础使用&lt;/text&gt;
+              &lt;view class="u-demo-block__content"&gt;
+                  &lt;up-row customStyle="margin-bottom: 10px"&gt;
+                      &lt;up-col span="6"&gt;
+                          &lt;view class="demo-layout bg-purple-light"&gt;&lt;/view&gt;
+                      &lt;/up-col&gt;
+                      &lt;up-col span="6"&gt;
+                          &lt;view class="demo-layout bg-purple"&gt;&lt;/view&gt;
+                      &lt;/up-col&gt;
+                  &lt;/up-row&gt;
+                  &lt;up-row customStyle="margin-bottom: 10px"&gt;
+                      &lt;up-col span="4"&gt;
+                          &lt;view class="demo-layout bg-purple"&gt;&lt;/view&gt;
+                      &lt;/up-col&gt;
+                      &lt;up-col span="4"&gt;
+                          &lt;view class="demo-layout bg-purple-light"&gt;&lt;/view&gt;
+                      &lt;/up-col&gt;
+                      &lt;up-col span="4"&gt;
+                          &lt;view class="demo-layout bg-purple-dark"&gt;&lt;/view&gt;
+                      &lt;/up-col&gt;
+                  &lt;/up-row&gt;
+                  &lt;up-row justify="space-between"&gt;
+                      &lt;up-col span="3"&gt;
+                          &lt;view class="demo-layout bg-purple"&gt;&lt;/view&gt;
+                      &lt;/up-col&gt;
+                      &lt;up-col span="3"&gt;
+                          &lt;view class="demo-layout bg-purple-light"&gt;&lt;/view&gt;
+                      &lt;/up-col&gt;
+                      &lt;up-col span="3"&gt;
+                          &lt;view class="demo-layout bg-purple"&gt;&lt;/view&gt;
+                      &lt;/up-col&gt;
+                      &lt;up-col span="3"&gt;
+                          &lt;view class="demo-layout bg-purple-light"&gt;&lt;/view&gt;
+                      &lt;/up-col&gt;
+                  &lt;/up-row&gt;
+              &lt;/view&gt;
+          &lt;/view&gt;
+      &lt;/view&gt;
+  &lt;/template&gt;
+  
+  &lt;style lang="scss"&gt;
+  .wrap {
+      padding: 12px;
+  }
+  .demo-layout {
+      height: 25px;
+      border-radius: 4px;
+  }
+  .bg-purple {
+      background: #CED7E1;
+  }
+  .bg-purple-light {
+      background: #e5e9f2;
+  }
+  .bg-purple-dark {
+      background: #99a9bf;
+  }
+  &lt;/style&gt;</code></pre>
+
+      <h2>功能特性</h2>
+      <h3>分栏间隔</h3>
+      <p>
+        通过设置`row`组件的`gutter`参数，指定每一栏之间的间隔（最终表现为左边内边距各为`gutter`/2），默认间隔为0。示例：
+      </p>
+      <pre><code class="language-html">&lt;view class="u-demo-block__content"&gt;
+      &lt;up-row
+          justify="space-between"
+          gutter="10"
+      &gt;
+          &lt;up-col span="3"&gt;
+              &lt;view class="demo-layout bg-purple"&gt;&lt;/view&gt;
+          &lt;/up-col&gt;
+          &lt;up-col span="3"&gt;
+              &lt;view class="demo-layout bg-purple-light"&gt;&lt;/view&gt;
+          &lt;/up-col&gt;
+          &lt;up-col span="3"&gt;
+              &lt;view class="demo-layout bg-purple"&gt;&lt;/view&gt;
+          &lt;/up-col&gt;
+          &lt;up-col span="3"&gt;
+              &lt;view class="demo-layout bg-purple-light"&gt;&lt;/view&gt;
+          &lt;/up-col&gt;
+      &lt;/up-row&gt;
+  &lt;/view&gt;</code></pre>
+
+      <h3>混合布局</h3>
+      <p>通过指定`col`组件不同的`span`属性值，实现不同的分栏比例布局。示例：</p>
+      <pre><code class="language-html">&lt;view class="u-demo-block__content"&gt;
+      &lt;up-row
+          justify="space-between"
+          gutter="10"
+      &gt;
+          &lt;up-col span="2"&gt;
+              &lt;view class="demo-layout bg-purple-light"&gt;&lt;/view&gt;
+          &lt;/up-col&gt;
+          &lt;up-col span="4"&gt;
+              &lt;view class="demo-layout bg-purple"&gt;&lt;/view&gt;
+          &lt;/up-col&gt;
+          &lt;up-col span="6"&gt;
+              &lt;view class="demo-layout bg-purple-dark"&gt;&lt;/view&gt;
+          &lt;/up-col&gt;
+      &lt;/up-row&gt;
+  &lt;/view&gt;</code></pre>
+
+      <h3>分栏偏移</h3>
+      <p>使用`col`组件的`offset`属性指定分栏偏移的栏数。示例：</p>
+      <pre><code class="language-html">&lt;view class="u-demo-block__content"&gt;
+      &lt;up-row
+              justify="space-between"
+              customStyle="margin-bottom: 10px"
+      &gt;
+          &lt;up-col
+                  span="3"
+                  offset="3"
+          &gt;
+              &lt;view class="demo-layout bg-purple-light"&gt;&lt;/view&gt;
+          &lt;/up-col&gt;
+          &lt;up-col
+                  span="3"
+                  offset="3"
+          &gt;
+              &lt;view class="demo-layout bg-purple"&gt;&lt;/view&gt;
+          &lt;/up-col&gt;
+      &lt;/up-row&gt;
+      &lt;up-row&gt;
+          &lt;up-col span="3"&gt;
+              &lt;view class="demo-layout bg-purple-light"&gt;&lt;/view&gt;
+          &lt;/up-col&gt;
+          &lt;up-col
+                  span="3"
+                  offset="3"
+          &gt;
+              &lt;view class="demo-layout bg-purple"&gt;&lt;/view&gt;
+          &lt;/up-col&gt;
+      &lt;/up-row&gt;
+  &lt;/view&gt;</code></pre>
+
+      <h3>对齐方式</h3>
+      <p>
+        利用`row`组件的`justify`属性对分栏进行水平对齐，可选值为`start`（或`flex-start`）、`end`（或`flex-end`）、`center`、`around`（或`space-around`）、`between`（或`space-between`）
+        ，表现类似CSS的`justify-content`属性，但此方式不支持微信小程序。示例：
+      </p>
+      <pre><code class="language-html">&lt;view class="u-demo-block__content"&gt;
+      &lt;up-row
+              justify="space-between"
+              customStyle="margin-bottom: 10px"
+      &gt;
+          &lt;up-col
+                  span="3"
+          &gt;
+              &lt;view class="demo-layout bg-purple-light"&gt;&lt;/view&gt;
+          &lt;/up-col&gt;
+          &lt;up-col
+                  span="3"
+          &gt;
+              &lt;view class="demo-layout bg-purple"&gt;&lt;/view&gt;
+          &lt;/up-col&gt;
+      &lt;/up-row&gt;
+      &lt;up-row&gt;
+          &lt;up-col span="3"&gt;
+              &lt;view class="demo-layout bg-purple-light"&gt;&lt;/view&gt;
+          &lt;/up-col&gt;
+          &lt;up-col
+                  span="3"
+          &gt;
+              &lt;view class="demo-layout bg-purple"&gt;&lt;/view&gt;
+          &lt;/up-col&gt;
+      &lt;/up-row&gt;
+  &lt;/view&gt;</code></pre>
+
+      <h2>API</h2>
+      <h3>Row Props</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">gutter</div>
+          <div class="table-cell">栅格间隔，左右各为此值的一半，单位任意</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">justify</div>
+          <div class="table-cell">水平排列方式(微信小程序暂不支持)</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">`start` (或`flex-start`)</div>
+          <div class="table-cell">
+            `end` (或`flex-end`) / `center` / `around` (或`space-around`) /
+            `between` (或`space-between`)
+          </div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">align</div>
+          <div class="table-cell">垂直排列方式</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">center</div>
+          <div class="table-cell">top / bottom</div>
+        </div>
+      </div>
+
+      <h3>Col Props</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">span</div>
+          <div class="table-cell">栅格占据的列数，总12等分</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">1-12</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">offset</div>
+          <div class="table-cell">分栏左边偏移，计算方式与`span`相同</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">justify</div>
+          <div class="table-cell">水平排列方式</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">start</div>
+          <div class="table-cell">
+            `start` (或`flex-start`)、`end` (或`flex-end`)、`center`、`around`
+            (或`space-around`)、`between` (或`space-between`)
+          </div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">align</div>
+          <div class="table-cell">垂直对齐方式</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">stretch</div>
+          <div class="table-cell">`top`、`center`、`bottom`、`stretch`</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">textAlign</div>
+          <div class="table-cell">文字水平对齐方式</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">left</div>
+          <div class="table-cell">center / right</div>
+        </div>
+      </div>
+
+      <h3>Row Events</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">click</div>
+          <div class="table-cell">`row`被点击</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h3>Col Events</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">click</div>
+          <div class="table-cell">`col`被点击，会阻止事件冒泡到`row`</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h2>BackTop 返回顶部</h2>
+      <p>
+        该组件一个用于长页面，滑动一定距离后，出现返回顶部按钮，方便快速返回顶部的场景。
+      </p>
+
+      <h3>平台差异说明</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <p>
+        由于返回顶部需要实时监听滚动条的位置，从而判断返回的按钮该出现还是隐藏，由于组件无法得知页面的滚动条信息，只能在页面的onPageScroll生命周期中获得滚动条的位置，故需要在页面监听onPageScroll生命周期，实时获得滚动条的位置，通过Props传递给组件。
+      </p>
+      <pre><code class="language-html">
+  &lt;template&gt;
+      &lt;view class="wrap"&gt;
+          &lt;text&gt;滑动页面，返回顶部按钮将出现在右下角&lt;/text&gt;
+          &lt;up-back-top :scroll-top="scrollTop"&gt;&lt;/up-back-top&gt;
+      &lt;/view&gt;
+  &lt;/template&gt;
+  &lt;script setup&gt;  
+  import { ref } from 'vue';  
+  import { onPageScroll } from '@dcloudio/uni-app';
+    
+  // 创建响应式数据 scrollTop  
+  const scrollTop = ref(0);  
+    
+  // onPageScroll 方法来更新 scrollTop 的值  
+  onPageScroll((e) =&gt; {
+      scrollTop.value = e.scrollTop;
+  });
+  &lt;/script&gt;
+  &lt;style lang="scss" scoped&gt;
+      .wrap {
+          height: 200vh;
+      }
+  &lt;/style&gt;
+      </code></pre>
+
+      <h3>改变返回顶部按钮的出现时机</h3>
+      <p>可以通过top参数，修改页面滚动多少距离时，出现返回顶部的按钮。</p>
+      <pre><code class="language-html">
+  &lt;up-back-top :scroll-top="scrollTop" top="600"&gt;&lt;/up-back-top&gt;
+      </code></pre>
+
+      <h3>自定义返回顶部的图标和提示</h3>
+      <p>
+        通过icon修改返回顶部按钮的图标，可以是uview-plus内置的图标，或者图片路径。
+      </p>
+      <p>
+        通过text参数修改返回顶部按钮的文字提示信息，如果需要修改文字的颜色和大小，可以通过customStyle参数。
+      </p>
+      <pre><code class="language-html">
+  &lt;up-back-top :scroll-top="scrollTop" icon="arrow-up" text="返回"&gt;&lt;/up-back-top&gt;
+      </code></pre>
+
+      <h3>其他自定义样式</h3>
+      <p>通过iconStyle参数自定义图标的样式，比如颜色，大小等。</p>
+      <p>通过customStyle修改返回按钮的背景颜色，大小等。</p>
+      <p>通过mode修改按钮的形状，circle为圆形，square为方形。</p>
+      <p>
+        注意：如果通过icon参数传入图片路径的话，需要通过iconStyle参数设置图片的width和height属性。
+      </p>
+      <pre><code class="language-html">
+  &lt;template&gt;
+      &lt;view class="wrap"&gt;
+          &lt;text&gt;滑动页面，返回顶部按钮将出现在右下角&lt;/text&gt;
+          &lt;up-back-top :scrollTop="scrollTop" :mode="mode" :iconStyle="iconStyle"&gt;&lt;/up-back-top&gt;
+      &lt;/view&gt;
+  &lt;/template&gt;
+  &lt;script setup&gt;  
+  import { ref, reactive } from 'vue';  
+  import { onPageScroll } from '@dcloudio/uni-app';
+  
+  // 使用 ref 创建响应式基本类型数据  
+  const scrollTop = ref(0);  
+  const mode = ref('square');  
+    
+  // 使用 reactive 创建响应式对象数据  
+  const iconStyle = reactive({  
+    fontSize: '32rpx',  
+    color: '#2979ff'  
+  });  
+    
+  // onPageScroll 方法来更新 scrollTop 的值  
+  onPageScroll((e) =&gt; {
+      scrollTop.value = e.scrollTop;
+  }); 
+  &lt;/script&gt;
+  &lt;style lang="scss" scoped&gt;
+      .wrap {
+          height: 200vh;
+      }
+  &lt;/style&gt;
+      </code></pre>
+
+      <h3>API</h3>
+      <h4>Props</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">mode</div>
+          <div class="table-cell">按钮形状</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">circle</div>
+          <div class="table-cell">square</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">icon</div>
+          <div class="table-cell">uview-plus内置图标名称，或图片路径</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">arrow-upward</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">text</div>
+          <div class="table-cell">返回顶部按钮的提示文字</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">duration</div>
+          <div class="table-cell">返回顶部过程中的过渡时间，单位ms</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">100</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">scrollTop</div>
+          <div class="table-cell">
+            页面的滚动距离，通过onPageScroll生命周期获取
+          </div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">top</div>
+          <div class="table-cell">滚动条滑动多少距离时显示，单位rpx</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">400</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">bottom</div>
+          <div class="table-cell">返回按钮位置到屏幕底部的距离，单位rpx</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">100</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">right</div>
+          <div class="table-cell">返回按钮位置到屏幕右边的距离，单位rpx</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">20</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">z-index</div>
+          <div class="table-cell">返回顶部按钮的层级</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">9</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">iconStyle</div>
+          <div class="table-cell">图标的样式，对象形式</div>
+          <div class="table-cell">Object</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">customStyle</div>
+          <div class="table-cell">按钮外层的自定义样式</div>
+          <div class="table-cell">Object</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>Slot</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">名称</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">-</div>
+          <div class="table-cell">自定义返回按钮的所有内容</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CateTab 组件</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h1>CateTab 组件</h1>
+      <p>
+        CateTab
+        是一个用于展示分类标签及对应内容的组件，常用于电商、外卖、商超等商品分类场景，在不同平台（App（vue）、App（nvue）、H5、小程序）上均有良好支持。
+      </p>
+      <h2>平台支持情况</h2>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+      <h2>基本使用</h2>
+      <h3>基本结构与数据绑定</h3>
+      <p>
+        通过 `tabList` 属性绑定分类数据数组，`tabKeyName` 和 `itemKeyName`
+        分别指定分类标签和内容项的 key 名称。
+      </p>
+      <pre><code class="language-html">&lt;template&gt;
+      &lt;view&gt;
+        &lt;up-cate-tab :tabList="tabList" :tabKeyName="categoryKey" :itemKeyName="contentKey"&gt;
+          &lt;template #tabItem="{item}"&gt;
+            &lt;view&gt;{{ item[categoryKey] }}&lt;/view&gt;
+          &lt;/template&gt;
+          &lt;template #pageItem="{pageItem}"&gt;
+            &lt;view&gt;
+              &lt;view&gt;{{ pageItem[contentKey] }}&lt;/view&gt;
+              <!-- 可在此处添加更多关于内容项的展示逻辑 -->
+            &lt;/view&gt;
+          &lt;/template&gt;
+        &lt;up-cate-tab&gt;
+      &lt;/view&gt;
+    &lt;/template&gt;
+    &lt;script setup&gt;
+    import { ref } from 'vue';
+    const tabList = ref([
+      { category: '分类一', content: '内容一详情' },
+      { category: '分类二', content: '内容二详情' }
+    ]);
+    const categoryKey = 'category';
+    const contentKey = 'content';
+    &lt;/script&gt;</code></pre>
+
+      <h3>自定义分类标签显示（tabItem 插槽）</h3>
+      <p>
+        使用 `tabItem` 插槽来自定义左侧分类标签的显示内容，通过 `scope={item}`
+        可获取每个分类的数据。
+      </p>
+      <pre><code class="language-html">&lt;template #tabItem="{item}"&gt;
+      &lt;view style="padding: 10px; border-bottom: 1px solid #ccc"&gt;
+        &lt;text&gt;{{ item[categoryKey] }} - 自定义样式&lt;/text&gt;
+      &lt;/view&gt;
+    &lt;/template&gt;</code></pre>
+
+      <h3>自定义内容区域显示（pageItem 插槽）</h3>
+      <p>
+        通过 `pageItem` 插槽自定义右侧对应分类内容区域的显示内容，通过
+        `scope={pageItem}` 获取具体内容项数据。
+      </p>
+      <pre><code class="language-html">&lt;template #pageItem="{pageItem}"&gt;
+      &lt;view style="padding: 20px"&gt;
+        &lt;text&gt;详细内容: {{ pageItem[contentKey] }}&lt;/text&gt;
+      &lt;/view&gt;
+    &lt;/template&gt;</code></pre>
+
+      <h2>API 文档</h2>
+      <h3>Props</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">属性</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">tabList</div>
+          <div class="table-cell">Array</div>
+          <div class="table-cell">[]</div>
+          <div class="table-cell">分类数据列表，包含分类标签及对应内容信息</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">tabKeyName</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">'name'</div>
+          <div class="table-cell">用于指定分类标签的 key 名称</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">itemKeyName</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">'name'</div>
+          <div class="table-cell">用于指定内容项的 key 名称</div>
+        </div>
+      </div>
+
+      <h3>Slots</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">名称</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">tabItem</div>
+          <div class="table-cell">
+            自定义左侧分类标签显示内容，通过 `scope={item}` 获取数据
+          </div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">pageItem</div>
+          <div class="table-cell">
+            自定义右侧对应分类内容区域显示内容，通过 `scope={pageItem}` 获取数据
+          </div>
+        </div>
+      </div>
+
+      <h3>Events</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名称</div>
+          <div class="table-cell">回调参数</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <!-- 此处因原文档未提及 CateTab 组件事件，暂留空，实际应按组件实际功能补充 -->
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h2>Avatar 头像</h2>
+      <p>
+        本组件一般用于展示头像的地方，如个人中心，或者评论列表页的用户头像展示等场所。
+      </p>
+
+      <h3>平台差异说明</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <p>
+        通过 <code>src</code> 指定头像的路径即可简单使用，如果传递了
+        <code>text</code> 参数，<code>text</code> 将会优先起作用。
+      </p>
+      <p>
+        <strong>注意</strong>：请保证传递给
+        <code>src</code> 的是绝对地址，而不是相对地址，因为传入
+        <code>avatar</code>
+        组件的相对地址，是相对于组件的，而不是父组件(页面)，所以相对地址可能会出错。
+      </p>
+      <pre class="language-html"><code>&lt;template&gt;
+      &lt;view&gt;
+        &lt;up-avatar :src="src"&gt;&lt;/up-avatar&gt;
+        &lt;up-avatar :text="text"&gt;&lt;/up-avatar&gt;
+      &lt;/view&gt;
+    &lt;/template&gt;
+    
+    &lt;script&gt;
+      export default {
+        data() {
+          return {
+            src: 'http://pic2.sc.chinaz.com/Files/pic/pic9/202002/hpic2119_s.jpg',
+            text: '无头像'
+          }
+        }
+      }
+    &lt;/script&gt;</code></pre>
+
+      <h3>头像形状</h3>
+      <p>
+        <code>shape</code> 参数指定头像的形状，取值
+        <code>circle</code> 为圆形，取值 <code>square</code> 为圆角方形。
+      </p>
+      <pre class="language-html"><code>&lt;template&gt;
+      &lt;up-avatar :src="src" shape="square"&gt;&lt;/up-avatar&gt;
+    &lt;/template&gt;
+    
+    &lt;script&gt;
+      export default {
+        data() {
+          return {
+            src: 'http://pic2.sc.chinaz.com/Files/pic/pic9/202002/hpic2119_s.jpg'
+          }
+        }
+      }
+    &lt;/script&gt;</code></pre>
+
+      <h3>图标头像</h3>
+      <p>
+        <code>icon</code> 参数指定头像的图标，图标可参考
+        <code>icon</code> 组件。
+      </p>
+      <pre
+        class="language-html"
+      ><code>&lt;view class="u-demo-block__content"&gt;
+      &lt;view class="u-avatar-item"&gt;
+        &lt;up-avatar
+                icon="red-packet-fill"
+                fontSize="22"
+        &gt;&lt;/up-avatar&gt;
+      &lt;/view&gt;
+      &lt;view class="u-avatar-item"&gt;
+        &lt;up-avatar
+                icon="star-fill"
+                fontSize="22"
+        &gt;&lt;/up-avatar&gt;
+      &lt;/view&gt;
+    &lt;/view&gt;
+    
+    &lt;style lang="scss"&gt;
+     .u-demo-block__content {
+        @include flex;
+        align-items: center;
+      }
+    
+     .u-avatar-item {
+        margin-right: 30px;
+      }
+    &lt;/style&gt;</code></pre>
+
+      <h3>文字头像（自动背景色）</h3>
+      <p><code>randomBgColor</code> 参数开启头像的自动背景色。</p>
+      <pre class="language-html"><code>&lt;template&gt;
+      &lt;up-avatar
+              text="北"
+              fontSize="18"
+              randomBgColor
+      &gt;&lt;/up-avatar&gt;
+    &lt;/template&gt;</code></pre>
+
+      <h3>默认头像</h3>
+      <p>如果头像加载失败，导致加载图片失败，将会显示一个默认的灰色头像。</p>
+
+      <h3>头像组</h3>
+      <p>使用 <code>up-avatar-group</code> 实现头像组。</p>
+      <pre class="language-html"><code>&lt;template&gt;
+      &lt;up-avatar-group
+              :urls="urls"
+              size="35"
+              gap="0.4"
+      &gt;&lt;/up-avatar-group&gt;
+    &lt;/template&gt;
+    &lt;script setup&gt;  
+    import { reactive } from 'vue';  
+      
+    // 使用 reactive 创建响应式数组  
+    const urls = reactive([  
+      'https://uview-plus.jiangruyi.com/uview-plus/album/1.jpg',  
+      'https://uview-plus.jiangruyi.com/uview-plus/album/2.jpg',  
+      'https://uview-plus.jiangruyi.com/uview-plus/album/3.jpg',  
+      'https://uview-plus.jiangruyi.com/uview-plus/album/4.jpg',  
+      'https://uview-plus.jiangruyi.com/uview-plus/album/7.jpg',  
+      'https://uview-plus.jiangruyi.com/uview-plus/album/6.jpg',  
+      'https://uview-plus.jiangruyi.com/uview-plus/album/5.jpg'  
+    ]);  
+    &lt;/script&gt;</code></pre>
+
+      <h3>API</h3>
+      <h4>Avatar Props</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">src</div>
+          <div class="table-cell">
+            头像路径，如加载失败，将会显示默认头像(不能为相对路径)
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">shape</div>
+          <div class="table-cell">头像形状</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">circle</div>
+          <div class="table-cell">square</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">size</div>
+          <div class="table-cell">
+            头像尺寸，可以为指定字符串(large, default, mini)，或者数值
+          </div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">40</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">mode</div>
+          <div class="table-cell">
+            头像图片的裁剪类型，与uni的image组件的mode参数一致，如效果达不到需求，可尝试传widthFix值
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">scaleToFill</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">text</div>
+          <div class="table-cell">用文字替代图片，级别优先于src</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">bg-color</div>
+          <div class="table-cell">背景颜色，一般显示文字时用</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#c0c4cc</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">color</div>
+          <div class="table-cell">文字颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#ffffff</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">font-size</div>
+          <div class="table-cell">文字大小</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">18</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">icon</div>
+          <div class="table-cell">显示的图标</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">mp-avatar</div>
+          <div class="table-cell">
+            显示小程序头像，只对百度，微信，QQ小程序有效
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">random-bg-color</div>
+          <div class="table-cell">是否使用随机背景色</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">default-url</div>
+          <div class="table-cell">加载失败的默认头像(组件有内置默认图片)</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">color-index</div>
+          <div class="table-cell">
+            如果配置了randomBgColor为true，且配置了此值，则从默认的背景色数组中取出对应索引的颜色值，取值0
+            - 19之间
+          </div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">name</div>
+          <div class="table-cell">组件标识符</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">level</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>Avatar Event</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">click</div>
+          <div class="table-cell">头像被点击</div>
+          <div class="table-cell">index: 用户传递的标识符</div>
+        </div>
+      </div>
+
+      <h4>AvatarGroup Props</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">urls</div>
+          <div class="table-cell">头像图片组</div>
+          <div class="table-cell">Array</div>
+          <div class="table-cell">[]</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">maxCount</div>
+          <div class="table-cell">最多展示的头像数量</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">5</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">shape</div>
+          <div class="table-cell">头像形状</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">circle</div>
+          <div class="table-cell">square</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">mode</div>
+          <div class="table-cell">图片裁剪模式</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">aspectFill</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">showMore</div>
+          <div class="table-cell">超出maxCount时是否显示查看更多的提示</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">size</div>
+          <div class="table-cell">头像大小</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">40</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">keyName</div>
+          <div class="table-cell">
+            指定从数组的对象元素中读取哪个属性作为图片地址
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">gap</div>
+          <div class="table-cell">头像之间的遮挡比例（0.4代表遮挡40%）</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">0.5</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">extraValue</div>
+          <div class="table-cell">
+            需额外显示的值，如设置则优先于内部的urls.length - maxCount值
+          </div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>AvatarGroup Event</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">showMore</div>
+          <div class="table-cell">头像组更多点击</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h1>Divider 分割线</h1>
+      <p>区隔内容的分割线，一般用于页面底部"没有更多"的提示。</p>
+
+      <h2>平台差异说明</h2>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h2>基本使用</h2>
+      <p>文字内容通过text传入</p>
+      <pre class="language-html">
+        <code>
+    &lt;up-divider text="分割线"&gt;&lt;/up-divider&gt;
+        </code>
+      </pre>
+
+      <h2>设置虚线</h2>
+      <p>可以通过dashed指定虚线</p>
+      <pre class="language-html">
+        <code>
+    &lt;up-divider text="分割线" :dashed="true"&gt;&lt;/up-divider&gt;
+        </code>
+      </pre>
+
+      <h2>设置细线</h2>
+      <p>可以通过hairline指定细线</p>
+      <pre class="language-html">
+        <code>
+    &lt;up-divider text="分割线" :hairline="true"&gt;&lt;/up-divider&gt;
+        </code>
+      </pre>
+
+      <h2>设置以点代替文字</h2>
+      <p>可以通过dot指定以点代替文字</p>
+      <pre class="language-html">
+        <code>
+    &lt;up-divider text="分割线" :dot="true"&gt;&lt;/up-divider&gt;
+        </code>
+      </pre>
+
+      <h2>设置文本靠左靠右</h2>
+      <p>可以通过textPosition指定文字靠左靠右</p>
+      <pre class="language-html">
+        <code>
+    &lt;up-divider text="靠左" textPosition="left"&gt;&lt;/up-divider&gt;
+    &lt;up-divider text="靠右" textPosition="right"&gt;&lt;/up-divider&gt;
+        </code>
+      </pre>
+
+      <h2>设置文本颜色和线条颜色</h2>
+      <p>可以通过textColor和lineColor指定文字和线条颜色</p>
+      <pre class="language-html">
+        <code>
+    &lt;up-divider
+            text="分割线"
+            textColor="#2979ff"
+            lineColor="#ff0000"
+    &gt;&lt;/up-divider&gt;
+        </code>
+      </pre>
+
+      <h2>API</h2>
+      <h3>Props</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">dashed</div>
+          <div class="table-cell">是否虚线</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">hairline</div>
+          <div class="table-cell">是否细线</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">dot</div>
+          <div class="table-cell">是否以点替代文字，优先于text字段起作用</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">textPosition</div>
+          <div class="table-cell">内容文本的位置</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">center</div>
+          <div class="table-cell">left、right</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">text</div>
+          <div class="table-cell">文本内容</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">textSize</div>
+          <div class="table-cell">文本大小</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">14</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">textColor</div>
+          <div class="table-cell">文本颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#909399</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">lineColor</div>
+          <div class="table-cell">线条颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#dcdfe6</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h3>Events</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+          <div class="table-cell">版本</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">click</div>
+          <div class="table-cell">divider组件被点击时触发</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

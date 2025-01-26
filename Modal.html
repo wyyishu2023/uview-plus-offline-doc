@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h2>Modal 模态框</h2>
+      <p>
+        弹出模态框，常用于消息提示、消息确认、在当前页面内完成特定的交互操作。
+      </p>
+
+      <h3>平台差异说明</h3>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <p>默认情况下，模态框只有一个确认按钮：</p>
+      <ul>
+        <li>请至少要配置弹框的内容参数 <code>content</code>。</li>
+        <li>通过 <code>show</code> 绑定一个布尔变量来控制模态框的显示与否。</li>
+      </ul>
+      <pre><code class="language-html">
+  &lt;template&gt;
+      &lt;view &gt;
+          &lt;up-modal :show="show" :title="title" :content='content'&gt;&lt;/up-modal&gt;
+          &lt;up-button @click="show = true"&gt;打开&lt;/up-button&gt;
+      &lt;/view&gt;
+  &lt;/template&gt;
+  &lt;script setup&gt;  
+  import { ref } from 'vue';  
+    
+  // 使用 ref 创建响应式数据  
+  const show = ref(false);  
+  const title = ref('标题');  
+  const content = ref('uview-plus的目标是成为uni-app生态最优秀的UI框架');  
+  &lt;/script&gt;
+      </code></pre>
+
+      <h3>传入富文本内容</h3>
+      <p>
+        有时候我们需要给模态框的内容，不一定是纯文本的字符串，可能会需要换行，嵌入其他元素等，这时候我们可以使用
+        <code>slot</code> 功能，再结合 uni-app <code>richText</code> 组件，
+        就能传入富文本内容了，如下演示：
+      </p>
+      <pre><code class="language-html">
+  &lt;template&gt;
+      &lt;view &gt;
+          &lt;up-modal :show="show"  :title="title" &gt;
+              &lt;view class="slot-content"&gt;
+                  &lt;rich-text :nodes="content"&gt;&lt;/rich-text&gt;
+              &lt;/view&gt;
+          &lt;/up-modal&gt;
+          &lt;up-button @click="show = true"&gt;打开&lt;/up-button&gt;
+      &lt;/view&gt;
+  &lt;/template&gt;
+  &lt;script setup&gt;  
+  import { ref } from 'vue';  
+    
+  // 创建响应式数据  
+  const show = ref(false);  
+  const title = ref('标题');  
+  const content = ref(`空山新雨后&lt;br&gt;  
+                        天气晚来秋`);  
+  &lt;/script&gt;
+      </code></pre>
+
+      <h3>异步关闭</h3>
+      <p>
+        异步关闭只对"确定"按钮起作用，需要设置 <code>asyncClose</code> 为
+        <code>true</code>，当点击确定按钮的时候，按钮的文字变成一个 loading
+        动画，此动画的颜色为 <code>confirm-color</code> 参数的颜色，同时 Modal
+        不会自动关闭，需要手动设置通过 <code>show</code> 绑定的变量为
+        <code>false</code> 来实现手动关闭。
+      </p>
+      <pre><code class="language-html">
+  &lt;template&gt;
+      &lt;view class=""&gt;
+          &lt;up-modal :show="show" @confirm="confirm" ref="uModal" :asyncClose="true"&gt;&lt;/up-modal&gt;
+          &lt;up-button @click="showModal"&gt;弹起Modal&lt;/up-button&gt;
+      &lt;/view&gt;
+  &lt;/template&gt;
+  &lt;script setup&gt;  
+  import { ref } from 'vue';  
+  import { onLoad, onShow } from "@dcloudio/uni-app";  
+    
+  // 创建响应式数据  
+  const show = ref(false);  
+    
+  // 方法  
+  const showModal = () =&gt; {  
+      show.value = true;  
+  };  
+    
+  const confirm = () =&gt; {  
+      setTimeout(() =&gt; {  
+          // 3秒后自动关闭  
+          show.value = false;  
+      }, 3000);  
+  };  
+    
+  // uni-app 的生命周期钩子  
+  onLoad((opt) =&gt; {  
+      // 页面加载时执行的代码  
+      console.log('页面加载了', opt);  
+  });  
+    
+  onShow(() =&gt; {  
+      // 页面显示时执行的代码  
+      console.log('页面显示了');  
+  });  
+  &lt;/script&gt;
+      </code></pre>
+
+      <h3>点击遮罩关闭</h3>
+      <p>
+        有时候我们不显示"关闭"按钮的时候，需要点击遮罩也可以关闭
+        Modal，这时通过配置 <code>closeOnClickOverlay</code> 为
+        <code>true</code> 即可（注意：关闭事件需要自行处理，只会在开启
+        <code>closeOnClickOverlay</code> 后点击遮罩层执行
+        <code>close</code> 回调）
+      </p>
+      <pre><code class="language-html">
+  &lt;up-modal :show="show" :closeOnClickOverlay="true"&gt;&lt;/up-modal&gt;
+      </code></pre>
+
+      <h3>控制模态框宽度</h3>
+      <p>
+        可以通过设置
+        <code>width</code> 参数控制模态框的宽度，不支持百分比，可以数值，px，rpx
+        单位
+      </p>
+      <pre><code class="language-html">
+  &lt;up-modal v-model="show" width="300px"&gt;&lt;/up-modal&gt;
+      </code></pre>
+
+      <h3>缩放效果</h3>
+      <p>
+        开启缩放效果，在打开和收起模态框的时候，会带有缩放效果，具体效果请见示例，此效果默认开启，通过
+        <code>zoom</code> 参数配置
+      </p>
+      <pre><code class="language-html">
+  &lt;up-modal v-model="show" :zoom="false"&gt;&lt;/up-modal&gt;
+      </code></pre>
+
+      <h3>右侧演示页面源代码地址</h3>
+      <p>点击以下链接以查看右侧演示页面的源码</p>
+      <ul>
+        <li>github github</li>
+        <li>github gitee</li>
+      </ul>
+
+      <h3>API</h3>
+
+      <h4>Props</h4>
+      <p>
+        注意：需要给 modal 组件通过 <code>show</code> 绑定一个布尔值，来初始化
+        modal 的状态，随后该值被双向绑定。
+      </p>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">show</div>
+          <div class="table-cell">是否显示模态框，请赋值给 show</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">title</div>
+          <div class="table-cell">标题内容</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">content</div>
+          <div class="table-cell">
+            模态框内容，如传入 slot 内容，则此参数无效
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">confirmText</div>
+          <div class="table-cell">确认按钮的文字</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">确认</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">cancelText</div>
+          <div class="table-cell">取消按钮的文字</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">取消</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">showConfirmButton</div>
+          <div class="table-cell">是否显示确认按钮</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">showCancelButton</div>
+          <div class="table-cell">是否显示取消按钮</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">confirmColor</div>
+          <div class="table-cell">确认按钮的颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#2979ff</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">cancelColor</div>
+          <div class="table-cell">取消按钮的颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#606266</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">buttonReverse</div>
+          <div class="table-cell">对调确认和取消的位置</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">zoom</div>
+          <div class="table-cell">是否开启缩放模式</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">asyncClose</div>
+          <div class="table-cell">
+            是否异步关闭，只对确定按钮有效，见上方说明
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">closeOnClickOverlay</div>
+          <div class="table-cell">
+            是否允许点击遮罩关闭 Modal（注意：关闭事件需要自行处理，只会在开启
+            closeOnClickOverlay 后点击遮罩层执行 close 回调）
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">negativeTop</div>
+          <div class="table-cell">
+            往上偏移的值，给一个负的
+            margin-top，往上偏移，避免和键盘重合的情况，单位任意，数值则默认为
+            rpx 单位
+          </div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">width</div>
+          <div class="table-cell">
+            modal 宽度，不支持百分比，可以数值，px，rpx 单位
+          </div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">650rpx</div>
+          <div class="table-cell">px | rpx</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">confirmButtonShape</div>
+          <div class="table-cell">
+            确认按钮的样式,如设置，将不会显示取消按钮
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">circle(圆形) | square(方形)</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">contentTextAlign</div>
+          <div class="table-cell">文案对齐方式</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">left</div>
+          <div class="table-cell">left | center | right</div>
+        </div>
+      </div>
+
+      <h4>Event</h4>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">confirm</div>
+          <div class="table-cell">点击确认按钮时触发</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">cancel</div>
+          <div class="table-cell">点击取消按钮时触发</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">close</div>
+          <div class="table-cell">
+            点击遮罩关闭出发，closeOnClickOverlay 为 true 有效
+          </div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>Slots</h4>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">名称</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">default</div>
+          <div class="table-cell">传入自定义内容，一般为富文本，见上方说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">confirmButton</div>
+          <div class="table-cell">
+            传入自定义按钮，用于在微信小程序弹窗通过按钮授权的场景
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h2>LineProgress 线形进度条</h2>
+      <p>展示操作或任务的当前进度，比如上传文件，是一个线形的进度条。</p>
+      <h3>平台差异说明</h3>
+      <div class="table-container">
+        <div class="table-row">
+          <div class="table-cell">平台</div>
+          <div class="table-cell">支持情况</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">√</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">√</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">H5</div>
+          <div class="table-cell">√</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">小程序</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+      <h3>基本使用</h3>
+      <h4>设置进度值和颜色</h4>
+      <p>
+        通过 <code>percentage</code> 设置当前的进度值，该值区间为 0 - 100，通过
+        <code>activeColor</code> 设置进度条的颜色。
+      </p>
+      <pre class="language-html"><code class="language-html">&lt;template&gt;
+      &lt;up-line-progress :percentage=&quot;30&quot; activeColor=&quot;#ff0000&quot;&gt;&lt;/up-line-progress&gt;
+  &lt;/template&gt;</code></pre>
+      <h4>不显示百分比</h4>
+      <p>使用 <code>show - text</code> 参数配置是否显示进度条内百分值。</p>
+      <pre class="language-html"><code class="language-html">&lt;template&gt;
+      &lt;up-line-progress :percentage=&quot;30&quot; :showText=&quot;false&quot;&gt;&lt;/up-line-progress&gt;
+  &lt;/template&gt;</code></pre>
+      <h4>自定义高度</h4>
+      <p>使用 <code>height</code> 设置进度条高度。</p>
+      <pre class="language-html"><code class="language-html">&lt;template&gt;
+      &lt;up-line-progress :percentage=&quot;30&quot; height=&quot;8&quot;&gt;&lt;/up-line-progress&gt;
+  &lt;/template&gt;</code></pre>
+      <h4>自定义样式（不支持安卓环境的 nvue）</h4>
+      <p>自定义的数值样式嵌套在默认插槽里。</p>
+      <pre class="language-html"><code class="language-html">&lt;template&gt;
+      &lt;up-line-progress :percentage=&quot;30&quot;&gt;
+          &lt;text class=&quot;u-percentage-slot&quot;&gt;{{30}}%&lt;/text&gt;
+      &lt;/up-line-progress&gt;
+  &lt;/template&gt;
+  
+  &lt;style lang=&quot;scss&quot; scoped&gt;
+  .u-percentage-slot {
+      padding: 1px 5px;
+      background-color: $up-warning;
+      color: #fff;
+      border-radius: 100px;
+      font-size: 10px;
+      margin-right: -5px;
+  }
+  &lt;/style&gt;</code></pre>
+      <h4>手动加减</h4>
+      <p>通过控制 <code>percentage</code> 参数数值达到增减。</p>
+      <pre class="language-html"><code class="language-html">&lt;template&gt;
+      &lt;view style=&quot;margin-top: 50px;&quot;&gt;
+          &lt;up-line-progress :percentage=&quot;percentage&quot; /&gt;
+          &lt;view style=&quot;display: flex;margin-top: 100px;&quot;&gt;
+              &lt;button @click=&quot;computedWidth('minus')&quot;&gt;减少&lt;/button&gt;
+              &lt;button @click=&quot;computedWidth('plus')&quot;&gt;增加&lt;/button&gt;
+          &lt;/view&gt;
+      &lt;/view&gt;
+  &lt;/template&gt;
+  
+  &lt;script setup&gt;
+  import { ref } from 'vue';
+  
+  const percentage = ref(30);
+  
+  const computedWidth = (type) =&gt; {
+      if (type === 'plus') {
+          percentage.value = uni.$u.range(0, 100, percentage.value + 10);
+      } else {
+          percentage.value = uni.$u.range(0, 100, percentage.value - 10);
+      }
+  };
+  &lt;/script&gt;</code></pre>
+
+      <h3>API</h3>
+      <h4>Props</h4>
+      <div class="table-container">
+        <div class="table-row">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">activeColor</div>
+          <div class="table-cell">进度条激活部分的颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#19be6b</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">inactiveColor</div>
+          <div class="table-cell">进度条的底色，默认为灰色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#ececec</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">percentage</div>
+          <div class="table-cell">进度百分比，数值</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">showText</div>
+          <div class="table-cell">是否在进度条内部显示百分比的值</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">height</div>
+          <div class="table-cell">进度条的高度，默认单位 px</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">12</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+      <h4>Slots</h4>
+      <div class="table-container">
+        <div class="table-row">
+          <div class="table-cell">名称</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">default</div>
+          <div class="table-cell">
+            传入自定义的显示内容，将会覆盖默认显示的百分比值
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

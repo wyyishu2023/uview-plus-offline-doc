@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h2>Link 超链接</h2>
+      <p>该组件为超链接组件，在不同平台有不同表现形式：</p>
+      <ul>
+        <li>在 APP 平台会通过 plus 环境打开内置浏览器。</li>
+        <li>在小程序中把链接复制到粘贴板，同时提示信息。</li>
+        <li>在 H5 中通过 window.open 打开链接。</li>
+      </ul>
+      <h3>平台差异说明</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+      <h3>基本使用</h3>
+      <p>
+        通过 <code>href</code> 设置打开的链接，<code>text</code>
+        设置显示的内容。
+      </p>
+      <pre><code class="language-html">
+  &lt;template&gt;
+      &lt;up-link href="https://uviewui.com/" text="打开uview-plus UI文档" @click="click"&gt;&lt;/up-link&gt;
+  &lt;/template&gt;
+  &lt;script setup&gt;  
+  // 直接定义方法  
+  function click() {  
+    console.log('click');  
+  }  
+  &lt;/script&gt;
+      </code></pre>
+      <h3>下划线</h3>
+      <p>通过 <code>under-line</code> 设置是否显示链接的下划线。</p>
+      <pre><code class="language-html">
+  &lt;template&gt;
+      &lt;up-link href="https://uviewui.com/" text="打开uview-plus UI文档" :under-line="true"&gt;&lt;/up-link&gt;
+  &lt;/template&gt;
+      </code></pre>
+      <h3>自定义颜色</h3>
+      <p>
+        通过 <code>color</code> 设置文字颜色，通过
+        <code>line-color</code> 设置下划线颜色。
+      </p>
+      <pre><code class="language-html">
+  &lt;template&gt;
+      &lt;up-link href="https://uviewui.com/" text="打开uview-plus UI文档" color="#19be6b" line-color="#19be6b"&gt;&lt;/up-link&gt;
+  &lt;/template&gt;
+      </code></pre>
+
+      <h3>API</h3>
+      <h4>Props</h4>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">color</div>
+          <div class="table-cell">文字颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">color['up-primary']</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">fontSize</div>
+          <div class="table-cell">字体大小，默认单位 px</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">15</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">underLine</div>
+          <div class="table-cell">是否显示下划线</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">href</div>
+          <div class="table-cell">跳转的链接，要带上 http(s)</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">mpTips</div>
+          <div class="table-cell">
+            各个小程序平台把链接复制到粘贴板后的提示语
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">链接已复制，请在浏览器打开</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">lineColor</div>
+          <div class="table-cell">下划线颜色，默认同 color 参数颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">text</div>
+          <div class="table-cell">
+            超链接的文本，不使用 slot 形式传入，是因为 nvue 下无法修改颜色
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

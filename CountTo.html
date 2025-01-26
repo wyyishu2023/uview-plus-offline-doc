@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h2>CountTo 数字滚动</h2>
+      <p>
+        该组件一般用于需要滚动数字到某一个值的场景，目标要求是一个递增的值。
+      </p>
+      <h3>注意</h3>
+      <p>
+        如果给组件的父元素设置
+        <code>text-align: center</code>
+        想让数字水平居中，可能是由于元素内容快速变化而导致渲染的问题，在 APP
+        上组件可能会有轻微的左右抖动现象，解决办法是给父元素设置
+        <code>padding-left</code> 或者 <code>margin-left</code> 即可。
+      </p>
+      <h3>平台差异说明</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+      <h3>基本使用</h3>
+      <p>
+        通过 <code>startVal</code> 设置开始值，<code>endVal</code> 设置结束值。
+      </p>
+      <pre><code class="language-html">&lt;up-count-to :startVal="30" :endVal="500"&gt;&lt;/up-count-to&gt;</code></pre>
+      <h3>设置滚动相关参数</h3>
+      <p>
+        通过
+        <code>duration</code> 设置从开始值到结束值整个滚动过程所需的时间，单位
+        <code>ms</code>；通过
+        <code>useEasing</code>
+        设置滚动快结尾的时候，是否放慢滚动的速度，给用户更好的视觉效果。
+      </p>
+      <pre><code class="language-html">&lt;up-count-to :start-val="30" :end-val="500" :duration="2000" :useEasing="false"&gt;&lt;/up-count-to&gt;</code></pre>
+      <h3>是否显示小数位</h3>
+      <p>
+        通过
+        <code>decimals</code>
+        设置显示的小数位，如果设置了，在滚动过程中，小数位会一起变化。如果
+        <code>startVal</code> 和 <code>endVal</code> 是带小数的，应该设置
+        <code>decimals</code> 为 <code>startVal</code> 和
+        <code>endVal</code> 一样的小数位数值，如 <code>endVal</code> 为
+        <code>1200.55</code>，那么 <code>decimals</code> 应该设置为
+        <code>2</code>。
+      </p>
+      <pre><code class="language-html">&lt;up-count-to :startVal="30" :endVal="500.55" :decimals="2"&gt;&lt;/up-count-to&gt;</code></pre>
+      <h3>千分位分隔符</h3>
+      <p>
+        通过
+        <code>separator</code>
+        配置千分位分隔符，默认为空字符串，可以设置英文逗号
+        <code>,</code>，此参数表现为 <code>endVal</code> 值超过
+        <code>1000</code> 时，比如为 <code>"1257"</code>，那么滚动后会变成
+        <code>"1,245"</code>，在金额数值时，该参数可能会用上。
+      </p>
+      <pre><code class="language-html">&lt;up-count-to :endVal="1542" separator=","&gt;&lt;/up-count-to&gt;</code></pre>
+      <h3>滚动执行的时机</h3>
+      <p>
+        可以通过 <code>autoplay</code> 设置是否需要初始化时就开始滚动，默认为
+        <code>true</code>，如果设置为 <code>false</code>，可以通过组件的
+        <code>ref</code> 去控制组件内部的 <code>start()</code> 和
+        <code>paused()</code> 方法来开始或暂停。
+      </p>
+      <pre><code class="language-html">&lt;template&gt;
+      &lt;up-count-to ref="uCountToRef" :endVal="endVal" :autoplay="autoplay"&gt;&lt;/up-count-to&gt;
+    &lt;/template&gt;
+    &lt;script setup&gt;  
+    import { ref } from 'vue';  
+      
+    // 创建响应式数据  
+    const endVal = ref(5000.55);  
+    const autoplay = ref(false);  
+      
+    // 创建对子组件的引用  
+    const uCountToRef = ref(null);  
+      
+    // 定义方法  
+    const start = () => {  
+      if (uCountToRef.value) {  
+        uCountToRef.value.start();  
+      }  
+    };  
+      
+    const paused = () => {  
+      if (uCountToRef.value) {  
+        uCountToRef.value.paused();  
+      }  
+    };  
+      
+    const reStart = () => {  
+      if (uCountToRef.value) {  
+        uCountToRef.value.reStart();  
+      }  
+    };  
+    &lt;/script&gt;</code></pre>
+
+      <h3>API</h3>
+      <h4>Props</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">startVal</div>
+          <div class="table-cell">开始值</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">endVal</div>
+          <div class="table-cell">结束值</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">duration</div>
+          <div class="table-cell">滚动过程所需的时间，单位 <code>ms</code></div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">2000</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">autoplay</div>
+          <div class="table-cell">是否自动开始滚动</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">decimals</div>
+          <div class="table-cell">要显示的小数位数，见上方说明</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">useEasing</div>
+          <div class="table-cell">滚动结束时，是否缓动结尾，见上方说明</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">decimal</div>
+          <div class="table-cell">十进制分割</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">.</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">color</div>
+          <div class="table-cell">字体颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#606266</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">fontSize</div>
+          <div class="table-cell">字体大小，单位 <code>px</code></div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">22</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">bold</div>
+          <div class="table-cell">字体是否加粗</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">separator</div>
+          <div class="table-cell">千位分隔符，见上方说明</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+      <h4>Methods</h4>
+      <p>此方法如要通过 <code>ref</code> 手动调用。</p>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">名称</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">start</div>
+          <div class="table-cell">
+            <code>autoplay</code> 为 <code>false</code> 时，通过此方法启动滚动
+          </div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">reStart</div>
+          <div class="table-cell">暂停后重新开始滚动(从暂停前的值开始滚动)</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">paused</div>
+          <div class="table-cell">暂停滚动</div>
+        </div>
+      </div>
+      <h4>Event</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+          <div class="table-cell">版本</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">end</div>
+          <div class="table-cell">数值滚动到目标值时触发</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

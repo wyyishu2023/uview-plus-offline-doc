@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h1>uview-plus Button按钮组件</h1>
+      <p>
+        uview-plus的Button按钮组件是对uni-app的`button`组件进行二次封装，相较于原生组件，提供了更多`type`主题颜色与`size`尺寸选择。适用于App（vue）、App（nvue）、H5、小程序平台。
+      </p>
+
+      <h2>平台支持情况</h2>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+      <h2>基本使用</h2>
+      <p>通过`text`属性设置按钮显示的文字，示例：</p>
+      <pre><code class="language-html">&lt;up-button text="月落"&gt;&lt;/up-button&gt;</code></pre>
+
+      <h2>设置按钮的多种形态</h2>
+      <ul>
+        <li>
+          <strong>样式类型</strong
+          >：利用`type`属性设定按钮样式，可选值为`default`（默认）、`primary`、`success`、`info`、`warning`、`error`。
+        </li>
+        <li>
+          <strong>镂空效果</strong
+          >：`plain`属性设为`true`时，按钮背景色透明，呈现镂空效果。
+        </li>
+        <li>
+          <strong>细边框</strong>：`hairline`属性为`true`时，按钮显示细边框。
+        </li>
+        <li>
+          <strong>禁用状态</strong
+          >：`disabled`属性设为`true`，按钮进入禁用状态。
+        </li>
+        <li>
+          <strong>加载图标</strong
+          >：`loading`属性为`true`显示加载图标，`loadingText`属性可自定义加载文字提示。
+        </li>
+        <li>
+          <strong>图标显示</strong
+          >：`icon`属性设置按钮显示图标，属性值为图标名称。
+        </li>
+        <li>
+          <strong>按钮形状</strong
+          >：`shape`属性设为`circle`可使按钮呈圆角形状，默认值为`square`。
+        </li>
+        <li>
+          <strong>渐变颜色</strong
+          >：`color`属性支持传入`linear-gradient`渐变色来设置按钮颜色。
+        </li>
+        <li>
+          <strong>按钮大小</strong
+          >：`size`属性设置按钮大小，可选值有`large`、`mini`，默认值为`normal`。
+        </li>
+      </ul>
+      <p>示例代码：</p>
+      <pre><code class="language-html">&lt;template&gt;
+    &lt;view style="padding: 20px;"&gt;
+        &lt;up-button type="primary" text="确定"&gt;&lt;/up-button&gt;
+        &lt;up-button type="primary" :plain="true" text="镂空"&gt;&lt;/up-button&gt;
+        &lt;up-button type="primary" :plain="true" :hairline="true" text="细边"&gt;&lt;/up-button&gt;
+        &lt;up-button type="primary" :disabled="disabled" text="禁用"&gt;&lt;/up-button&gt;
+        &lt;up-button type="primary" loading loadingText="加载中"&gt;&lt;/up-button&gt;
+        &lt;up-button type="primary" icon="map" text="图标按钮"&gt;&lt;/up-button&gt;
+        &lt;up-button type="primary" shape="circle" text="按钮形状"&gt;&lt;/up-button&gt;
+        &lt;up-button text="渐变色按钮" color="linear-gradient(to right, rgb(66, 83, 216), rgb(213, 51, 186))"&gt;&lt;/up-button&gt;
+        &lt;up-button type="primary" size="small" text="大小尺寸"&gt;&lt;/up-button&gt;
+    &lt;/view&gt;
+&lt;/template&gt;
+&lt;script setup&gt;
+import { ref } from 'vue';
+const disabled = ref(true);
+&lt;/script&gt;</code></pre>
+
+      <h2>定义外部样式</h2>
+      <ul>
+        <li>
+          <strong>非微信小程序平台</strong
+          >：可直接给组件添加类名或内联样式修改按钮样式。
+        </li>
+        <li>
+          <strong>微信小程序平台</strong
+          >：因编译后页面存在同名元素，直接设置样式可能有问题。推荐使用`custom-style`参数，以对象形式传递样式给组件内部，使用驼峰命名。
+        </li>
+      </ul>
+      <p>示例代码：</p>
+      <pre><code class="language-html">&lt;template&gt;
+    &lt;view style="padding: 20px;"&gt;
+        &lt;!-- 以下形式在微信小程序会无效，APP和H5有效  --&gt;
+        &lt;up-button class="custom-style" text="雪月夜"&gt;&lt;/up-button&gt;
+        &lt;!-- 推荐使用这种方式在微信小程序设置样式  --&gt;
+        &lt;up-button :custom-style="{marginTop: '20px', color:'red'}" text="雪月夜"&gt;&lt;/up-button&gt;
+    &lt;/view&gt;
+&lt;/template&gt;
+&lt;script setup&gt;
+import { ref, reactive } from 'vue';
+const disabled = ref(true);
+const customStyle = reactive({
+    marginTop: '20px',
+    color:'red'
+});
+&lt;/script&gt;
+&lt;style lang="scss" scoped&gt;
+.custom-style {
+    color: #ff0000;
+    width: 400rpx;
+}
+&lt;/style&gt;</code></pre>
+
+      <h2>各家小程序开放能力的对接</h2>
+      <p>
+        uview-plus已对接uni-app关于`button`组件的所有开放能力（截止2020-04-14），使用方式参考uni-app文档说明。若发现遗漏，请加群反馈。
+      </p>
+
+      <h2>API</h2>
+      <h3>Props</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">属性名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+          <div class="table-cell">平台差异说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">hairline</div>
+          <div class="table-cell">是否显示按钮的细边框</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">type</div>
+          <div class="table-cell">按钮的样式类型</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">info</div>
+          <div class="table-cell">
+            info / primary / error / warning / success
+          </div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">size</div>
+          <div class="table-cell">按钮的大小</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">normal</div>
+          <div class="table-cell">large / mini</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">shape</div>
+          <div class="table-cell">按钮外观形状</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">square</div>
+          <div class="table-cell">circle</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">plain</div>
+          <div class="table-cell">按钮是否镂空，背景色透明</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">disabled</div>
+          <div class="table-cell">是否禁用</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">loading</div>
+          <div class="table-cell">按钮名称前是否带loading图标</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">
+            App-nvue平台，在ios上为雪花，Android上为圆圈
+          </div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">loadingText</div>
+          <div class="table-cell">加载中提示文字</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">loadingMode</div>
+          <div class="table-cell">加载状态图标类型</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">spinner</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">loadingSize</div>
+          <div class="table-cell">加载图标大小</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">15</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">openType</div>
+          <div class="table-cell">
+            开放能力，具体请看uniapp关于button组件部分说明
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">formType</div>
+          <div class="table-cell">
+            用于`form`组件，点击分别会触发`form`组件的submit/reset事件
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">appParameter</div>
+          <div class="table-cell">
+            打开APP时，向APP传递的参数，open-type="launchApp"时有效（注：只微信小程序、QQ小程序有效）
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">微信小程序、QQ小程序有效</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">hoverStopPropagation</div>
+          <div class="table-cell">
+            指定是否阻止本节点的祖先节点出现点击态，微信小程序有效（默认true）
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">微信小程序有效</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">lang</div>
+          <div class="table-cell">
+            指定返回用户信息的语言，zh_CN简体中文，zh_TW繁体中文，en英文
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">en</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">sessionFrom</div>
+          <div class="table-cell">会话来源，openType="contact"时有效</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">sendMessageTitle</div>
+          <div class="table-cell">
+            会话内消息卡片标题，openType="contact"时有效
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">sendMessagePath</div>
+          <div class="table-cell">
+            会话内消息卡片点击跳转小程序路径，openType="contact"时有效
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">sendMessageImg</div>
+          <div class="table-cell">
+            会话内消息卡片图片，openType="contact"时有效
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">showMessageCard</div>
+          <div class="table-cell">
+            是否显示会话内消息卡片，设置此参数为true，用户进入客服会话会在右下角显示"可能要发送的小程序"提示，用户点击后可以快速发送小程序消息，openType="contact"时有效
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">dataName</div>
+          <div class="table-cell">
+            额外传参参数，用于小程序的data-xxx属性，通过target.dataset.name获取
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">throttleTime</div>
+          <div class="table-cell">节流，一定时间内只能触发一次，单位毫秒</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">hoverStartTime</div>
+          <div class="table-cell">按住后多久出现点击态，单位毫秒</div>
+          <div class="table-cell">String | Number</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">hoverStartTime</div>
+          <div class="table-cell">按住后多久出现点击态，单位毫秒</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">hoverStayTime</div>
+          <div class="table-cell">手指松开后点击态保留时间，单位毫秒</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">200</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">text</div>
+          <div class="table-cell">按钮文字</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">icon</div>
+          <div class="table-cell">按钮图标</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">iconColor</div>
+          <div class="table-cell">
+            按钮颜色，在`plain =
+            true`镂空状态下，颜色与边框保持一致，否则为白色（主题为`info`时为黑色`#000000`）
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">color</div>
+          <div class="table-cell">
+            按钮颜色，支持传入`linear-gradient`渐变色
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">customStyle</div>
+          <div class="table-cell">定义需要用到的外部样式，详细见上方文档</div>
+          <div class="table-cell">Object</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h3>Events</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+          <div class="table-cell">平台差异说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">click</div>
+          <div class="table-cell">
+            按钮点击，请勿使用`@tap`点击事件，微信小程序无效，返回值为点击事件及参数
+          </div>
+          <div class="table-cell">点击事件及参数</div>
+          <div class="table-cell">微信小程序需用此事件替代`tap`</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">getphonenumber</div>
+          <div class="table-cell">`open-type="getPhoneNumber"`时有效</div>
+          <div class="table-cell">获取到的用户手机号相关信息</div>
+          <div class="table-cell">微信小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">getuserinfo</div>
+          <div class="table-cell">
+            用户点击该按钮时，会返回获取到的用户信息，从返回参数的`detail`中获取到的值同`uni.getUserInfo`
+          </div>
+          <div class="table-cell">用户信息对象</div>
+          <div class="table-cell">微信小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">error</div>
+          <div class="table-cell">当使用开放能力时，发生错误的回调</div>
+          <div class="table-cell">错误信息</div>
+          <div class="table-cell">微信小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">opensetting</div>
+          <div class="table-cell">在打开授权设置页并关闭后回调</div>
+          <div class="table-cell">授权设置相关信息</div>
+          <div class="table-cell">微信小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">launchapp</div>
+          <div class="table-cell">打开APP成功的回调</div>
+          <div class="table-cell">打开APP成功相关信息</div>
+          <div class="table-cell">微信小程序</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h1>Dropdown 下拉菜单 3.2.2</h1>
+      <p>该组件一般用于向下展开菜单，同时可切换多个选项卡的场景。</p>
+
+      <h2>平台差异说明</h2>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">微信小程序</div>
+          <div class="table-cell">支付宝小程序</div>
+          <div class="table-cell">百度小程序</div>
+          <div class="table-cell">头条小程序</div>
+          <div class="table-cell">QQ小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h2>基本使用</h2>
+      <h3>使用前说明：</h3>
+      <ul>
+        <li>
+          该组件必须结合 <code>up-dorpdown</code> 和
+          <code>up-dropdown-item</code> 一起使用，展开的内容由
+          <code>up-dropdown-item</code> 通过传递参数或者
+          <code>slot</code> 提供。
+        </li>
+        <li>
+          组件的菜单栏标题由 <code>up-dropdown-item</code> 通过
+          <code>title</code> 参数提供。
+        </li>
+        <li>
+          <code>up-dropdown-item</code> 带有默认的单选展示功能，通过
+          <code>options</code>(见下方说明) 配置，传入
+          <code>slot</code> 则会覆盖默认功能，通过 <code>v-model</code> 双向绑定
+          <code>options</code> 选中项的 <code>value</code> 值。
+        </li>
+      </ul>
+      <pre class="language-html">
+        <code>
+    &lt;template&gt;
+      &lt;view class=""&gt;
+        &lt;up-dropdown&gt;
+          &lt;up-dropdown-item v-model="value1" title="距离" :options="options1"&gt;&lt;/up-dropdown-item&gt;
+          &lt;up-dropdown-item v-model="value2" title="温度" :options="options2"&gt;&lt;/up-dropdown-item&gt;
+        &lt;/up-dropdown&gt;
+      &lt;/view&gt;
+    &lt;/template&gt;
+    
+    &lt;script&gt;
+      export default {
+        data() {
+          return {
+            value1: 1,
+            value2: 2,
+            options1: [
+              {
+                label: '默认排序',
+                value: 1
+              },
+              {
+                label: '距离优先',
+                value: 2
+              },
+              {
+                label: '价格优先',
+                value: 3
+              }
+            ],
+            options2: [
+              {
+                label: '去冰',
+                value: 1
+              },
+              {
+                label: '加冰',
+                value: 2
+              }
+            ]
+          }
+        }
+      }
+    &lt;/script&gt;
+        </code>
+      </pre>
+
+      <h2>配置选项卡默认功能</h2>
+      <p>
+        如上所示，<code>up-dropdown-item</code>
+        具有默认的单选功能，这里主要讲解其 <code>options</code> 和
+        <code>v-model</code> 参数：
+      </p>
+      <p>
+        <code>options</code> 参数为一个数组，元素为对象，其中
+        <code>label</code> 为需要展示的提示文字，<code>value</code>
+        为点击时双向绑定给 <code>v-model</code> 的值，<code>v-model</code>
+        初始化时如果设置某个 <code>options</code> 中的
+        <code>value</code>，则该条目将会被默认选中：
+      </p>
+      <pre class="language-html">
+        <code>
+    let options = [
+      {
+        label: '蜀道难',
+        value: 1
+      },
+      {
+        label: '难以上青天',
+        value: 2
+      }
+    ]
+        </code>
+      </pre>
+
+      <h2>配置选项卡自定义功能</h2>
+      <p>
+        在选项卡默认的单选功能无法满足的时候，我们可以给
+        <code>up-dropw-item</code> 传递
+        <code>slot</code> 来自定义需要展示的内容。
+      </p>
+      <h3>问：如果自定义内容，如何实现点击其中的按钮关闭下拉菜单？</h3>
+      <p>
+        答：在 <code>up-dropdown</code> 中，有一个
+        <code>close()</code> 方法，可以通过
+        <code>ref</code> 获取实例，并调用方法进行关闭即可。
+      </p>
+      <pre class="language-html">
+        <code>
+    &lt;template&gt;
+      &lt;view class=""&gt;
+        &lt;up-dropdown ref="uDropdownRef"&gt;
+          &lt;up-dropdown-item title="属性"&gt;
+            &lt;view class="slot-content"&gt;
+              &lt;view class="up-text-center up-content-color up-m-t-20 up-m-b-20"&gt;其他自定义内容&lt;/view&gt;
+              &lt;up-button type="primary" @click="closeDropdown"&gt;确定&lt;/up-button&gt;
+            &lt;/view&gt;
+          &lt;/up-dropdown-item&gt;
+        &lt;/up-dropdown&gt;
+      &lt;/view&gt;
+    &lt;/template&gt;
+    
+    &lt;script&gt;
+      export default {
+        methods: {
+          closeDropdown() {
+            this.$refs.uDropdownRef.close();
+          }
+        }
+      }
+    &lt;/script&gt;
+        </code>
+      </pre>
+      <h2>配置选项卡内容可滚动</h2>
+      <p>
+        如果我们想给自定义内容的选项中局部内容可滚动，可以通过嵌入
+        <code>scroll-view</code> 元素实现，需要注意的是
+        <code>scroll-view</code> 必须声明高度才有效，大概如下：
+      </p>
+      <pre class="language-html">
+        <code>
+    &lt;template&gt;
+      &lt;view class=""&gt;
+        &lt;up-dropdown ref="uDropdownRef"&gt;
+          &lt;up-dropdown-item title="属性"&gt;
+            &lt;view class="slot-content" style="background-color: #FFFFFF;"&gt;
+              &lt;scroll-view scroll-y="true" style="height: 200rpx;"&gt;
+                &lt;view class="up-text-center up-content-color up-m-t-20 up-m-b-20"&gt;无言独上西楼&lt;/view&gt;
+                &lt;view class="up-text-center up-content-color up-m-t-20 up-m-b-20"&gt;月如钩&lt;/view&gt;
+                &lt;view class="up-text-center up-content-color up-m-t-20 up-m-b-20"&gt;寂寞梧桐深院锁清秋&lt;/view&gt;
+                &lt;view class="up-text-center up-content-color up-m-t-20 up-m-b-20"&gt;剪不断&lt;/view&gt;
+                &lt;view class="up-text-center up-content-color up-m-t-20 up-m-b-20"&gt;理还乱&lt;/view&gt;
+                &lt;view class="up-text-center up-content-color up-m-t-20 up-m-b-20"&gt;是离愁&lt;/view&gt;
+                &lt;view class="up-text-center up-content-color up-m-t-20 up-m-b-20"&gt;别是一般滋味在心头&lt;/view&gt;
+              &lt;/scroll-view&gt;
+              &lt;up-button type="primary" @click="closeDropdown"&gt;确定&lt;/up-button&gt;
+            &lt;/view&gt;
+          &lt;/up-dropdown-item&gt;
+        &lt;/up-dropdown&gt;
+      &lt;/view&gt;
+    &lt;/template&gt;
+    
+    &lt;script&gt;
+      export default {
+        methods: {
+          closeDropdown() {
+            this.$refs.uDropdownRef.close();
+          }
+        }
+      }
+    &lt;/script&gt;
+        </code>
+      </pre>
+
+      <h2>如何保持菜单高亮</h2>
+      <p>
+        有时候，我们可能会希望下拉菜单收起之后，标题部分可以保持高亮，组件内部可以做到这样的要求，但是如果通过自定义
+        <code>slot</code>
+        传入了内容，那么组件就不知道收起的时候，是否该保持菜单的高亮了，因为组件不知道您在自定义的内容中是否进行了"操作"，所以我们提供了一个手动通过
+        <code>ref</code> 设置的
+        <code>highlight(index)</code>
+        方法，让您自主决定是否让某个菜单高亮，可以自行结合
+        <code>change(dropdown-item)</code>、<code>open(dropdown)</code>、<code
+          >close(dropdown)</code
+        >
+        事件进行组合操作。
+      </p>
+      <pre class="language-html">
+        <code>
+    &lt;template&gt;
+      &lt;view class=""&gt;
+        &lt;up-dropdown ref="uDropdownRef" @open="open" @close="close"&gt;
+          &lt;up-dropdown-item v-model="value1" title="距离" :options="options1" @change="change"&gt;&lt;/up-dropdown-item&gt;
+          &lt;up-dropdown-item v-model="value2" title="温度" :options="options2"&gt;&lt;/up-dropdown-item&gt;
+        &lt;/up-dropdown&gt;
+      &lt;/view&gt;
+    &lt;/template&gt;
+    
+    &lt;script&gt;
+      export default {
+        data() {
+          return {
+            value1: 1,
+            value2: 2,
+            options1: [
+              {
+                label: '默认排序',
+                value: 1
+              },
+              {
+                label: '距离优先',
+                value: 2
+              }
+            ],
+            options2: [
+              {
+                label: '去冰',
+                value: 1
+              },
+              {
+                label: '加冰',
+                value: 2
+              }
+            ]
+          }
+        },
+        methods: {
+          open(index) {
+            // 展开某个下来菜单时，先关闭原来的其他菜单的高亮
+            // 同时内部会自动给当前展开项进行高亮
+            this.$refs.uDropdownRef.highlight();
+          },
+          close(index) {
+            // 关闭的时候，给当前项加上高亮
+            // 当然，您也可以通过监听dropdown-item的@change事件进行处理
+            this.$refs.uDropdownRef.highlight(index);
+          },
+          change() {
+            // 更多的细节，如有需要请自行根据业务逻辑进行处理
+            // this.$refs.uDropdownRef.highlight(xxx);
+          }
+        }
+      }
+    &lt;/script&gt;
+        </code>
+      </pre>
+
+      <h2>兼容性</h2>
+      <p>
+        由于头条小程序的兼容性原因，如果 <code>up-dropdown</code> 父元素设置了
+        <code>display: flex</code>，您可能需要给组件添加
+        <code>up-dropdown</code> 类，如下：
+      </p>
+      <pre class="language-html">
+        <code>
+    &lt;up-dropdown class="up-dropdown"&gt;&lt;/up-dropdown&gt;
+        </code>
+      </pre>
+
+      <h2>API</h2>
+      <h3>Dropdown Props</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">active-color</div>
+          <div class="table-cell">标题和选项卡选中的颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#2979ff</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">inactive-color</div>
+          <div class="table-cell">标题和选项卡未选中的颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#606266</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">close-on-click-mask</div>
+          <div class="table-cell">点击遮罩是否关闭菜单</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">close-on-click-self</div>
+          <div class="table-cell">点击当前激活项标题是否关闭菜单</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">duration</div>
+          <div class="table-cell">选项卡展开和收起的过渡时间，单位ms</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">300</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">height</div>
+          <div class="table-cell">
+            标题菜单的高度，单位任意，数值默认为rpx单位
+          </div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">80</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">border-bottom</div>
+          <div class="table-cell">标题菜单是否显示下边框</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">title-size</div>
+          <div class="table-cell">
+            标题的字体大小，单位任意，数值默认为rpx单位
+          </div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">28</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">border-radius 1.7.2</div>
+          <div class="table-cell">菜单展开内容下方的圆角值，单位任意</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">menu-icon 1.7.6</div>
+          <div class="table-cell">标题菜单右侧的图标</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">arrow-down</div>
+          <div class="table-cell">arrow-down-fill</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">menu-icon-size 1.7.6</div>
+          <div class="table-cell">
+            标题菜单右侧的图标的大小，单位任意，数值默认为rpx单位
+          </div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">26</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+      <h3>Dropdown Events 1.6.5</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">open</div>
+          <div class="table-cell">下拉菜单被打开时触发</div>
+          <div class="table-cell">(index) - 当前被打开菜单的索引</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">close</div>
+          <div class="table-cell">下拉菜单被关闭时触发</div>
+          <div class="table-cell">(index) - 当前被关闭菜单的索引</div>
+        </div>
+      </div>
+
+      <h3>Dropdown-item Props</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">v-model</div>
+          <div class="table-cell">双向绑定选项卡选择值</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">title</div>
+          <div class="table-cell">菜单项标题</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">options</div>
+          <div class="table-cell">
+            选项数据，如果传入了默认slot，此参数无效，数据结构见上方说明
+          </div>
+          <div class="table-cell">Array[Object]</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">disabled</div>
+          <div class="table-cell">是否禁用此选项卡</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">height 1.7.0</div>
+          <div class="table-cell">
+            弹窗下拉内容的高度(内容超出将会滚动)，slot自定义内容时无效(自行使用scroll
+            - view处理)，单位任意，默认rpx
+          </div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">auto</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h3>Dropdown-item Slot</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">名称</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">-</div>
+          <div class="table-cell">自定义选项卡内容</div>
+        </div>
+      </div>
+
+      <h3>Dropdown-item Events</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">change</div>
+          <div class="table-cell">
+            每个up - dropdown均有此回调，点击某个options选项时触发
+          </div>
+          <div class="table-cell">(value) - 点击项绑定的value属性值</div>
+        </div>
+      </div>
+
+      <h3>Dropdown-item Methods 3.2.2</h3>
+      <p>这些为组件内部的方法，需要通过 <code>ref</code> 调用</p>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">highlight(index)</div>
+          <div class="table-cell">
+            index为需要设置高亮的菜单项的索引(从0开始)，不写表示清空内部的高亮
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

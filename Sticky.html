@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h1>Sticky 吸顶</h1>
+      <p>
+        该组件与 CSS 中 position: sticky
+        属性实现的效果一致，当组件达到预设的到顶部距离时，就会固定在指定位置，组件位置大于预设的顶部距离时，会重新按照正常的布局排列。
+      </p>
+
+      <h2>平台差异说明</h2>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h2>说明</h2>
+      <p>
+        本组件内部通过多种手段嗅探当前运行环境是否支持 css sticky，在 H5，APP -
+        VUE，NVUE，MP - WEIIXN，安卓等环境可以进行准确判断，如果支持则使用 CSS
+        方案，否则使用降级的 JS 方案。
+      </p>
+
+      <h2>基本使用</h2>
+      <p>
+        由于 css sticky
+        的特殊性，建议您将此组件放置在页面外层元素中，否则可能会导致 sticky
+        失效，以下为 MDN 对 sticky 的解释 (opens new window)：
+      </p>
+      <p>
+        元素根据正常文档流进行定位，然后相对它的最近滚动祖先（nearest scrolling
+        ancestor）和 containing block (最近块级祖先 nearest block - level
+        ancestor)，包括 table - related 元素，基于 top, right, bottom, 和 left
+        的值进行偏移。偏移值不会影响任何其他元素的位置。
+      </p>
+      <pre class="language-html">
+        <code>
+    &lt;template&gt;
+      &lt;view class="container"&gt;
+        &lt;!-- 建议放在外层 --&gt;
+        &lt;up-sticky&gt;......&lt;/up-sticky&gt;
+        &lt;view class="container__inner"&gt;
+          &lt;!-- 不建议放在层层嵌套的view中，除非您清楚知道自己为什么需要这么做 --&gt;
+          &lt;up-sticky&gt;......&lt;/up-sticky&gt;
+        &lt;/view&gt;
+      &lt;/view&gt;
+    &lt;/template&gt;
+        </code>
+      </pre>
+
+      <h2>吸顶距离</h2>
+      <p>通过 offset - top 参数设置组件在吸顶时与顶部的距离</p>
+      <pre class="language-html">
+        <code>
+    &lt;up-sticky offset-top="200"&gt;
+      &lt;text&gt;塞下秋来风景异，衡阳雁去无留意&lt;/text&gt;
+    &lt;/up-sticky&gt;
+        </code>
+      </pre>
+
+      <h2>API</h2>
+      <h3>Props</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">offsetTop</div>
+          <div class="table-cell">吸顶时与顶部的距离，单位 rpx</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">customNavHeight</div>
+          <div class="table-cell">导航栏高度，自定义导航栏时，需要传入此值</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">disabled</div>
+          <div class="table-cell">是否禁用吸顶功能</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">bgColor</div>
+          <div class="table-cell">组件背景颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#ffffff</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">zIndex</div>
+          <div class="table-cell">吸顶时的 z - index 值，NVUE 无效</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">index</div>
+          <div class="table-cell">自定义标识，用于区分是哪一个组件</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

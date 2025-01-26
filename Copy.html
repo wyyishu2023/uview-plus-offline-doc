@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h2>Copy 复制 3.1.52</h2>
+      <p>点击复制</p>
+
+      <h3>注意</h3>
+      <p>需要 uview - plus 版本 v3.1.52 以上版本</p>
+
+      <h3>使用场景</h3>
+      <p>点击页面元素复制文字到剪切板</p>
+
+      <h3>平台差异说明</h3>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <p>通过 content 设置要复制的文字内容，通过 alertStyle 设置提示样式</p>
+      <pre><code class="language-html">
+  &lt;template&gt;
+      &lt;view&gt;
+          &lt;up-copy content="uview-plus is great !"&gt;
+              &lt;text&gt;点击复制&lt;/text&gt;
+          &lt;/up-copy&gt;
+          &lt;up-copy content="uview-plus is great !"&gt;
+              &lt;up-button type="primary"&gt;点击复制&lt;/up-button&gt;
+          &lt;/up-copy&gt;
+      &lt;/view&gt;
+  &lt;/template&gt;
+      </code></pre>
+
+      <h3>API</h3>
+
+      <h4>Props</h4>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">content</div>
+          <div class="table-cell">待复制文字内容</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell"></div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">alertStyle</div>
+          <div class="table-cell">提示样式</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">toast</div>
+          <div class="table-cell">modal</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">notice</div>
+          <div class="table-cell">提示消息</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">复制成功</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>Events</h4>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">success</div>
+          <div class="table-cell">复制成功</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

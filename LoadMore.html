@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h2>LoadMore 加载更多</h2>
+      <p>此组件一般用于标识页面底部加载数据时的状态，共有三种状态：</p>
+      <ul>
+        <li>
+          加载前，显示"加载更多"，加入点击可选，是因为数据不够一页时，无法触发页面的onReachBottom生命周期
+        </li>
+        <li>加载中，显示"正在加载..."，2种动画可选</li>
+        <li>
+          加载后，如果还有数据，回到"加载前"状态，否则加载结束，显示"没有更多了"
+        </li>
+      </ul>
+
+      <h3>平台差异说明</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <p>
+        通过status设置组件的状态，加载前值为loadmore，加载中为loading，没有数据为nomore
+      </p>
+      <p>注意：以下示例仅为模拟效果，实际中请根据自己的逻辑，修改代码的实现</p>
+      <pre><code class="language-html">&lt;template&gt;
+      &lt;view class="wrap"&gt;
+        &lt;view class="item up-border-bottom" v-for="(item, index) in list" :key="index"&gt;
+          {{'第' + item + '条数据'}}
+        &lt;/view&gt;
+        &lt;up-loadmore :status="status" /&gt;
+      &lt;/view&gt;
+    &lt;/template&gt;
+    &lt;script setup&gt;  
+    import { ref } from 'vue';  
+      
+    // 创建响应式数据  
+    const status = ref('loadmore');  
+    const list = ref(15);  
+    const page = ref(0);  
+      
+    // 定义方法  
+    function onReachBottom() {  
+      if (page.value >= 3) return;  
+      status.value = 'loading';  
+      page.value++;  
+      setTimeout(() =&gt; {  
+        list.value += 10;  
+        if (page.value >= 3) status.value = 'nomore';  
+        else status.value = 'loading';  
+      }, 2000);  
+    }  
+    &lt;/script&gt;
+    &lt;style lang="scss" scoped&gt;
+      .wrap {
+        padding: 24rpx;
+      }
+      
+      .item {
+        padding: 24rpx 0;
+        color: $up-content-color;
+        font-size: 28rpx;
+      }
+    &lt;/style&gt;</code></pre>
+
+      <h3>控制组件的提示以及动画效果</h3>
+      <ul>
+        <li>如果不需要图标，可以设置icon为false</li>
+        <li>
+          可以设置is-dot为true，在没有数据时，内容显示为一个"●"替代默认的"没有更多了"
+        </li>
+        <li>
+          可以通过配置loading-text配置提示的文字，该参数为一个对象值，可以修改默认的文字提示
+        </li>
+      </ul>
+      <pre><code class="language-html">&lt;template&gt;
+      &lt;up-loadmore 
+            :status="status" 
+            :loading-text="loadingText" 
+            :loadmore-text="loadmoreText" 
+            :nomore-text="nomoreText" 
+        /&gt;
+    &lt;/template&gt;
+    &lt;script setup&gt;  
+    import { ref } from 'vue';  
+      
+    // 创建响应式数据  
+    const status = ref('loadmore');  
+    const loadingText = ref('努力加载中');  
+    const loadmoreText = ref('轻轻上拉');  
+    const nomoreText = ref('实在没有了');  
+    &lt;/script&gt;</code></pre>
+
+      <h3>线条自定义颜色和设置为虚线 2.0.32</h3>
+      <p>可以通过配置dashed和lineColor实现</p>
+      <pre><code class="language-html">&lt;template&gt;
+      &lt;up-loadmore 
+        loadmoreText="看,我和别人不一样"
+        color="#1CD29B"
+        lineColor="#1CD29B"
+        dashed
+        line
+      /&gt;
+    &lt;/template&gt;
+    &lt;script setup&gt;  
+    import { ref } from 'vue';  
+      
+    // 创建响应式数据  
+    const status = ref('loadmore');  
+    const loadingText = ref('努力加载中');  
+    const loadmoreText = ref('轻轻上拉');  
+    const nomoreText = ref('实在没有了');  
+    &lt;/script&gt;</code></pre>
+
+      <h3>手动触发加载更多</h3>
+      <p>
+        有时候可能会因为网络，或者数据不满一页的原因，导致无法上拉触发onReachBottom生命周期，这时候(需status为loadmore状态)，用户点击组件，就会触发loadmore事件，可以在回调中，进行状态的控制和数据的加载，同时也可以修改loadText的loadmore为"上拉或点击加载更多"进行更加人性化的提示。
+      </p>
+
+      <h3>API</h3>
+      <h4>Props</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">status</div>
+          <div class="table-cell">组件状态</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">loadmore</div>
+          <div class="table-cell">loading / nomore</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">bgColor</div>
+          <div class="table-cell">
+            组件背景颜色，在页面是非白色时会用到(默认为transparent)
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">transparent</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">icon</div>
+          <div class="table-cell">加载中时是否显示图标</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">fontSize</div>
+          <div class="table-cell">字体大小，单位rpx</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">14</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">iconSize</div>
+          <div class="table-cell">图标大小，单位px</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">17</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">color</div>
+          <div class="table-cell">字体颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#606266</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">loadingIcon</div>
+          <div class="table-cell">加载中状态的图标</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">circle</div>
+          <div class="table-cell">spinner / semicircle</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">loadmoreText</div>
+          <div class="table-cell">加载前的提示语</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">加载更多</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">loadingText</div>
+          <div class="table-cell">加载中提示语</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">正在加载...</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">nomoreText</div>
+          <div class="table-cell">没有更多的提示语</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">没有更多了</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">isDot</div>
+          <div class="table-cell">status为nomore时，内容显示为一个"●"</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">iconColor</div>
+          <div class="table-cell">加载中的动画图标的颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#b7b7b7</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">lineColor 2.0.32</div>
+          <div class="table-cell">线条颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#E6E8EB</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">dashed 2.0.32</div>
+          <div class="table-cell">是否虚线，false-实线，true-虚线</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">marginTop</div>
+          <div class="table-cell">与前一个元素的距离，单位rpx</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">10</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">marginBottom</div>
+          <div class="table-cell">与后一个元素的距离，单位rpx</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">10</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">height</div>
+          <div class="table-cell">高度</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">auto</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">line</div>
+          <div class="table-cell">是否显示左边分割线</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+      </div>
+
+      <h4>Event</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+          <div class="table-cell">版本</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">loadmore</div>
+          <div class="table-cell">status为loadmore时，点击组件会发出此事件</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h2>NoNetwork 无网络提示</h2>
+      <p>
+        该组件无需任何配置，引入即可，内部自动处理所有功能和事件，有如下特点：
+      </p>
+      <ul>
+        <li>
+          如果没有网络，该组件会以 fixed 定位，并且以很大的 z-index
+          值覆盖原来的内容。一旦有网络了，会自动隐藏该组件，实现自动化。
+        </li>
+        <li>
+          在 APP 上，嵌入了 5+
+          接口，可以直接打开手机的设置页面，方便用户进行网络相关的设置。
+        </li>
+      </ul>
+
+      <h3>说明</h3>
+      <p>
+        应用有网络时，是不会触发本组件的，为了测试此功能，请关闭手机的数据连接以及
+        WiFi 即可。由于普通的组件无法覆盖原生组件，所以本组件不适用那些有
+        video，map 等原生表现的组件的页面，可以自行使用 uni 的 cover-view
+        组件修改。
+      </p>
+
+      <h3>平台差异说明</h3>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <pre><code class="language-html">
+    &lt;template&gt;
+      &lt;view&gt;
+        &lt;up-no-network
+          @disconnected="disconnected"
+          @connected="connected"
+          @retry="retry"
+        &gt;&lt;/up-no-network&gt;
+        &lt;view class="up-content"&gt;
+          &lt;view class="up-content__circle"&gt;
+            &lt;up-icon
+              name="checkbox-mark"
+              color="#fff"
+              size="30"
+            &gt;&lt;/up-icon&gt;
+          &lt;/view&gt;
+          &lt;text class="up-content__normal"&gt;网络正常&lt;/text&gt;
+        &lt;/view&gt;
+      &lt;/view&gt;
+    &lt;/template&gt;
+    &lt;script setup&gt;  
+    // 定义方法  
+    function disconnected() {  
+        console.log('disconnected');  
+    }  
+      
+    function connected() {  
+        console.log('connected');  
+    }  
+      
+    function retry() {  
+        console.log('retry');  
+    }  
+    &lt;/script&gt;
+    &lt;style lang="scss" scoped&gt;
+      .up-content {
+        padding: 150px 60px 0;
+        @include flex(column);
+        align-items: center;
+        justify-content: center;
+    
+        &__circle {
+          background-color: $up-success;
+          @include flex;
+          border-radius: 100px;
+          width: 60px;
+          height: 60px;
+          align-items: center;
+          justify-content: center;
+        }
+    
+        &__normal {
+          font-size: 15px;
+          color: $up-success;
+          margin-top: 15px;
+        }
+      }
+    &lt;/style&gt;
+      </code></pre>
+
+      <h3>API</h3>
+
+      <h4>Props</h4>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">tips</div>
+          <div class="table-cell">没有网络时的提示语</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">哎呀，网络信号丢失</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">zIndex</div>
+          <div class="table-cell">组件的 z-index 值</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">10080</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">image</div>
+          <div class="table-cell">
+            无网络的图片提示，可用的 src 地址或 base64 图片
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>Events</h4>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">retry</div>
+          <div class="table-cell">用户点击页面的"重试"按钮时触发</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">connected</div>
+          <div class="table-cell">"重试"后，有网络触发</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">disconnected</div>
+          <div class="table-cell">"重试"后，无网络触发</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

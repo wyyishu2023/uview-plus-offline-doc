@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h2>Grid 宫格布局</h2>
+      <p>
+        宫格组件一般用于同时展示多个同类项目的场景，可以给宫格的项目设置徽标组件(badge)，或者图标等，也可以扩展为左右滑动的轮播形式。
+      </p>
+
+      <h3>平台差异说明</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <p>
+        该组件外层为 <code>up-grid</code> 组件包裹，通过
+        <code>col</code> 设置内部宫格的列数。内部通过
+        <code>up-grid-item</code> 组件的
+        <code>slot</code> 设置宫格的内容。如果不需要宫格的边框，可以设置
+        <code>border</code> 为 <code>false</code>。
+      </p>
+      <pre><code class="language-html">
+    &lt;template&gt;
+        &lt;view&gt;
+            &lt;up-grid
+                    :border="false"
+                    @click="click"
+            &gt;
+                &lt;up-grid-item
+                        v-for="(baseListItem,baseListIndex) in baseList"
+                        :key="baseListIndex"
+                &gt;
+                    &lt;up-icon
+                            :customStyle="{paddingTop:20+'rpx'}"
+                            :name="baseListItem.name"
+                            :size="22"
+                    &gt;&lt;/up-icon&gt;
+                    &lt;text class="grid-text"&gt;{{baseListItem.title}}&lt;/text&gt;
+                &lt;/up-grid-item&gt;
+            &lt;/up-grid&gt;
+            &lt;up-toast ref="uToastRef" /&gt;
+        &lt;/view&gt;
+    &lt;/template&gt;
+    &lt;script setup&gt;  
+    import { ref } from 'vue';  
+      
+    // 创建响应式数据  
+    const baseList = ref([  
+        {  
+            name: 'photo',  
+            title: '图片'  
+        },  
+        {  
+            name: 'lock',  
+            title: '锁头'  
+        },  
+        {  
+            name: 'star',  
+            title: '星星'  
+        },  
+    ]);  
+      
+    // 创建对子组件的引用  
+    const uToastRef = ref(null);  
+      
+    // 定义方法  
+    const click = (name) => {  
+        if (uToastRef.value) {  
+            uToastRef.value.success(`点击了第${name}个`);  
+        }  
+    };  
+    &lt;/script&gt;
+    &lt;style lang="scss"&gt;
+      .grid-text {
+            font-size: 14px;
+            color: #909399;
+            padding: 10rpx 0 20rpx 0rpx;
+            /* #ifndef APP-PLUS */
+            box-sizing: border-box;
+            /* #endif */
+        }
+    &lt;/style&gt;
+      </code></pre>
+
+      <h3>绑定点击事件&自定义列数</h3>
+      <pre><code class="language-html">
+    &lt;template&gt;
+        &lt;view&gt;
+            &lt;up-grid
+                    :border="false"
+                    col="4"
+            &gt;
+                &lt;up-grid-item
+                        v-for="(listItem,listIndex) in list"
+                        :key="listIndex"
+                &gt;
+                    &lt;up-icon
+                            :customStyle="{paddingTop:20+'rpx'}"
+                            :name="listItem.name"
+                            :size="22"
+                    &gt;&lt;/up-icon&gt;
+                    &lt;text class="grid-text"&gt;{{listItem.title}}&lt;/text&gt;
+                &lt;/up-grid-item&gt;
+            &lt;/up-grid&gt;
+            &lt;up-toast ref="uToastRef" /&gt;
+        &lt;/view&gt;
+    &lt;/template&gt;
+    &lt;script setup&gt;  
+    import { ref, reactive } from 'vue';  
+      
+    // 创建响应式数据  
+    const list = reactive([  
+        {  
+            name: 'photo',  
+            title: '图片'  
+        },  
+        {  
+            name: 'lock',  
+            title: '锁头'  
+        },  
+        {  
+            name: 'star',  
+            title: '星星'  
+        },  
+        {  
+            name: 'hourglass',  
+            title: '沙漏'  
+        },  
+        {  
+            name: 'home',  
+            title: '首页'  
+        },  
+        {  
+            name: 'volume', // 注意：这里修改了 name 从 'star' 改为 'volume'，以避免列表中两个元素具有相同的 name  
+            title: '音量'  
+        },  
+    ]);  
+      
+    // 创建对子组件的引用  
+    const uToastRef = ref(null);  
+      
+    // 定义方法  
+    const click = (name) => {  
+        if (uToastRef.value) {  
+            uToastRef.value.success(`点击了第${name + 1}个`); // 注意：这里加1是因为通常我们是从第1个开始计数的  
+        }  
+    };  
+    &lt;/script&gt;
+    &lt;style lang="scss"&gt;
+      .grid-text {
+            font-size: 14px;
+            color: #909399;
+            padding: 10rpx 0 20rpx 0rpx;
+            /* #ifndef APP-PLUS */
+            box-sizing: border-box;
+            /* #endif */
+        }
+    &lt;/style&gt;
+      </code></pre>
+
+      <h3>实现宫格的左右滑动</h3>
+      <p>
+        结合 uni 的 <code>swiper</code> 组件可以实现宫格的左右滑动，因为
+        <code>swiper</code> 特性的关系，请指定 <code>swiper</code> 的高度 ，否则
+        <code>swiper</code> 的高度不会被内容撑开，可以自定义
+        <code>swiper</code> 的指示器，达到更高的灵活度。
+      </p>
+      <pre><code class="language-html">
+    &lt;template&gt;
+        &lt;view&gt;
+            &lt;swiper
+                    :indicator-dots="true"
+                    class="swiper"
+            &gt;
+                &lt;swiper-item&gt;
+                    &lt;up-grid :border="true"&gt;
+                        &lt;up-grid-item
+                                :customStyle="{width:220+'rpx',height:220+'rpx'}"
+                                v-for="(item, index) in swiperList"
+                                :index="index"
+                                :key="index"
+                        &gt;
+                            &lt;up-icon
+                                    :customStyle="{paddingTop:20+'rpx'}"
+                                    :name="item"
+                                    :size="22"
+                            &gt;&lt;/up-icon&gt;
+                            &lt;text class="grid-text"&gt;{{ '宫格' + (index + 1) }}&lt;/text&gt;
+                        &lt;/up-grid-item&gt;
+                    &lt;/up-grid&gt;
+                &lt;/swiper-item&gt;
+                &lt;swiper-item&gt;
+                    &lt;up-grid :border="true"&gt;
+                        &lt;up-grid-item
+                                :customStyle="{width:220+'rpx',height:220+'rpx'}"
+                                v-for="(item, index) in swiperList"
+                                :index="index + 9"
+                                :key="index"
+                        &gt;
+                            &lt;up-icon
+                                    :customStyle="{paddingTop:20+'rpx'}"
+                                    :name="item"
+                                    :size="22"
+                            &gt;&lt;/up-icon&gt;
+                            &lt;text class="grid-text"&gt;{{ '宫格' + (index + 1) }}&lt;/text&gt;
+                        &lt;/up-grid-item&gt;
+                    &lt;/up-grid&gt;
+                &lt;/swiper-item&gt;
+                &lt;swiper-item&gt;
+                    &lt;up-grid :border="true"&gt;
+                        &lt;up-grid-item
+                                :customStyle="{width:220+'rpx',height:220+'rpx'}"
+                                v-for="(item, index) in swiperList"
+                                :index="index + 18"
+                                :key="index"
+                        &gt;
+                            &lt;up-icon
+                                    :customStyle="{paddingTop:20+'rpx'}"
+                                    :name="item"
+                                    :size="22"
+                            &gt;&lt;/up-icon&gt;
+                            &lt;text class="grid-text"&gt;{{ "宫格" + (index + 1) }}&lt;/text&gt;
+                        &lt;/up-grid-item&gt;
+                    &lt;/up-grid&gt;
+                &lt;/swiper-item&gt;
+            &lt;/swiper&gt;
+        &lt;/view&gt;
+    &lt;/template&gt;
+    &lt;script setup&gt;  
+    import { ref } from 'vue';  
+      
+    // 创建响应式数据  
+    const swiperList = ref(['integral', 'kefu-ermai', 'coupon', 'gift','scan', 'pause-circle', 'wifi', 'email', 'list']);  
+    &lt;/script&gt;
+    &lt;style lang="scss"&gt;
+      .swiper {
+            height: 720rpx;
+        }
+    
+      .grid-text {
+            font-size: 14px;
+            color: #909399;
+            padding: 10rpx 0 20rpx 0rpx;
+            /* #ifndef APP-PLUS */
+            box-sizing: border-box;
+            /* #endif */
+        }
+    &lt;/style&gt;
+      </code></pre>
+
+      <h3>API</h3>
+
+      <h4>Grid Props</h4>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">col</div>
+          <div class="table-cell">宫格的列数</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">3</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">border</div>
+          <div class="table-cell">是否显示宫格的边框</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">align</div>
+          <div class="table-cell">
+            宫格的对齐方式，用于控制只有一两个宫格时的对齐场景
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">left</div>
+          <div class="table-cell">center / right</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">gap</div>
+          <div class="table-cell">宫格间隔（暂不支持nvue)</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">0px</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>Grid-item Props</h4>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">name</div>
+          <div class="table-cell">宫格的name</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">bgColor</div>
+          <div class="table-cell">宫格的背景颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">transparent(背景透明)</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>Grid Event</h4>
+      <p>
+        注意：请在 <code>&lt;up-grid&gt;&lt;/up-grid&gt;</code> 上监听此事件。
+      </p>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">click</div>
+          <div class="table-cell">点击宫格触发</div>
+          <div class="table-cell">name</div>
+        </div>
+      </div>
+
+      <h4>Grid-item Event</h4>
+      <p>
+        注意：请在
+        <code>&lt;up-grid-item&gt;&lt;/up-grid-item&gt;</code> 上监听此事件。
+      </p>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">click</div>
+          <div class="table-cell">点击宫格触发</div>
+          <div class="table-cell">name</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

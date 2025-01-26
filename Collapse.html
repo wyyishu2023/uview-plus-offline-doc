@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h2>Collapse 折叠面板</h2>
+      <p>通过折叠面板收纳内容区域。</p>
+
+      <h3>平台差异说明</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">平台</div>
+          <div class="table-cell">支持情况</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">√</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">√</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">H5</div>
+          <div class="table-cell">√</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">小程序</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <pre class="language-html">
+        <code>
+    &lt;template&gt;
+      &lt;up-collapse
+        @change="change"
+        @close="close"
+        @open="open"
+      &gt;
+        &lt;up-collapse-item
+          title="文档指南"
+          name="Docs guide"
+        &gt;
+          &lt;text class="u-collapse-content"&gt;涵盖uniapp各个方面，给开发者方向指导和设计理念，让您茅塞顿开，一马平川&lt;/text&gt;
+        &lt;/up-collapse-item&gt;
+        &lt;up-collapse-item
+          title="组件全面"
+          name="Variety components"
+        &gt;
+          &lt;text class="u-collapse-content"&gt;众多组件覆盖开发过程的各个需求，组件功能丰富，多端兼容。让您快速集成，开箱即用&lt;/text&gt;
+        &lt;/up-collapse-item&gt;
+        &lt;up-collapse-item
+          title="众多利器"
+          name="Numerous tools"
+        &gt;
+          &lt;text class="u-collapse-content"&gt;众多的贴心小工具，是您开发过程中召之即来的利器，让您飞镖在手，百步穿杨&lt;/text&gt;
+        &lt;/up-collapse-item&gt;
+      &lt;/up-collapse&gt;
+    &lt;/template&gt;
+    &lt;script setup&gt;  
+    // 定义 open 方法  
+    const open = (e) => {  
+      // console.log('open', e)  
+    };  
+      
+    // 定义 close 方法  
+    const close = (e) => {  
+      // console.log('close', e)  
+    };  
+      
+    // 定义 change 方法  
+    const change = (e) => {  
+      // console.log('change', e)  
+    };  
+    &lt;/script&gt;
+        </code>
+      </pre>
+
+      <h3>控制面板的初始状态，以及是否可以操作</h3>
+      <p>
+        设置 <code>up-collapse-item</code> 的 <code>name</code> 参数，并在
+        <code>up-collapse</code> 中指定数组
+        <code>value</code> 可以让面板初始化时为打开状态。如果设置
+        <code>up-collapse-item</code> 的
+        <code>disabled</code> 参数，那么面板会保持被禁用状态。
+      </p>
+      <pre class="language-html">
+        <code>
+    &lt;template&gt;
+      &lt;up-collapse
+        :value="['2']"
+      &gt;
+        &lt;up-collapse-item
+          title="文档指南"
+        &gt;
+          &lt;text class="u-collapse-content"&gt;涵盖uniapp各个方面，给开发者方向指导和设计理念，让您茅塞顿开，一马平川&lt;/text&gt;
+        &lt;/up-collapse-item&gt;
+        &lt;up-collapse-item
+          disabled
+          title="组件全面"
+        &gt;
+          &lt;text class="u-collapse-content"&gt;众多组件覆盖开发过程的各个需求，组件功能丰富，多端兼容。让您快速集成，开箱即用&lt;/text&gt;
+        &lt;/up-collapse-item&gt;
+        &lt;up-collapse-item
+          name="2"
+          title="众多利器"
+        &gt;
+          &lt;text class="u-collapse-content"&gt;众多的贴心小工具，是您开发过程中召之即来的利器，让您飞镖在手，百步穿杨&lt;/text&gt;
+        &lt;/up-collapse-item&gt;
+      &lt;/up-collapse&gt;
+    &lt;/template&gt;
+    &lt;script setup&gt;  
+    // 定义 open 方法  
+    const open = (e) => {  
+      // console.log('open', e)  
+    };  
+      
+    // 定义 close 方法  
+    const close = (e) => {  
+      // console.log('close', e)  
+    };  
+      
+    // 定义 change 方法  
+    const change = (e) => {  
+      // console.log('change', e)  
+    };  
+    &lt;/script&gt;
+        </code>
+      </pre>
+
+      <h3>手风琴模式</h3>
+      <p>
+        将 <code>up-collapse</code> 的 <code>accordion</code> 设置为
+        <code>true</code>，这样可以开启手风琴模式。
+      </p>
+      <pre class="language-html">
+        <code>
+    &lt;template&gt;
+        &lt;view class="u-page__item"&gt;
+            &lt;text class="u-page__item__title"&gt;手风琴模式&lt;/text&gt;
+            &lt;up-collapse
+                    accordion
+            &gt;
+                &lt;up-collapse-item
+                        title="文档指南"
+                &gt;
+                    &lt;text class="u-collapse-content"&gt;涵盖uniapp各个方面，给开发者方向指导和设计理念，让您茅塞顿开，一马平川&lt;/text&gt;
+                &lt;/up-collapse-item&gt;
+                &lt;up-collapse-item
+                        title="组件全面"
+                &gt;
+                    &lt;text class="u-collapse-content"&gt;众多组件覆盖开发过程的各个需求，组件功能丰富，多端兼容。让您快速集成，开箱即用&lt;/text&gt;
+                &lt;/up-collapse-item&gt;
+                &lt;up-collapse-item
+                        title="众多利器"
+                &gt;
+                    &lt;text class="u-collapse-content"&gt;众多的贴心小工具，是您开发过程中召之即来的利器，让您飞镖在手，百步穿杨&lt;/text&gt;
+                &lt;/up-collapse-item&gt;
+            &lt;/up-collapse&gt;
+        &lt;/view&gt;
+    &lt;/template&gt;
+    
+    &lt;style lang="scss"&gt;
+        .u-page {
+            padding: 0;
+    
+            &__item {
+        
+                &__title {
+                     color: $up-tips-color;
+                     background-color: $up-bg-color;
+                     padding: 15px;
+                     font-size: 15px;
+            
+                    &__slot-title {
+                         color: $up-primary;
+                         font-size: 14px;
+                     }
+                }
+            }
+        }
+    
+        .u-collapse-content {
+            color: $up-tips-color;
+            font-size: 14px;
+        }
+    &lt;/style&gt;
+        </code>
+      </pre>
+
+      <h3>自定义标题和内容</h3>
+      <p>通过设置 <code>slot</code> 来自定义标题和内容。</p>
+      <pre class="language-html">
+        <code>
+    &lt;template&gt;
+        &lt;view class="u-page__item"&gt;
+            &lt;text class="u-page__item__title"&gt;自定义标题和内容&lt;/text&gt;
+            &lt;up-collapse
+                    accordion
+            &gt;
+                &lt;up-collapse-item
+                &gt;
+                    &lt;template #title&gt;
+                      &lt;text class="u-page__item__title__slot-title"&gt;文档指南&lt;/text&gt;
+                    &lt;/template&gt;
+                    &lt;text class="u-collapse-content"&gt;涵盖uniapp各个方面，给开发者方向指导和设计理念，让您茅塞顿开，一马平川&lt;/text&gt;
+                &lt;/up-collapse-item&gt;
+                &lt;up-collapse-item
+                        title="组件全面"
+                &gt;
+                    &lt;up-icon name="tags-fill" size="20" slot="icon"&gt;&lt;/up-icon&gt;
+                    &lt;text class="u-collapse-content"&gt;众多组件覆盖开发过程的各个需求，组件功能丰富，多端兼容。让您快速集成，开箱即用&lt;/text&gt;
+                &lt;/up-collapse-item&gt;
+                &lt;up-collapse-item
+                        title="众多利器"
+                &gt;
+                    &lt;template #value&gt;
+                      &lt;text class="u-page__item__title__slot-title"&gt;自定义内容&lt;/text&gt;
+                    &lt;/template&gt;
+                    &lt;text class="u-collapse-content"&gt;众多的贴心小工具，是您开发过程中召之即来的利器，让您飞镖在手，百步穿杨&lt;/text&gt;
+                &lt;/up-collapse-item&gt;
+            &lt;/up-collapse&gt;
+        &lt;/view&gt;
+    &lt;/template&gt;
+    
+    &lt;style lang="scss"&gt;
+        .u-page {
+            padding: 0;
+    
+            &__item {
+        
+                &__title {
+                     color: $up-tips-color;
+                     background-color: $up-bg-color;
+                     padding: 15px;
+                     font-size: 15px;
+            
+                    &__slot-title {
+                         color: $up-primary;
+                         font-size: 14px;
+                     }
+                }
+            }
+        }
+    
+        .u-collapse-content {
+            color: $up-tips-color;
+            font-size: 14px;
+        }
+    &lt;/style&gt;
+        </code>
+      </pre>
+
+      <h3>右侧演示页面源代码地址</h3>
+      <p>点击以下链接以查看右侧演示页面的源码。</p>
+      <ul>
+        <li><a href="github">github</a></li>
+        <li><a href="github gitee">github gitee</a></li>
+      </ul>
+
+      <h3>API</h3>
+
+      <h4>Collapse Props</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">value</div>
+          <div class="table-cell">
+            当前展开面板的 name，非手风琴模式：[&lt;String |
+            Number&gt;]，手风琴模式：String | Number
+          </div>
+          <div class="table-cell">String | Number | Array</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">accordion</div>
+          <div class="table-cell">是否手风琴模式</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">border</div>
+          <div class="table-cell">是否显示外边框</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+      </div>
+
+      <h4>Collapse Item Props</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">title</div>
+          <div class="table-cell">面板标题</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">value</div>
+          <div class="table-cell">标题右侧内容</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">label</div>
+          <div class="table-cell">标题下方的描述信息</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">disabled</div>
+          <div class="table-cell">面板是否可以打开或收起</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">isLink</div>
+          <div class="table-cell">是否展示右侧箭头并开启点击反馈</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">clickable</div>
+          <div class="table-cell">是否开启点击反馈</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">border</div>
+          <div class="table-cell">是否显示内边框</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">align</div>
+          <div class="table-cell">标题的对齐方式</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">left</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">name</div>
+          <div class="table-cell">
+            唯一标识符，如不设置，默认用当前 collapse-item 的索引值
+          </div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">icon</div>
+          <div class="table-cell">
+            标题左侧图片，可为绝对路径的图片或内置图标
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">duration</div>
+          <div class="table-cell">面板展开收起的过渡时间，单位 ms</div>
+          <div class="table-cell">Number</div>
+          <div class="table-cell">300</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>Collapse Event</h4>
+      <p>
+        <strong>注意：</strong>请在
+        <code>&lt;up-collapse&gt;&lt;/up-collapse&gt;</code> 上监听此事件。
+      </p>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">change</div>
+          <div class="table-cell">
+            当前激活面板展开时触发(如果是手风琴模式，参数 activeNames 类型为
+            String，否则为 Array)
+          </div>
+          <div class="table-cell">activeNames: String | Array</div>
+        </div>
+        <div class="table">
+          <div class="table-cell">open</div>
+          <div class="table-cell">
+            当前激活面板展开时触发(如果是手风琴模式，参数 activeNames 类型为
+            String，否则为 Array)
+          </div>
+          <div class="table-cell">activeNames: String | Array</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">close</div>
+          <div class="table-cell">
+            当前激活面板关闭时触发(如果是手风琴模式，参数 activeNames 类型为
+            String，否则为 Array)
+          </div>
+          <div class="table-cell">activeNames: String | Array</div>
+        </div>
+      </div>
+
+      <h4>Collapse Methods</h4>
+      <p><strong>注意：</strong>此方法需要通过 ref 调用。</p>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">方法</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">init</div>
+          <div class="table-cell">
+            重新初始化内部高度计算，用于异步获取内容的情形，请结合
+            this.$nextTick() 使用
+          </div>
+        </div>
+      </div>
+
+      <h4>Slot</h4>
+      <p>微信小程序不支持 slot 写法。</p>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">名称</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">-</div>
+          <div class="table-cell">主体部分的内容</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">title</div>
+          <div class="table-cell">标题内容</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">icon</div>
+          <div class="table-cell">icon</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">value</div>
+          <div class="table-cell">右侧 value</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">right-icon</div>
+          <div class="table-cell">右侧 icon</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

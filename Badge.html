@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h2>Badge 徽标数</h2>
+      <p>
+        Badge徽标数组件一般用于图标右上角显示未读的消息数量，提示用户点击，有圆点和圆包含文字两种形式。
+      </p>
+
+      <h2>平台支持情况</h2>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+      <h3>基本使用</h3>
+      <p>通过 <code>value</code> 参数定义徽标内容。</p>
+      <p>
+        通过 <code>type</code> 设置主题，uview-plus中，所有组件的
+        <code>type</code> 参数都只有5个固定的可选值，分别是
+        <code>primary</code
+        >（蓝色-主色）、<code>warning</code>（黄色-警告）、<code>error</code>（红色-错误）、<code>success</code>（绿色-成功）、<code>info</code>（灰色-信息）。
+      </p>
+      <p>
+        通过 <code>max</code> 参数控制最大值，超过最大值会显示
+        <code>{max}+</code>。
+      </p>
+      <p>注意：</p>
+      <ul>
+        <li>
+          此组件内部默认为 <code>absulote</code> 绝对定位，所以需要给
+          <code>badge</code> 父组件(元素)设置
+          <code>position: relative</code> 相对定位，再通过调整
+          <code>offset</code> 偏移值（数组，两个元素，第一个元素为
+          <code>top</code> 值，第二个元素为
+          <code>right</code> 值，单位rpx，可为负值，如"[-10,
+          -10]"）设置到合适的位置即可。
+        </li>
+        <li>
+          如果不需要组件内容默认的自动绝对定位，设置
+          <code>absolute</code> 参数为 <code>false</code> 即可。
+        </li>
+      </ul>
+      <pre><code class="language-html">&lt;template&gt;
+  &lt;view style="padding: 20px;"&gt;
+      &lt;view class="box"&gt;
+           &lt;up-badge :type="type" max="99" :value="value"&gt;&lt;/up-badge&gt;
+      &lt;/view&gt;
+  &lt;/view&gt;
+&lt;/template&gt;
+&lt;script setup&gt;  
+import { ref } from 'vue';  
+// 使用 ref 创建响应式数据  
+const type = ref('warning');  
+const value = ref(100);  
+&lt;/script&gt;
+&lt;script&gt;
+export default {
+  data() {
+      return {
+          type:"warning",
+          value:100
+      }
+  }
+};
+&lt;/script&gt;
+&lt;style lang="scss" scoped&gt;
+.box{
+      width: 100px; 
+      height: 100px;
+      background-color: #909193;
+      border-radius: 15px;
+  }
+&lt;/style&gt;</code></pre>
+
+      <h3>设置徽标的类型为一个圆点</h3>
+      <p>
+        通过 <code>isDot</code> 参数设置，该形式组件没有内容，只显示一个圆点。
+      </p>
+      <pre><code class="language-html">&lt;up-badge :isDot="true" type="success"&gt;&lt;/up-badge&gt;</code></pre>
+
+      <h3>设置数字的显示方式 overflow|ellipsis|limit</h3>
+      <ul>
+        <li>
+          <code>overflow</code> 会根据 <code>max</code> 字段判断，超出显示
+          <code>${max}+</code>。
+        </li>
+        <li>
+          <code>ellipsis</code> 会根据 <code>max</code> 判断，超出显示
+          <code>${max}...</code>。
+        </li>
+        <li>
+          <code>limit</code> 会依据1000作为判断条件，超出1000，显示
+          <code>${value / 1000}K</code>，比如2.2k、3.34w，最多保留2位小数。
+        </li>
+      </ul>
+      <pre><code class="language-html">&lt;template&gt;
+  &lt;view style="padding: 20px;"&gt;
+      &lt;view class="box"&gt;
+           &lt;up-badge numberType="overflow" :type="type" max="99" :value="value"&gt;&lt;/up-badge&gt;
+      &lt;/view&gt;
+      &lt;view class="box"&gt;
+           &lt;up-badge numberType="ellipsis" :type="type" max="99" :value="value"&gt;&lt;/up-badge&gt;
+      &lt;/view&gt;
+      &lt;view class="box"&gt;
+           &lt;up-badge numberType="limit" :type="type" max="99" :value="value"&gt;&lt;/up-badge&gt;
+      &lt;/view&gt;
+  &lt;/view&gt;
+&lt;/template&gt;
+&lt;script setup&gt;  
+import { ref } from 'vue';  
+// 使用 ref 创建响应式数据  
+const type = ref('warning');  
+const value = ref(99999);  
+&lt;/script&gt;
+&lt;script&gt;
+export default {
+  data() {
+      return {
+          type:"warning",
+          value:99999
+      }
+  }
+};
+&lt;/script&gt;
+&lt;style lang="scss" scoped&gt;
+.box{
+      width: 100px; 
+      height: 100px;
+      background-color: #909193;
+      border-radius: 15px;
+  }
+&lt;/style&gt;</code></pre>
+
+      <h3>API</h3>
+      <h4>Props</h4>
+      <div class="table">
+        <div class="table-row">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">isDot</div>
+          <div class="table-cell">不展示数字，只有一个小点</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">value</div>
+          <div class="table-cell">
+            展示的数字，大于 <code>overflowCount</code> 时显示为
+            <code>${overflowCount}+</code>，为 <code>0</code> 且
+            <code>show-zero</code> 为 <code>false</code> 时隐藏
+          </div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">show</div>
+          <div class="table-cell">组件是否显示</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">max</div>
+          <div class="table-cell">
+            最大值，超过最大值会显示 <code>{max}+</code>
+          </div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">99</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">type</div>
+          <div class="table-cell">主题类型</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">error</div>
+          <div class="table-cell">warning / success / primary / info</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">showZero</div>
+          <div class="table-cell">当数值为0时，是否展示Badge</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">bgColor</div>
+          <div class="table-cell">
+            背景颜色，优先级比 <code>type</code> 高，如设置，<code>type</code>
+            参数会失效
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">color</div>
+          <div class="table-cell">字体颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#ffffff</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">shape</div>
+          <div class="table-cell">
+            徽标形状，circle-四角均为圆角，horn-左下角为直角
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">circle</div>
+          <div class="table-cell">horn</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">numberType</div>
+          <div class="table-cell">设置数字的显示方式，详细见上方文档</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">overflow</div>
+          <div class="table-cell">ellipsis / limit</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">offset</div>
+          <div class="table-cell">
+            设置badge的位置偏移，格式为[x, y]，也即设置的为
+            <code>top</code> 和 <code>right</code> 的值，<code>absolute</code>
+            为 <code>true</code> 时有效
+          </div>
+          <div class="table-cell">Array</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">inverted</div>
+          <div class="table-cell">是否反转背景和字体颜色</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">absolute</div>
+          <div class="table-cell">
+            组件是否绝对定位，为 <code>true</code> 时，<code>offset</code>
+            参数才有效
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

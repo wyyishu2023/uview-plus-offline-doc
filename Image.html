@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h1>uview-plus Image 图片组件</h1>
+      <p>
+        此组件为uni -
+        app的image组件的加强版，在继承了原有功能外，还支持淡入动画、加载中、加载失败提示、圆角值和形状等。推荐在任何使用图片场景的地方优先考虑使用。
+      </p>
+
+      <h2>平台支持情况</h2>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h2>配置manifest</h2>
+      <p>在项目的manifest.json中增加如下配置：</p>
+      <pre><code class="language-json">"mp-weixin" : {
+      "appid" : "",
+   ...
+      "mergeVirtualHostAttributes" : true
+  },
+  "mp-toutiao" : {
+      "appid" : "",
+   ...
+      "mergeVirtualHostAttributes" : true
+  }</code></pre>
+
+      <h2>基本使用</h2>
+      <p>配置图片的width宽、height高以及src路径即可使用。</p>
+      <pre><code class="language-html">&lt;template&gt;
+    &lt;up-image :show-loading="true" :src="src" width="80px" height="80px" @click="click"&gt;&lt;/up-image&gt;
+  &lt;/template&gt;
+  
+  &lt;script setup&gt;
+  import { ref } from 'vue';
+  
+  const src = ref('https://cdn.uviewui.com/uview/album/1.jpg');
+  
+  const click = () =&gt; {
+    // 点击事件处理逻辑
+  };
+  &lt;/script&gt;</code></pre>
+
+      <h2>功能特性</h2>
+      <h3>裁剪模式</h3>
+      <p>
+        通过mode参数配置填充模式，此模式用法与uni -
+        app的image组件的mode参数完全一致。
+      </p>
+      <pre><code class="language-html">&lt;up-image src="https://cdn.uviewui.com/uview/album/1.jpg" mode="widthFix"&gt;&lt;/up-image&gt;</code></pre>
+
+      <h3>图片形状</h3>
+      <p>
+        通过shape参数设置图片的形状，circle为圆形，square为方形；方形时还可通过radius属性设置圆角值。
+      </p>
+      <pre><code class="language-html">&lt;up-image src="https://cdn.uviewui.com/uview/album/1.jpg" shape="circle"&gt;&lt;/up-image&gt;</code></pre>
+
+      <h3>懒加载</h3>
+      <p>
+        此功能只对微信小程序、App、百度小程序、字节跳动小程序有效，默认开启。
+      </p>
+      <pre><code class="language-html">&lt;up-image src="https://cdn.uviewui.com/uview/album/1.jpg" :lazy-load="true"&gt;&lt;/up-image&gt;</code></pre>
+
+      <h3>加载中提示</h3>
+      <p>
+        图片加载过程中，默认显示一个小图标，也可通过loading自定义插槽结合u -
+        loading组件实现加载动画效果。
+      </p>
+      <pre><code class="language-html">&lt;up-image src="https://cdn.uviewui.com/uview/album/1.jpg"&gt;
+    &lt;template v-slot:loading&gt;
+      &lt;up-loading-icon color="red"&gt;&lt;/up-loading-icon&gt;
+    &lt;/template&gt;
+  &lt;/up-image&gt;</code></pre>
+
+      <h3>加载错误提示</h3>
+      <p>
+        图片加载失败时，默认显示一个错误提示图标，可通过error自定义插槽实现个性化提示。
+      </p>
+      <pre><code class="language-html">&lt;up-image src="https://cdn.uviewui.com/uview/album/1.jpg"&gt;
+      &lt;template #error&gt;
+          &lt;view style="font-size: 24rpx;"&gt;加载失败&lt;/view&gt;
+      &lt;/template&gt;
+  &lt;/up-image&gt;</code></pre>
+
+      <h3>淡入动画</h3>
+      <p>
+        通过fade参数配置是否开启动画效果，通过duration参数配置动画过渡时间，单位ms。
+      </p>
+      <pre><code class="language-html">&lt;up-image src="https://cdn.uviewui.com/uview/album/1.jpg" :fade="true" duration="450"&gt;&lt;/up-image&gt;</code></pre>
+
+      <h3>事件冒泡</h3>
+      <p>
+        默认情况下，组件允许内部向外事件冒泡。若想避免事件冒泡，可在组件外面嵌套一个view，并给它加上@tap.stop。
+      </p>
+      <pre><code class="language-html">&lt;!-- 点击图片将不会触发clickHandler --&gt;
+  &lt;view @tap="clickHandler"&gt;
+      &lt;view @tap.stop&gt;
+          &lt;up-image src="https://cdn.uviewui.com/uview/album/1.jpg"&gt;&lt;/up-image&gt;
+      &lt;/view&gt;
+  &lt;/view&gt;</code></pre>
+
+      <h2>API 文档</h2>
+      <h3>Props</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">src</div>
+          <div class="table-cell">图片地址，强烈建议使用绝对或者网络路径</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">mode</div>
+          <div class="table-cell">裁剪模式</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">aspectFill</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">width</div>
+          <div class="table-cell">宽度，单位任意，如果为数值，默认单位px</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">300</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">height</div>
+          <div class="table-cell">高度，单位任意，如果为数值，默认单位px</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">225</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">shape</div>
+          <div class="table-cell">图片形状，circle-圆形，square-方形</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">square</div>
+          <div class="table-cell">square</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">radius</div>
+          <div class="table-cell">圆角，默认单位px</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">lazyLoad</div>
+          <div class="table-cell">
+            是否懒加载，仅微信小程序、App、百度小程序、字节跳动小程序有效
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">showMenuByLongpress</div>
+          <div class="table-cell">
+            是否开启长按图片显示识别小程序码菜单，仅微信小程序有效
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">loadingIcon</div>
+          <div class="table-cell">加载中的图标，或者小图片</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">photo</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">errorIcon</div>
+          <div class="table-cell">加载失败的图标，或者小图片</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">error-circle</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">showLoading</div>
+          <div class="table-cell">是否显示加载中的图标或者自定义的slot</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">showError</div>
+          <div class="table-cell">是否显示加载错误的图标或者自定义的slot</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">fade</div>
+          <div class="table-cell">是否需要淡入效果</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">webp</div>
+          <div class="table-cell">只支持网络资源，只对微信小程序有效</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">duration</div>
+          <div class="table-cell">搭配fade参数的过渡时间，单位ms</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">500</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">bgColor</div>
+          <div class="table-cell">
+            背景颜色，用于深色页面加载图片时，为了和背景色融合
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#f3f4f6</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h3>Slot</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">名称</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">loading</div>
+          <div class="table-cell">自定义加载中的提示内容</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">error</div>
+          <div class="table-cell">自定义失败的提示内容</div>
+        </div>
+      </div>
+
+      <h3>CellItem Events</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">click</div>
+          <div class="table-cell">点击图片时触发</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">error</div>
+          <div class="table-cell">图片加载失败时触发</div>
+          <div class="table-cell">err: 错误信息</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">load</div>
+          <div class="table-cell">图片加载成功时触发</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

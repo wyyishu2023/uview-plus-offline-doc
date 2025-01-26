@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h2>Line 线条</h2>
+      <p>
+        此组件一般用于显示一根线条，用于分隔内容块，有横向和竖向两种模式，且能设置0.5px线条，使用也很简单。
+      </p>
+
+      <h3>平台差异说明</h3>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <p>组件内部有预置的参数，直接使用即可，有如下几个参数需要了解：</p>
+      <ul>
+        <li>color为线条的颜色</li>
+        <li>direction为线条的方向，默认为横向</li>
+        <li>
+          length参数需要特别留意，它需要带上单位，比如设置为"50%"，"500rpx"等，在线条为横向时，表现为线条的长度；在线条为竖向时，表现为线条的高度。
+        </li>
+      </ul>
+      <pre><code class="language-html">
+  &lt;template&gt;
+      /* 基础使用 */
+      &lt;up-line&gt;&lt;/up-line&gt;
+      
+      /* 自定义颜色 */
+      &lt;up-line color="#2979ff"&gt;&lt;/up-line&gt;
+      
+      /* 自定义线条方向 */
+      &lt;up-line direction="col"&gt;&lt;/up-line&gt;
+      
+      /* 自定义线条长度 */
+      &lt;up-line length="50%"&gt;&lt;/up-line&gt;
+  &lt;/template&gt;
+      </code></pre>
+
+      <h3>是否虚线</h3>
+      <p>dashed控制线条是否虚线：</p>
+      <pre><code class="language-html">
+  &lt;template&gt;
+      &lt;up-line dashed&gt;&lt;/up-line&gt;
+  &lt;/template&gt;
+      </code></pre>
+
+      <h3>API</h3>
+
+      <h4>Props</h4>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">color</div>
+          <div class="table-cell">线条的颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#d6d7d9</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">length</div>
+          <div class="table-cell">
+            长度，竖向时表现为高度，横向时表现为长度，可以为百分比，带rpx单位的值等
+          </div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">100%</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">direction</div>
+          <div class="table-cell">线条的方向，row - 横向，col - 竖向</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">row</div>
+          <div class="table-cell">col</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">hairline</div>
+          <div class="table-cell">是否显示细边框</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">margin</div>
+          <div class="table-cell">
+            线条与上下左右元素的间距，字符串形式，如"30rpx"、"20rpx
+            30rpx"，默认单位px
+          </div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">dashed</div>
+          <div class="table-cell">是否虚线，false - 实线，true - 虚线</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

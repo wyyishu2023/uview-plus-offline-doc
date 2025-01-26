@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uview-plus 组件文档</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="left-menu">
+      <h3>uview-plus 组件文档</h3>
+      <ul id="menu"></ul>
+    </div>
+    <div class="main-content">
+      <h2>Popup 弹出层</h2>
+      <p>
+        弹出层容器，用于展示弹窗、信息提示等内容，支持上、下、左、右和中部弹出。组件只提供容器，内部内容由用户自定义。
+      </p>
+
+      <h3>平台差异说明</h3>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <p>
+        弹出层的内容通过 slot 传入，由用户自定义。通过 show
+        绑定一个布尔值的变量控制弹出层的打开和收起，通过 v-model:show
+        双向绑定简化使用。
+      </p>
+      <pre><code class="language-html">
+  &lt;template&gt;
+      &lt;view&gt;
+          &lt;up-popup :show="show" @close="close" @open="open"&gt;
+              &lt;view&gt;
+                  &lt;text&gt;出淤泥而不染，濯清涟而不妖&lt;/text&gt;
+              &lt;/view&gt;
+          &lt;/up-popup&gt;
+          &lt;up-popup v-model:show="show"&gt;
+              &lt;view&gt;
+                  &lt;text&gt;出淤泥而不染，濯清涟而不妖&lt;/text&gt;
+              &lt;/view&gt;
+          &lt;/up-popup&gt;
+          &lt;up-button @click="show = true"&gt;打开&lt;/up-button&gt;
+      &lt;/view&gt;
+  &lt;/template&gt;
+  &lt;script setup&gt;  
+  import { ref } from 'vue';  
+    
+  // 创建响应式数据  
+  const show = ref(false);
+    
+  // 定义方法  
+  function open() {  
+    // 打开逻辑，比如设置 show 为 true  
+    show.value = true;  
+    // console.log('open');  
+  }  
+    
+  function close() {  
+    // 关闭逻辑，设置 show 为 false  
+    show.value = false;  
+    // console.log('close');  
+  }  
+  &lt;/script&gt;
+      </code></pre>
+
+      <h3>设置弹出层的方向</h3>
+      <p>可以通过 mode 参数设置，可以设置为 left、top、right、bottom、center</p>
+      <pre><code class="language-html">
+  &lt;template&gt;
+      &lt;up-popup :show="show" mode="top"  @close="close" @open="open"&gt;
+          &lt;view&gt;
+              &lt;text&gt;人生若只如初见，何事秋风悲画扇&lt;/text&gt;
+          &lt;/view&gt;
+      &lt;/up-popup&gt;
+  &lt;/template&gt;
+  &lt;script setup&gt;  
+  import { ref } from 'vue';  
+    
+  // 创建响应式数据  
+  const show = ref(false);  
+    
+  // 定义方法  
+  function open() {  
+    // 打开逻辑，比如设置 show 为 true  
+    show.value = true;  
+    // console.log('open');  
+  }  
+    
+  function close() {  
+    // 关闭逻辑，设置 show 为 false  
+    show.value = false;  
+    // console.log('close');  
+  }  
+  &lt;/script&gt;
+      </code></pre>
+
+      <h3>设置弹出层的圆角</h3>
+      <p>需要将 round 设置为圆角值(仅对 mode = top | bottom | center 有效)。</p>
+      <pre><code class="language-html">
+  &lt;template&gt;
+      &lt;up-popup :show="show" :round="10" mode="top" @close="close" @open="open"&gt;
+          &lt;view&gt;
+              &lt;text&gt;人生若只如初见，何事秋风悲画扇&lt;/text&gt;
+          &lt;/view&gt;
+      &lt;/up-popup&gt;
+  &lt;/template&gt;
+  &lt;script setup&gt;  
+  import { ref } from 'vue';  
+    
+  // 创建响应式数据  
+  const show = ref(false);  
+    
+  // 定义方法  
+  function open() {  
+    // 打开逻辑，比如设置 show 为 true  
+    show.value = true;  
+    // console.log('open');  
+  }  
+    
+  function close() {  
+    // 关闭逻辑，设置 show 为 false  
+    show.value = false;  
+    // console.log('close');  
+  }  
+  &lt;/script&gt;
+      </code></pre>
+
+      <h3>右侧演示页面源代码地址</h3>
+      <p>点击以下链接以查看右侧演示页面的源码</p>
+      <ul>
+        <li>github github</li>
+        <li>github gitee</li>
+      </ul>
+
+      <h3>API</h3>
+
+      <h4>Props</h4>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">show</div>
+          <div class="table-cell">是否展示弹窗</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">overlay</div>
+          <div class="table-cell">是否显示遮罩</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">mode</div>
+          <div class="table-cell">弹出方向</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">bottom</div>
+          <div class="table-cell">top / right / bottom / center</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">duration</div>
+          <div class="table-cell">遮罩打开或收起的动画过渡时间，单位ms</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">300</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">closeable</div>
+          <div class="table-cell">是否显示关闭图标</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">overlayStyle</div>
+          <div class="table-cell">
+            遮罩自定义样式，一般用于修改遮罩颜色，如：{background: 'rgba(3, 100,
+            219, 0.5)'}
+          </div>
+          <div class="table-cell">Object | String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">overlayOpacity</div>
+          <div class="table-cell">
+            遮罩透明度，0 - 1之间，勿与overlayStyle共用
+          </div>
+          <div class="table-cell">Number | String</div>
+          <div class="table-cell">0.5</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">closeOnClickOverlay</div>
+          <div class="table-cell">
+            点击遮罩是否关闭弹窗（注意：关闭事件需要自行处理，只会在开启closeOnClickOverlay后点击遮罩层执行close回调）
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">zIndex</div>
+          <div class="table-cell">弹出层的z-index值</div>
+          <div class="table-cell">Number | String</div>
+          <div class="table-cell">10075</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">safeAreaInsetBottom</div>
+          <div class="table-cell">是否为留出底部安全距离</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">safeAreaInsetTop</div>
+          <div class="table-cell">是否留出顶部安全距离（状态栏高度）</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">closeIconPos</div>
+          <div class="table-cell">
+            自定义关闭图标位置，top-left为左上角，top-right为右上角，bottom-left为左下角，bottom-right为右下角
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">top-right</div>
+          <div class="table-cell">top-left / bottom-left / bottom-right</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">round</div>
+          <div class="table-cell">
+            设置圆角值，仅对mode = top | bottom | center有效
+          </div>
+          <div class="table-cell">Number | String</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">zoom</div>
+          <div class="table-cell">当mode=center时 是否开启缩放</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">bgColor</div>
+          <div class="table-cell">
+            背景色，一般用于特殊弹窗内容场景，设置为transparent可去除默认的白色背景
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">customStyle</div>
+          <div class="table-cell">用户自定义样式</div>
+          <div class="table-cell">Object</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>Event</h4>
+      <div class="table">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+          <div class="table-cell">版本</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">open</div>
+          <div class="table-cell">弹出层打开</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">close</div>
+          <div class="table-cell">弹出层收起</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-phone">
+      <div class="right-phone-inner">
+        <!-- 这里可以添加右侧手机模拟展示的内容，比如示例组件的运行效果 -->
+        <iframe
+          id="iframeId"
+          src="./Loading.html"
+          width="100%"
+          height="90%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>
