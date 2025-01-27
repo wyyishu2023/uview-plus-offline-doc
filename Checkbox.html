@@ -16,7 +16,436 @@
       <ul id="menu"></ul>
     </div>
     <div class="main-content">
-      <!-- 这里放组件的具体文档 -->
+      <h2>Checkbox 复选框</h2>
+      <p>复选框组件一般用于需要多个选择的场景，该组件功能完整，使用方便。</p>
+
+      <h3>平台差异说明</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <pre class="language-html">
+            <code>
+    &lt;template&gt;
+        &lt;view&gt;
+            &lt;up-checkbox-group
+                v-model="checkboxValue1"
+                placement="column"
+                @change="checkboxChange"
+            &gt;
+                &lt;up-checkbox
+                    :customStyle="{marginBottom: '8px'}"
+                    v-for="(item, index) in checkboxList1"
+                    :key="index"
+                    :label="item.name"
+                    :name="item.name"
+                &gt;
+                &lt;/up-checkbox&gt;
+            &lt;/up-checkbox-group&gt;
+        &lt;/view&gt;
+    &lt;/template&gt;
+    &lt;script setup&gt;
+    import { ref, reactive } from 'vue';
+    
+    const checkboxValue1 = reactive([]);
+    
+    // 基本案列数据
+    const checkboxList1 = reactive([
+      {
+        name: '苹果',
+        disabled: false,
+      },
+      {
+        name: '香蕉',
+        disabled: false,
+      },
+      {
+        name: '橙子',
+        disabled: false,
+      },
+    ]);
+    
+    const checkboxChange = (n) =&gt; {
+      console.log('change', n);
+    };
+    &lt;/script&gt;
+            </code>
+        </pre>
+
+      <h3>独立使用 up-checkbox</h3>
+      <p>
+        通过 usedAlone 可以设置独立使用 up-checkbox，通过 v-model:checked
+        双向绑定值。
+      </p>
+      <pre class="language-html">
+            <code>
+    &lt;template&gt;
+        &lt;up-checkbox
+            :customStyle="{marginBottom: '8px'}"
+            label="同意用户协议与隐私条款"
+            name="agree"
+            usedAlone
+            v-model:checked="aloneChecked"
+        &gt;
+        &lt;/up-checkbox&gt;
+    &lt;/template&gt;
+    &lt;script setup&gt;
+    import { ref } from 'vue'
+    
+    const aloneChecked = ref(false)
+    &lt;/script&gt;
+            </code>
+        </pre>
+
+      <h3>自定义形状</h3>
+      <pre class="language-html">
+            <code>
+    &lt;template&gt;
+        &lt;view&gt;
+            &lt;up-checkbox-group
+                v-model="checkboxValue1"
+                placement="column"
+                @change="checkboxChange"
+            &gt;
+                &lt;up-checkbox
+                    :customStyle="{marginBottom: '8px'}"
+                    v-for="(item, index) in checkboxList1"
+                    :key="index"
+                    :label="item.name"
+                    :name="item.name"
+                &gt;
+                &lt;/up-checkbox&gt;
+            &lt;/up-checkbox-group&gt;
+        &lt;/view&gt;
+    &lt;/template&gt;
+    &lt;script setup&gt;
+    import { ref, reactive } from 'vue';
+    
+    const checkboxValue1 = reactive([]);
+    
+    // 基本案列数据
+    const checkboxList1 = reactive([
+      {
+        name: '苹果',
+        disabled: false,
+      },
+      {
+        name: '香蕉',
+        disabled: false,
+      },
+      {
+        name: '橙子',
+        disabled: false,
+      },
+    ]);
+    
+    const checkboxChange = (n) =&gt; {
+      console.log('change', n);
+    };
+    &lt;/script&gt;
+            </code>
+        </pre>
+      <h3>禁用 checkbox</h3>
+      <p>
+        设置 disabled 为
+        true，即可禁用某个组件，让用户无法点击，禁用分为两种状态，一是未勾选前禁用，这时只显示一个灰色的区域。二是已勾选后
+        再禁用，会有灰色的已勾选的图标，但此时依然是不可操作的。
+      </p>
+      <pre class="language-html">
+            <code>
+    &lt;template&gt;
+        &lt;view&gt;
+            &lt;up-checkbox-group
+                v-model="checkboxValue1"
+                placement="column"
+                @change="checkboxChange"
+            &gt;
+                &lt;up-checkbox
+                    :customStyle="{marginBottom: '8px'}"
+                    v-for="(item, index) in checkboxList1"
+                    :key="index"
+                    :label="item.name"
+                    :name="item.name"
+                    :disabled="item.disabled"
+                &gt;
+                &lt;/up-checkbox&gt;
+            &lt;/up-checkbox-group&gt;
+        &lt;/view&gt;
+    &lt;/template&gt;
+    &lt;script setup&gt;
+    import { reactive } from 'vue';
+    
+    const checkboxValue1 = reactive([]);
+    
+    // 基本案列数据
+    const checkboxList1 = reactive([
+      {
+        name: '苹果',
+        disabled: false,
+      },
+      {
+        name: '香蕉',
+        disabled: false,
+      },
+      {
+        name: '橙子',
+        disabled: true,
+      },
+    ]);
+    
+    const checkboxChange = (n) =&gt; {
+      console.log('change', n);
+    };
+    &lt;/script&gt;
+            </code>
+        </pre>
+
+      <h3>自定义形状</h3>
+      <p>
+        可以通过设置 shape 为 square 或者 circle，将复选框设置为方形或者圆形。
+      </p>
+      <pre class="language-html">
+            <code>
+    &lt;up-checkbox-group&gt;
+        &lt;up-checkbox v-model="checked" shape="circle" label="明月"&gt;&lt;/up-checkbox&gt;
+    &lt;/up-checkbox-group&gt;
+            </code>
+        </pre>
+
+      <h3>自定义颜色</h3>
+      <p>此处所指的颜色，为 checkbox 选中时的背景颜色，参数为 activeColor。</p>
+      <pre class="language-html">
+            <code>
+    &lt;up-checkbox-group v-model="checked"&gt;
+        &lt;up-checkbox  activeColor="red" label="光影"&gt;&lt;/up-checkbox&gt;
+    &lt;/up-checkbox-group&gt;
+            </code>
+        </pre>
+
+      <h3>横向排列形式</h3>
+      <p>
+        可以通过设置 placement 为 row 或者
+        column，将复选框设置为横向排列或者竖向排列。
+      </p>
+      <pre class="language-html">
+            <code>
+    &lt;up-checkbox-group v-model="checked" placement="row"&gt;
+        &lt;up-checkbox activeColor="red" label="红色"&gt;&lt;/up-checkbox&gt;
+        &lt;up-checkbox activeColor="green" label="绿色"&gt;&lt;/up-checkbox&gt;
+    &lt;/up-checkbox-group&gt;
+            </code>
+        </pre>
+
+      <h3>横向两端排列形式</h3>
+      <p>
+        可以通过设置 iconPlacement 为 left 或者
+        right，将复选框勾选图标的对齐设置为左对齐或者右对齐。
+      </p>
+      <pre class="language-html">
+            <code>
+    &lt;up-checkbox-group 
+        v-model="checked"
+        iconPlacement="right" 
+        placement="row"&gt;
+        &lt;up-checkbox activeColor="red" label="红色"&gt;&lt;/up-checkbox&gt;
+        &lt;up-checkbox activeColor="green" label="绿色"&gt;&lt;/up-checkbox&gt;
+    &lt;/up-checkbox-group&gt;
+            </code>
+        </pre>
+
+      <h3>API</h3>
+      <h4>Checkbox Props</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">label的颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">labelDisabled</div>
+          <div class="table-cell">是否禁止点击提示语选中复选框</div>
+          <div class="table-cell">String | Boolean</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">usedAlone</div>
+          <div class="table-cell">是否独立使用复选框</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+      </div>
+
+      <h4>CheckboxGroup Props</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">name</div>
+          <div class="table-cell">标识符</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">modelValue</div>
+          <div class="table-cell">绑定的值</div>
+          <div class="table-cell">Array</div>
+          <div class="table-cell">[]</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">shape</div>
+          <div class="table-cell">形状，circle-圆形，square-方形</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">square</div>
+          <div class="table-cell">circle</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">disabled</div>
+          <div class="table-cell">是否禁用全部checkbox</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">activeColor</div>
+          <div class="table-cell">
+            选中状态下的颜色，如子Checkbox组件设置此值，将会覆盖本值
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#2979ff</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">inactiveColor</div>
+          <div class="table-cell">未选中的颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#c8c9cc</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">size</div>
+          <div class="table-cell">整个组件的尺寸，默认px</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">18</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">placement</div>
+          <div class="table-cell">布局方式，row-横向，column-纵向</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">row</div>
+          <div class="table-cell">column</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">labelSize</div>
+          <div class="table-cell">label的字体大小，px单位</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">14</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">labelColor</div>
+          <div class="table-cell">label的字体颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#303133</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">labelDisabled</div>
+          <div class="table-cell">是否禁止点击文本操作</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">iconColor</div>
+          <div class="table-cell">图标颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#ffffff</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">iconSize</div>
+          <div class="table-cell">图标的大小，单位px</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">12</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">iconPlacement</div>
+          <div class="table-cell">
+            勾选图标的对齐方式，left-左边，right-右边
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">left</div>
+          <div class="table-cell">right</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">borderBottom</div>
+          <div class="table-cell">竖向配列时，是否显示下划线</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+      </div>
+
+      <h4>Checkbox Slot</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">名称</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">icon 3.2.25</div>
+          <div class="table-cell">自定义icon内容</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">label 3.2.25</div>
+          <div class="table-cell">自定义label内容</div>
+        </div>
+      </div>
+
+      <h4>CheckboxGroup Event</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+          <div class="table-cell">版本</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">change</div>
+          <div class="table-cell">
+            任一个checkbox状态发生变化时触发，回调为一个对象
+          </div>
+          <div class="table-cell">
+            detail = array( [元素为被选中的checkbox的name] )
+          </div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
     </div>
     <div class="right-phone">
       <div class="right-phone-inner">

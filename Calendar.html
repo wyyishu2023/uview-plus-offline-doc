@@ -16,7 +16,548 @@
       <ul id="menu"></ul>
     </div>
     <div class="main-content">
-      <!-- 这里放组件的具体文档 -->
+      <h2>Calendar 日历</h2>
+      <p>
+        此组件用于单个选择日期、范围选择日期等，日历被包裹在底部弹起的容器中。
+      </p>
+      <p>
+        <strong>注意</strong
+        >：此组件与Picker选择器的日期选择模式有一定的重合之处，区别在于本组件为更专业的日期选择场景，能选择日期范围等。另外Picker组件的日期模式可以配置更多的参数，如时、分、秒等，可以根据不同的使用场景进行选择。
+      </p>
+      <h3>平台差异说明</h3>
+      <div class="table-like">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+      <h3>基本使用</h3>
+      <p>通过 <code>show</code> 绑定一个布尔变量用于打开或收起日历弹窗。</p>
+      <p>
+        通过 <code>mode</code> 参数指定选择日期模式，包含单选/多选/范围选择。
+      </p>
+      <pre class="language-html"><code>&lt;template&gt;
+  &lt;view&gt;
+    &lt;up-calendar :show="show"&gt;&lt;/up-calendar&gt;
+    &lt;up-button @click="show = true"&gt;打开&lt;/up-button&gt;
+  &lt;/view&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+import { ref } from 'vue';
+
+const show = ref(false);
+&lt;/script&gt;</code></pre>
+      <h3>日历模式</h3>
+      <ul>
+        <li><code>mode</code> 为 <code>single</code> 只能选择单个日期。</li>
+        <li><code>mode</code> 为 <code>multiple</code> 可以选择多个日期。</li>
+        <li><code>mode</code> 为 <code>range</code> 可以选择日期范围。</li>
+      </ul>
+      <h4>单个日期模式</h4>
+      <p>
+        选择日期后，需要点击底部的确定按钮才能触发回调事件，回调参数为一个数组，有如下属性：
+      </p>
+      <pre class="language-html"><code>[&quot;2021-07-01&quot;]</code></pre>
+      <p>示例代码：</p>
+      <pre class="language-html"><code>&lt;template&gt;
+  &lt;up-calendar :show="show" :mode="mode" @confirm="confirm"&gt;&lt;/up-calendar&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+import { ref } from 'vue';
+
+const show = ref(true);
+const mode = ref('single');
+
+const confirm = (e) =&gt; {
+  console.log(e);
+};
+&lt;/script&gt;</code></pre>
+      <h4>多个日期模式</h4>
+      <p>
+        选择日期后，需要点击底部的确定按钮才能触发回调事件，回调参数为一个数组，有如下属性：
+      </p>
+      <pre
+        class="language-html"
+      ><code>[&quot;2021-07-27&quot;, &quot;2021-07-29&quot;, &quot;2021-07-30&quot;]</code></pre>
+      <p>示例代码：</p>
+      <pre class="language-html"><code>&lt;template&gt;
+  &lt;up-calendar :show="show" :mode="mode" @confirm="confirm"&gt;&lt;/up-calendar&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+import { ref } from 'vue';
+
+const show = ref(true);
+const mode = ref('multiple');
+
+const confirm = (e) =&gt; {
+  console.log(e);
+};
+&lt;/script&gt;</code></pre>
+      <h4>日期范围模式</h4>
+      <p>此模式用于选择一个日期范围，比如住酒店的入住到离店的日期范围。</p>
+      <p>此模式的返回参数如下：</p>
+      <pre
+        class="language-html"
+      ><code>[&quot;2021-07-27&quot;, &quot;2021-07-28&quot;, &quot;2021-07-29&quot;, &quot;2021-07-30&quot;, &quot;2021-07-31&quot;]</code></pre>
+      <p>示例代码：</p>
+      <pre class="language-html"><code>&lt;template&gt;
+  &lt;up-calendar :show="show" :mode="mode" @confirm="confirm"&gt;&lt;/up-calendar&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+import { ref } from 'vue';
+
+const show = ref(true);
+const mode = ref('range');
+
+const confirm = (e) =&gt; {
+  console.log(e);
+};
+&lt;/script&gt;</code></pre>
+      <h3>自定义主题颜色</h3>
+      <p>组件可传入 <code>color</code> 参数，更改组件主题色。</p>
+      <p>示例代码：</p>
+      <pre class="language-html"><code>&lt;template&gt;
+  &lt;up-calendar :show="show" color="#f56c6c" :mode="mode" @confirm="confirm"&gt;&lt;/up-calendar&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+import { ref } from 'vue';
+
+const show = ref(true);
+const mode = ref('range');
+
+const confirm = (e) =&gt; {
+  console.log(e);
+};
+&lt;/script&gt;</code></pre>
+      <h3>自定义文案</h3>
+      <p>组件可以通过 <code>formatter</code> 以函数的方式定义日期文案。</p>
+      <p>
+        <strong>注意</strong>：微信小程序不支持通过
+        <code>props</code> 传递函数参数，所以组件内部暴露了一个
+        <code>setFormatter</code> 方法用于设置格式化方法，注意在页面的
+        <code>onReady</code> 生命周期获取 <code>ref</code> 再操作。
+      </p>
+      <pre class="language-html"><code>&lt;template&gt;
+  &lt;up-calendar 
+        startText="住店"
+        endText="离店"
+        confirmDisabledText="请选择离店日期"
+        :formatter="formatter"
+        :show="show" 
+        :mode="mode" 
+        @confirm="confirm"
+        ref="calendar"
+  &gt;
+    &lt;/up-calendar&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+import { ref } from 'vue';
+import { onReady } from '@dcloudio/uni-app';
+
+const show = ref(true);
+const mode = ref('range');
+
+const confirm = (e) =&gt; {
+  console.log(e);
+};
+
+const formatter = (day) =&gt; {
+  const d = new Date();
+  let month = d.getMonth() + 1;
+  const date = d.getDate();
+  if (day.month == month &amp;&amp; day.day == date + 3) {
+    day.bottomInfo = '有优惠';
+    day.dot = true;
+  }
+  return day;
+};
+
+const onReady = () =&gt; {
+  // 如果需要兼容微信小程序的话，需要用此写法
+  $refs.calendar.setFormatter(formatter);
+};
+&lt;/script&gt;
+
+&lt;style lang="scss" scoped&gt;
+  .title{
+    color: $up-primary;
+    text-align: center;
+    padding: 20rpx 0 0 0;
+  }
+&lt;/style&gt;</code></pre>
+      <h3>日期最大范围</h3>
+      <p>组件可以通过 <code>maxDate</code> 定义日期文案。</p>
+      <pre class="language-html"><code>&lt;template&gt;
+&lt;up-calendar 
+  :maxDate="maxDate"
+  :show="show" 
+  @confirm="confirm"&gt;
+&lt;/up-calendar&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+import { ref } from 'vue';
+
+const d = new Date();
+const year = d.getFullYear();
+let month = d.getMonth() + 1;
+month = month &lt; 10? `0${month}` : month;
+const date = d.getDate();
+
+const show = ref(true);
+const maxDate = `${year}-${month}-${date + 10}`;
+
+const confirm = (e) =&gt; {
+console.log(e);
+};
+&lt;/script&gt;
+
+&lt;style lang="scss" scoped&gt;
+.title{
+color: $up-primary;
+text-align: center;
+padding: 20rpx 0 0 0;
+}
+&lt;/style&gt;</code></pre>
+      <h3>是否显示农历</h3>
+      <p>组件可以通过 <code>showLunar</code> 定义是否显示农历。</p>
+      <pre class="language-html"><code>&lt;template&gt;
+&lt;up-calendar 
+  showLunar
+  :show="show" 
+  @confirm="confirm"&gt;
+&lt;/up-calendar&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+import { ref } from 'vue';
+
+const show = ref(true);
+
+const confirm = (e) =&gt; {
+console.log(e);
+};
+&lt;/script&gt;
+
+&lt;style lang="scss" scoped&gt;
+.title{
+color: $up-primary;
+text-align: center;
+padding: 20rpx 0 0 0;
+}
+&lt;/style&gt;</code></pre>
+      <h3>默认日期</h3>
+      <p>组件可以通过 <code>defaultDate</code> 定义默认日期。</p>
+      <pre class="language-html"><code>&lt;template&gt;
+&lt;up-calendar 
+  :defaultDate="defaultDateMultiple"
+  :show="show" 
+  mode="multiple"
+  @confirm="confirm"&gt;
+&lt;/up-calendar&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+import { ref } from 'vue';
+
+const d = new Date();
+const year = d.getFullYear();
+let month = d.getMonth() + 1;
+month = month &lt; 10? `0${month}` : month;
+const date = d.getDate();
+
+const show = ref(true);
+const defaultDateMultiple = [`${year}-${month}-${date}`, `${year}-${month}-${date + 1}`, `${year}-${month}-${date + 2}`];
+
+const confirm = (e) =&gt; {
+console.log(e);
+};
+&lt;/script&gt;
+
+&lt;style lang="scss" scoped&gt;
+.title{
+color: $up-primary;
+text-align: center;
+padding: 20rpx 0 0 0;
+}
+&lt;/style&gt;</code></pre>
+
+      <h3>API</h3>
+      <h4>Props</h4>
+      <div class="table-like">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">title</div>
+          <div class="table-cell">标题内容</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">日期选择</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">showTitle</div>
+          <div class="table-cell">是否显示标题</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">showSubtitle</div>
+          <div class="table-cell">是否显示副标题</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">mode</div>
+          <div class="table-cell">日期类型选择</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">single</div>
+          <div class="table-cell">
+            multiple - 可以选择多个日期，range -
+            选择日期范围（多个月需配合monthNum属性使用）
+          </div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">startText</div>
+          <div class="table-cell">mode = range时，第一个日期底部的提示文字</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">开始</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">endText</div>
+          <div class="table-cell">
+            mode = range时，最后一个日期底部的提示文字
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">结束</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">customList</div>
+          <div class="table-cell">自定义列表</div>
+          <div class="table-cell">Array</div>
+          <div class="table-cell">[]</div>
+          <div class="table-cell">[]</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">color</div>
+          <div class="table-cell">主题色，对底部按钮和选中日期有效</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#3c9cff</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">minDate</div>
+          <div class="table-cell">最小的可选日期</div>
+          <div class="table-cell">Number | String</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">maxDate</div>
+          <div class="table-cell">最大可选日期</div>
+          <div class="table-cell">Number | String</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">defaultDate</div>
+          <div class="table-cell">
+            默认选中的日期，mode为multiple或range是必须为数组格式
+          </div>
+          <div class="table-cell">Array | String | Date</div>
+          <div class="table-cell">null</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">maxCount</div>
+          <div class="table-cell">mode = multiple时，最多可选多少个日期</div>
+          <div class="table-cell">Number | String</div>
+          <div class="table-cell">Number.MAX_SAFE_INTEGER</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">rowHeight</div>
+          <div class="table-cell">日期行高</div>
+          <div class="table-cell">Number | String</div>
+          <div class="table-cell">56</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">formatter</div>
+          <div class="table-cell">
+            日期格式化函数(如需兼容微信小程序，则只能通过setFormatter方法)
+          </div>
+          <div class="table-cell">Function</div>
+          <div class="table-cell">null</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">showLunar</div>
+          <div class="table-cell">是否显示农历</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">showMark</div>
+          <div class="table-cell">是否显示月份背景色</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">confirmText</div>
+          <div class="table-cell">确定按钮的文字</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">确定</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">confirmDisabledText</div>
+          <div class="table-cell">确认按钮处于禁用状态时的文字</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">确定</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">show</div>
+          <div class="table-cell">是否显示日历弹窗</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">closeOnClickOverlay</div>
+          <div class="table-cell">
+            是否允许点击遮罩关闭日历
+            （注意：关闭事件需要自行处理，只会在开启closeOnClickOverlay后点击遮罩层执行close回调）
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">readonly</div>
+          <div class="table-cell">是否为只读状态，只读状态下禁止选择日期</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">maxRange</div>
+          <div class="table-cell">
+            日期区间最多可选天数，默认无限制，mode = range时有效
+          </div>
+          <div class="table-cell">Number | String</div>
+          <div class="table-cell">无限制</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">rangePrompt</div>
+          <div class="table-cell">
+            范围选择超过最多可选天数时的提示文案，mode = range时有效
+          </div>
+          <div class="table-cell">String | null</div>
+          <div class="table-cell">选择天数不能超过 xx 天</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">showRangePrompt</div>
+          <div class="table-cell">
+            范围选择超过最多可选天数时，是否展示提示文案，mode = range时有效
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">allowSameDay</div>
+          <div class="table-cell">
+            是否允许日期范围的起止时间为同一天，mode = range时有效
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">round</div>
+          <div class="table-cell">圆角值，默认无圆角</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">monthNum 2.0.17</div>
+          <div class="table-cell">最大展示的月份数量</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">3</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">weekText</div>
+          <div class="table-cell">星期文案，可用于多语言。</div>
+          <div class="table-cell">Array</div>
+          <div class="table-cell">
+            ['一', '二', '三', '四', '五', '六', '日']
+          </div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+      <h4>Methods</h4>
+      <div class="table-like">
+        <div class="table-row table-header">
+          <div class="table-cell">方法名</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">setFormatter</div>
+          <div class="table-cell">
+            为兼容微信小程序而暴露的内部方法，见上方说明
+          </div>
+        </div>
+      </div>
+      <h4>Event</h4>
+      <div class="table-like">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">confirm</div>
+          <div class="table-cell">
+            日期选择完成后触发，若show - confirm为true，则点击确认按钮后触发
+          </div>
+          <div class="table-cell">选择日期相关的返回参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">close</div>
+          <div class="table-cell">日历关闭时触发</div>
+          <div class="table-cell">可定义页面关闭时的回调事件</div>
+        </div>
+      </div>
     </div>
     <div class="right-phone">
       <div class="right-phone-inner">

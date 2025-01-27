@@ -180,3 +180,7 @@ iframe {
 .copy-button.copied {
   background: #5ac725; /* 绿色 */
 }
+.tip {
+  color: red;
+  font-weight: bold;
+}

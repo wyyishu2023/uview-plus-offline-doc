@@ -16,7 +16,362 @@
       <ul id="menu"></ul>
     </div>
     <div class="main-content">
-      <!-- 这里放组件的具体文档 -->
+      <h2>Picker 选择器</h2>
+      <p>此选择器用于单列，多列，多列联动的选择场景。</p>
+      <h3>平台差异说明</h3>
+      <div class="table-like">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+      <h3>基本使用</h3>
+      <p>
+        通过 <code>show</code> 绑定一个布尔值变量，用于控制组件的弹出与收起。
+      </p>
+      <p>都通过传入数组 <code>columns</code> 配置选择项。</p>
+      <pre class="language-html"><code>&lt;template&gt;
+  &lt;view&gt;
+    &lt;up-picker :show="show" :columns="columns"&gt;&lt;/up-picker&gt;
+    &lt;up-button @click="show = true"&gt;打开&lt;/up-button&gt;
+  &lt;/view&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+import { ref, reactive } from 'vue';
+
+const show = ref(false);
+const columns = reactive([
+  ['中国', '美国', '日本']
+]);
+&lt;/script&gt;</code></pre>
+      <h3>多列模式与多列联动</h3>
+      <p>
+        此模式通过传入 <code>columns</code> 参数，此参数为二维数组，通过
+        <code>change</code> 事件完成联动操作。
+      </p>
+      <pre class="language-html"><code>&lt;template&gt;
+    &lt;up-picker :show="show" ref="uPickerRef" :columns="columns" @confirm="confirm" @change="changeHandler"&gt;&lt;/up-picker&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+import { ref, reactive } from 'vue';
+
+const show = ref(true);
+const columns = reactive([
+  ['中国', '美国'],
+  ['深圳', '厦门', '上海', '拉萨']
+]);
+const columnData = reactive([
+  ['深圳', '厦门', '上海', '拉萨'],
+  ['得州', '华盛顿', '纽约', '阿拉斯加']
+]);
+
+const uPickerRef = ref(null)
+const changeHandler = (e) =&gt; {
+  const {
+    columnIndex,
+    value,
+    values,
+    index,
+  } = e;
+
+  if (columnIndex === 0) {
+    uPickerRef.value.setColumnValues(1, columnData[index]);
+  }
+};
+
+const confirm = (e) =&gt; {
+  console.log('confirm', e);
+  show.value = false;
+};
+&lt;/script&gt;</code></pre>
+      <h3>加载状态</h3>
+      <p>
+        由于需要多列联动，此模式和上面的"多列模式"基本相同，在加载之前将
+        <code>loading</code> 设置为 <code>true</code>，数据获取完成之后再置为
+        <code>false</code> 即可。
+      </p>
+      <pre class="language-html"><code>&lt;template&gt;
+    &lt;up-picker :show="show" ref="uPickerRef" :loading="loading" :columns="columns" @change="changeHandler"&gt;&lt;/up-picker&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+import { ref, reactive } from 'vue';
+
+const show = ref(true);
+const loading = ref(false);
+const columns = reactive([
+  ['中国', '美国'],
+  ['深圳', '厦门', '上海', '拉萨']
+]);
+const columnData = reactive([
+  ['深圳', '厦门', '上海', '拉萨'],
+  ['得州', '华盛顿', '纽约', '阿拉斯加']
+]);
+
+const uPickerRef = ref(null)
+const changeHandler = (e) =&gt; {
+  const {
+    columnIndex,
+    index,
+    picker
+  } = e;
+
+  if (columnIndex === 0) {
+    loading.value = true;
+    // 模拟网络请求
+    setTimeout(() =&gt; {
+      uPickerRef.value.setColumnValues(1, columnData[index]);
+      loading.value = false;
+    }, 1500);
+  }
+};
+&lt;/script&gt;</code></pre>
+      <h3>自定义选项值</h3>
+      <p>
+        参数 <code>columns</code> 可以传入自定义选项值，可以通过
+        <code>keyName</code> 参数控制对应的显示属性。
+      </p>
+      <pre class="language-html"><code>&lt;template&gt;
+    &lt;up-picker :show="show" :columns="columns" keyName="label"&gt;&lt;/up-picker&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+import { ref, reactive } from 'vue';
+
+const show = ref(true);
+const columns = reactive([
+  [
+    {
+      label: '雪月夜',
+      // 其他属性值
+      id: 2021
+      // ...
+    },
+    {
+      label: '冷夜雨',
+      id: 804
+    }
+  ]
+]);
+&lt;/script&gt;</code></pre>
+      <h3>默认值</h3>
+      <p>
+        此组件的所有模式，都可以设置默认值，通过
+        <code>defaultIndex</code> 数组参数配置，数组元素的 0
+        表示选中每列的哪个值(从 0 开始)，下面分别对几种模式进行说明：
+      </p>
+      <p>
+        <strong>注意</strong>：
+        <code>defaultIndex</code> 数组的长度，必须与列数相同，否则无效。
+      </p>
+      <h4>单列模式</h4>
+      <p>
+        如设置 <code>defaultIndex</code> 为 <code>[1]</code> 表示默认选中第 2
+        个(从 0 开始)，<code>[5]</code> 表示选中第 6 个。
+      </p>
+      <h4>多列模式</h4>
+      <p>
+        如设置 <code>defaultIndex</code> 为
+        <code>[1, 3]</code> 表示第一列默认选中第 2 个，第二列默认选中第 4 个。
+      </p>
+
+      <h3>API</h3>
+      <h4>Props</h4>
+      <div class="table-like">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">show</div>
+          <div class="table-cell">用于控制选择器的弹出与收起</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">showToolbar</div>
+          <div class="table-cell">是否显示顶部的操作栏</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">title</div>
+          <div class="table-cell">顶部中间的标题</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">columns</div>
+          <div class="table-cell">设置每一列的数据，见上方说明</div>
+          <div class="table-cell">Array</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">loading</div>
+          <div class="table-cell">加载状态</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">itemHeight</div>
+          <div class="table-cell">各列中，单个选项的高度</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">44</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">cancelText</div>
+          <div class="table-cell">取消按钮的文字</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">取消</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">confirmText</div>
+          <div class="table-cell">确认按钮的文字</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">确认</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">cancelColor</div>
+          <div class="table-cell">取消按钮的颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#909193</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">confirmColor</div>
+          <div class="table-cell">确认按钮的颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#3c9cff</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">visibleItemCount</div>
+          <div class="table-cell">每列中可见选项的数量</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">5</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">keyName</div>
+          <div class="table-cell">自定义需要展示的text属性键名</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">text</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">closeOnClickOverlay</div>
+          <div class="table-cell">
+            是否允许点击遮罩关闭选择器（注意：关闭事件需要自行处理，只会在开启closeOnClickOverlay后点击遮罩层执行close回调）
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">defaultIndex</div>
+          <div class="table-cell">各列的默认索引</div>
+          <div class="table-cell">Array</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">immediateChange 2.0.22</div>
+          <div class="table-cell">
+            是否在手指松开时立即触发change事件。若不开启则会在滚动动画结束后触发change事件，只在微信2.21.1及以上有效
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+      </div>
+      <h4>Methods</h4>
+      <div class="table-like">
+        <div class="table-row table-header">
+          <div class="table-cell">名称</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">setIndexs</div>
+          <div class="table-cell">(index, setLastIndex) 设置对应列的选择值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">setColumnValues</div>
+          <div class="table-cell">
+            多列联动时需要用到，见上方说明，注意微信小程序的特殊用法
+          </div>
+        </div>
+      </div>
+      <h4>Events</h4>
+      <div class="table-like">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+          <div class="table-cell">版本</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">close</div>
+          <div class="table-cell">关闭选择器时触发</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">confirm</div>
+          <div class="table-cell">点击确定按钮，返回当前选择的值</div>
+          <div class="table-cell">Array: 见上方"回调参数"部分说明</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">change</div>
+          <div class="table-cell">当选择值变化时触发</div>
+          <div class="table-cell">Array: 见上方"回调参数"部分说明</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">cancel</div>
+          <div class="table-cell">点击取消按钮</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+      <h4>Slots</h4>
+      <div class="table-like">
+        <div class="table-row table-header">
+          <div class="table-cell">名称</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">toolbar-right</div>
+          <div class="table-cell">
+            工具栏右侧内容，自定义右侧内容，因为微信小程序限制，需要同时设置:toolbarRightSlot="true"生效。
+          </div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">toolbar-bottom</div>
+          <div class="table-cell">输入框下方自定义区域</div>
+        </div>
+      </div>
     </div>
     <div class="right-phone">
       <div class="right-phone-inner">

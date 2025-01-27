@@ -16,7 +16,471 @@
       <ul id="menu"></ul>
     </div>
     <div class="main-content">
-      <!-- 这里放组件的具体文档 -->
+      <h2>NumberBox 步进器</h2>
+      <p>该组件一般用于商城购物选择物品数量的场景。</p>
+      <p>注意：该输入框只能输入大于或等于 0 的整数。</p>
+
+      <h3>平台差异说明</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <p>
+        通过 <code>v-model</code> 绑定
+        <code>modelValue</code>
+        初始值，此值是双向绑定的，无需在回调中将返回的数值重新赋值给
+        <code>modelValue</code>。
+      </p>
+      <pre class="language-html">
+          <code>
+  &lt;template&gt;
+      &lt;up-number-box v-model="value" @change="valChange"&gt;&lt;/up-number-box&gt;
+  &lt;/template&gt;
+  &lt;script setup&gt;  
+  import { ref } from 'vue';  
+    
+  // 创建响应式数据  
+  const value = ref(0);  
+    
+  // 定义方法  
+  function valChange(e) {  
+      console.log('当前值为: ' + e.target.value);  
+  }  
+  &lt;/script&gt;
+          </code>
+      </pre>
+
+      <h3>步长设置</h3>
+      <p>
+        通过 <code>step</code> 属性设置每次点击增加或减少按钮时变化的值，默认为
+        1，下面示例每次都会加 2 或者减 2。
+      </p>
+      <pre class="language-html">
+          <code>
+  &lt;up-number-box :step="2"&gt;&lt;/up-number-box&gt;
+          </code>
+      </pre>
+
+      <h3>限制输入范围</h3>
+      <p>
+        通过 <code>min</code> 和
+        <code>max</code> 参数限制输入值的最小值和最大值。
+      </p>
+      <pre class="language-html">
+          <code>
+  &lt;up-number-box :min="1" :max="100"&gt;&lt;/up-number-box&gt;
+          </code>
+      </pre>
+
+      <h3>限制只能输入整数</h3>
+      <p>通过 <code>integer</code> 限制输入类型。</p>
+      <pre class="language-html">
+          <code>
+  &lt;up-number-box integer&gt;&lt;/up-number-box&gt;
+          </code>
+      </pre>
+
+      <h3>禁用</h3>
+      <h4>禁用整个输入框及按钮</h4>
+      <p>
+        通过设置
+        <code>disabled</code>
+        参数来禁用输入框，禁用状态下无法点击加减按钮或修改输入框的值。
+      </p>
+      <pre class="language-html">
+          <code>
+  &lt;up-number-box :disabled="true"&gt;&lt;/up-number-box&gt;
+          </code>
+      </pre>
+
+      <h4>仅禁用输入框</h4>
+      <pre class="language-html">
+          <code>
+  &lt;up-number-box :disabledInput="true"&gt;&lt;/up-number-box&gt;
+          </code>
+      </pre>
+
+      <h4>禁用增加按钮</h4>
+      <pre class="language-html">
+          <code>
+  &lt;up-number-box :disablePlus="true"&gt;&lt;/up-number-box&gt;
+          </code>
+      </pre>
+
+      <h4>禁用减少按钮</h4>
+      <pre class="language-html">
+          <code>
+  &lt;up-number-box :disableMinus="true"&gt;&lt;/up-number-box&gt;
+          </code>
+      </pre>
+
+      <h4>禁用长按</h4>
+      <pre class="language-html">
+          <code>
+  &lt;up-number-box :longPress="false"&gt;&lt;/up-number-box&gt;
+          </code>
+      </pre>
+
+      <h3>固定小数位数</h3>
+      <p>
+        通过 <code>step</code> 设置步进长度，<code>decimal-length</code>
+        设置显示小数位数。
+      </p>
+      <pre class="language-html">
+          <code>
+  &lt;up-number-box step="0.25" decimal-length="1" &gt;&lt;/up-number-box&gt;
+          </code>
+      </pre>
+
+      <h3>异步变更</h3>
+      <p>
+        通过 <code>asyncChange</code> 设置异步变更，开启后需要手动控制输入值
+        （默认 <code>false</code> ）。
+      </p>
+      <pre class="language-html">
+          <code>
+  &lt;template&gt;
+      &lt;up-number-box v-model="value" :asyncChange="true" @change="onChange"&gt;&lt;/up-number-box&gt;
+  &lt;/template&gt;
+  &lt;script setup&gt;  
+  import { ref, onMounted } from 'vue';  
+    
+  // 创建响应式数据  
+  const value = ref(1);  
+    
+  // 定义方法  
+  function onChange(e) {  
+      setTimeout(() => {  
+          value.value += 1; // 使用 value.value 来访问和修改响应式数据  
+      }, 3000);  
+  }
+  &lt;/script&gt;
+          </code>
+      </pre>
+
+      <h3>自定义颜色和大小</h3>
+      <p>
+        通过 <code>button-size</code> 参数设置按钮大小，通过
+        <code>icon-style</code> 参数设置加减按钮图标的样式。
+      </p>
+      <pre class="language-html">
+          <code>
+  &lt;up-number-box 
+      button-size="36"
+      color="#ffffff"
+      bgColor="#2979ff"
+      iconStyle="color: #fff"
+  &gt;&lt;/up-number-box&gt;
+          </code>
+      </pre>
+
+      <h3>自定义 slot</h3>
+      <pre class="language-html">
+          <code>
+  &lt;template&gt;
+      &lt;up-number-box v-model="value"&gt;
+          &lt;template #minus&gt;
+              &lt;view
+                  class="minus"
+              &gt;
+                  &lt;up-icon
+                      name="minus"
+                      size="12"
+                  &gt;&lt;/up-icon&gt;
+              &lt;/view&gt;
+          &lt;/template&gt;
+          &lt;template #input&gt;
+              &lt;text
+                  style="width: 50px;text-align: center;"
+                  class="input"
+              &gt;{{value}}&lt;/text&gt;
+          &lt;/template&gt;
+          &lt;template #plus&gt;
+              &lt;view
+                  class="plus"
+              &gt;
+                  &lt;up-icon
+                      name="plus"
+                      color="#FFFFFF"
+                      size="12"
+                  &gt;&lt;/up-icon&gt;
+              &lt;/view&gt;
+          &lt;/template&gt;
+      &lt;/up-number-box&gt;
+  &lt;/template&gt;
+  &lt;script setup&gt;  
+  import { ref } from 'vue';  
+    
+  // 创建响应式数据  
+  const value = ref(1);  
+  &lt;/script&gt;
+  &lt;style lang="scss"&gt;
+  .minus {
+      width: 22px;
+      height: 22px;
+      border-width: 1px;
+      border-color: #E6E6E6;
+      border-top-left-radius: 100px;
+      border-top-right-radius: 100px;
+      border-bottom-left-radius: 100px;
+      border-bottom-right-radius: 100px;
+      @include flex;
+      justify-content: center;
+      align-items: center;
+  }
+  
+  .input {
+      padding: 0 10px;
+  }
+  
+  .plus {
+      width: 22px;
+      height: 22px;
+      background-color: #FF0000;
+      border-radius: 50%;
+      /* #ifndef APP-NVUE */
+      display: flex;
+      /* #endif */
+      justify-content: center;
+      align-items: center;
+  }
+  &lt;/style&gt;
+          </code>
+      </pre>
+
+      <h3>API</h3>
+      <h4>Props</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">name</div>
+          <div class="table-cell">步进器标识符，在 change 回调返回</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">modelValue</div>
+          <div class="table-cell">
+            用于双向绑定的值，初始化时设置设为默认 min 值(最小值)
+          </div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">1</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">min</div>
+          <div class="table-cell">用户可输入的最小值</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">1</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">max</div>
+          <div class="table-cell">用户可输入的最大值</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">Number.MAX_SAFE_INTEGER</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">step</div>
+          <div class="table-cell">
+            步长，每次加或减的值， 支持小数值，如需小数
+          </div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">1</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">integer</div>
+          <div class="table-cell">是否只能输入正整数</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">disabled</div>
+          <div class="table-cell">是否禁用操作，包括输入框，加减按钮</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">disabledInput</div>
+          <div class="table-cell">是否禁止输入框</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">asyncChange</div>
+          <div class="table-cell">
+            是否开启异步变更，开启后需要手动控制输入值
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">inputWidth</div>
+          <div class="table-cell">输入框宽度，单位 px</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">35</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">showMinus</div>
+          <div class="table-cell">是否显示减少按钮</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">showPlus</div>
+          <div class="table-cell">是否显示增加按钮</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">decimalLength</div>
+          <div class="table-cell">显示的小数位数</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">longPress</div>
+          <div class="table-cell">是否允许长按进行加减</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">color</div>
+          <div class="table-cell">输入框文字和加减按钮图标的颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#323233</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">buttonSize</div>
+          <div class="table-cell">
+            按钮大小，宽高等于此值，单位 px，输入框高度和此值保持一致
+          </div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">30</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">bgColor</div>
+          <div class="table-cell">输入框和按钮的背景颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#EBECEE</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">cursorSpacing</div>
+          <div class="table-cell">
+            指定光标于键盘的距离，避免键盘遮挡输入框，单位 px
+          </div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">100</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">disablePlus</div>
+          <div class="table-cell">是否禁用增加按钮</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">disableMinus</div>
+          <div class="table-cell">是否禁用减少按钮</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">iconStyle</div>
+          <div class="table-cell">加减按钮图标的样式</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>Events</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">focus</div>
+          <div class="table-cell">
+            输入框得到焦点触发(按钮可点击情况下)，对象形式
+          </div>
+          <div class="table-cell">value：输入框当前值，name：步进器标识符</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">blur</div>
+          <div class="table-cell">输入框失去焦点时触发，对象形式</div>
+          <div class="table-cell">value：输入框当前值，name：步进器标识符</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">change</div>
+          <div class="table-cell">输入框内容发生变化时触发，对象形式</div>
+          <div class="table-cell">value：输入框当前值，name：步进器标识符</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">overlimit</div>
+          <div class="table-cell">超过范围阈值时触发</div>
+          <div class="table-cell">
+            type：（minus已达最小值，plus已达最大值）
+          </div>
+        </div>
+      </div>
+
+      <h4>Slots</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">名称</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">minus</div>
+          <div class="table-cell">减少按钮</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">input</div>
+          <div class="table-cell">输入框</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">plus</div>
+          <div class="table-cell">增加按钮</div>
+        </div>
+      </div>
     </div>
     <div class="right-phone">
       <div class="right-phone-inner">

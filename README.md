@@ -2,7 +2,7 @@
 
 ## 简介
 
-- 主要是 uviewPlus 的 3.3.64 以下离线版本，如果有要加的组件，在/js/app.js 里面 menuList 根据格式加就行，然后 test.html 是通用模板，在 miain-content 加文档。
+- 主要是 uviewPlus 的 3.3.64 以下离线版本，如果有要加的组件，在/js/app.js 里面 menuList 根据格式加就行，本地地址属性 BaseUrl 修改为自己的，然后 test.html 是通用模板，在 miain-content 加文档。
 
 ## 免责声明
 
@@ -45,3 +45,7 @@
 - 已验证的代码示例
 
 - 官方技术支持
+
+### 预览
+
+<img src="./image-html.png" />

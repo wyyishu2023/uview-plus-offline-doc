@@ -16,7 +16,218 @@
       <ul id="menu"></ul>
     </div>
     <div class="main-content">
-      <!-- 这里放组件的具体文档 -->
+      <h2>Rate 评分</h2>
+      <p>该组件一般用于满意度调查，星型评分的场景。</p>
+
+      <h3>平台差异说明</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <p>通过 <code>count</code> 参数设置总共有多少颗星星可选择</p>
+      <p>通过 <code>v-model</code> 双向绑定初始化时默认选中的星星数量</p>
+      <pre class="language-html">
+          <code>
+&lt;template&gt;
+  &lt;up-rate :count="count" v-model="value"&gt;&lt;/up-rate&gt;
+&lt;/template&gt;
+&lt;script setup&gt;  
+import { ref } from 'vue';  
+
+const count = ref(4);  
+const value = ref(2);  
+&lt;/script&gt;
+          </code>
+      </pre>
+
+      <h3>自定义样式</h3>
+      <p>通过 <code>active-color</code> 设置选中的星星的颜色</p>
+      <p>通过 <code>inactive-color</code> 设置未选中时星星的颜色</p>
+      <p>
+        通过 <code>gutter</code> 设置星星的间距，左右内边距各占
+        <code>gutter</code> 的一半
+      </p>
+      <pre class="language-html">
+          <code>
+&lt;up-rate active-color="#FA3534" inactive-color="#b2b2b2" gutter="20"&gt;&lt;/up-rate&gt;
+          </code>
+      </pre>
+
+      <h3>自定义图标</h3>
+      <p>通过 <code>active-icon</code> 设置激活的图标</p>
+      <p>通过 <code>inactive-icon</code> 设置未激活的图标</p>
+      <p>下方示例为使用心形图标替代默认的星星图标：</p>
+      <pre class="language-html">
+          <code>
+&lt;up-rate activeIcon="heart-fill" inactiveIcon="heart"&gt;&lt;/up-rate&gt;
+          </code>
+      </pre>
+
+      <h3>最少选中的数量</h3>
+      <pre class="language-html">
+          <code>
+&lt;up-rate :minCount="5"&gt;&lt;/up-rate&gt;
+          </code>
+      </pre>
+
+      <h3>禁用状态</h3>
+      <p>
+        禁用下，无法点击或者滑动选择，但是可以通过
+        <code>value</code>
+        设置默认选中的数量，禁用状态下用来展示分数，允许出现半星
+      </p>
+      <pre class="language-html">
+          <code>
+&lt;up-rate :value="3.7" disabled&gt;&lt;/up-rate&gt;
+          </code>
+      </pre>
+
+      <h3>只读状态</h3>
+      <p>
+        只读下，无法点击或者滑动选择，但是可以通过
+        <code>value</code>
+        设置默认选中的数量，禁用状态下用来展示分数，允许出现半星
+      </p>
+      <pre class="language-html">
+          <code>
+&lt;up-rate :value="3.7" readonly&gt;&lt;/up-rate&gt;
+          </code>
+      </pre>
+
+      <h3>API</h3>
+      <h4>Props</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">modelValue</div>
+          <div class="table-cell">双向绑定选择星星的数量</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">1</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">count</div>
+          <div class="table-cell">最多可选的星星数量</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">5</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">disabled</div>
+          <div class="table-cell">是否禁止用户操作</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">readonly 2.0.30</div>
+          <div class="table-cell">是否只读</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">size</div>
+          <div class="table-cell">星星的大小，单位rpx</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">18</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">inactiveColor</div>
+          <div class="table-cell">未选中星星的颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#b2b2b2</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">activeColor</div>
+          <div class="table-cell">选中的星星颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#FA3534</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">gutter</div>
+          <div class="table-cell">星星之间的距离</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">4</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">minCount</div>
+          <div class="table-cell">最少选中星星的个数</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">1</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">allowHalf</div>
+          <div class="table-cell">是否允许半星选择</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">activeIcon</div>
+          <div class="table-cell">
+            选中时的图标名，只能为uview - plus的内置图标
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">star-fill</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">inactiveIcon</div>
+          <div class="table-cell">
+            未选中时的图标名，只能为uview - plus的内置图标
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">star</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">touchable</div>
+          <div class="table-cell">是否可以通过滑动手势选择评分</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+      </div>
+
+      <h4>Events</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">change</div>
+          <div class="table-cell">选中的星星发生变化时触发</div>
+          <div class="table-cell">
+            value：当前选中的星星的数量，如果使用v-model双向绑定方式，无需监听此事件
+          </div>
+        </div>
+      </div>
     </div>
     <div class="right-phone">
       <div class="right-phone-inner">

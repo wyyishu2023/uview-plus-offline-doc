@@ -16,7 +16,595 @@
       <ul id="menu"></ul>
     </div>
     <div class="main-content">
-      <!-- 这里放组件的具体文档 -->
+      <h2>Input 输入框</h2>
+      <p>
+        此组件为一个输入框，默认没有边框和样式，是专门为配合表单组件 up-form
+        而设计的，利用它可以快速实现表单验证，输入内容，下拉选择等功能。
+      </p>
+      <p>应该在 up-form 中嵌套 up-form-item，再嵌套 up-input 去实现。</p>
+      <p>注意：</p>
+      <p>
+        由于在 nvue 下，u-input 名称被 uni-app 官方占用，在 uview2 中官方使用
+        u--input 的方式解决，uview-plus 则统一将前缀改为形如 up-input 既兼容
+        nvue 也兼容 vue，同时仍然保持 u-- 和 u- 前缀的兼容。
+      </p>
+
+      <h3>平台差异说明</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <p>
+        通过 type 设置输入框的类型，默认 text；通过 placeholder
+        设置输入框为空时的占位符；通过 border 配置是否显示输入框的边框；绑定
+        @change 事件。
+      </p>
+      <pre class="language-html">
+          <code>
+  &lt;template&gt;
+    &lt;up-input
+      placeholder="请输入内容"
+      border="surround"
+      v-model="value"
+      @change="change"
+    &gt;&lt;/up-input&gt;
+  &lt;/template&gt;
+  
+  &lt;script setup&gt;
+  import { ref } from 'vue';
+  
+  const value = ref('');
+  
+  const change = (e) =&gt; {
+    console.log('change', e);
+  };
+  &lt;/script&gt;
+          </code>
+      </pre>
+
+      <h3>输入框的类型</h3>
+      <p>综述：输入框的类型可通过配置 type 来设置：</p>
+      <ul>
+        <li>text - 文本输入键盘。</li>
+        <li>
+          number - 数字输入键盘，app-vue 下可以输入浮点数，app-nvue
+          和小程序平台下只能输入整数。
+        </li>
+        <li>idcard - 身份证输入键盘，微信、支付宝、百度、QQ 小程序。</li>
+        <li>
+          digit - 带小数点的数字键盘，App 的 nvue
+          页面、微信、支付宝、百度、头条、QQ 小程序。
+        </li>
+        <li>password - 等同于设置 password 为 true 的效果。</li>
+      </ul>
+
+      <h3>可清空字符</h3>
+      <p>将 clearable 设置为 true，会在输入框后方增加一个清空按钮。</p>
+      <pre class="language-html">
+          <code>
+  &lt;template&gt;
+    &lt;up-input
+      placeholder="请输入内容"
+      border="surround"
+      clearable
+    &gt;&lt;/up-input&gt;
+  &lt;/template&gt;
+          </code>
+      </pre>
+
+      <h3>下划线</h3>
+      <p>通过设置属性 border 为 bottom 即可变成一个下划线。</p>
+      <pre class="language-html">
+          <code>
+  &lt;template&gt;
+    &lt;up-input
+      placeholder="请输入内容"
+      border="bottom"
+      clearable
+    &gt;&lt;/up-input&gt;
+  &lt;/template&gt;
+          </code>
+      </pre>
+
+      <h3>前后图标</h3>
+      <p>全后置图标可自由设置样式信息。</p>
+      <pre class="language-html">
+          <code>
+  &lt;template&gt;
+    &lt;up-input
+      placeholder="前置图标"
+      prefixIcon="search"
+      prefixIconStyle="font-size: 22px;color: #909399"
+    &gt;&lt;/up-input&gt;
+    &lt;up-input
+      placeholder="后置图标"
+      suffixIcon="map-fill"
+      suffixIconStyle="color: #909399"
+    &gt;&lt;/up-input&gt;
+  &lt;/template&gt;
+  
+  &lt;script&gt;
+  &lt;/script&gt;
+          </code>
+      </pre>
+
+      <h3>前后插槽</h3>
+      <p>通过设置 slot 为 prefix 或 suffix 来指定前后插槽。</p>
+      <pre class="language-html">
+          <code>
+  &lt;template&gt;
+    &lt;view class="u-demo-block"&gt;
+      &lt;text class="u-demo-block__title"&gt;前后插槽&lt;/text&gt;
+      &lt;view class="u-demo-block__content"&gt;
+        &lt;!-- 注意：由于兼容性差异，如果需要使用前后插槽，nvue 下需使用 u--input，非 nvue 下需使用 u-input --&gt;
+        &lt;!-- #ifndef APP-NVUE --&gt;
+        &lt;up-input placeholder="前置插槽"&gt;
+        &lt;!-- #endif --&gt;
+        &lt;!-- #ifdef APP-NVUE --&gt;
+        &lt;up-input placeholder="前置插槽"&gt;
+        &lt;!-- #endif --&gt;
+          &lt;template #prefix&gt;
+            &lt;up-text
+              text="http://"
+              margin="0 3px 0 0"
+              type="tips"
+            &gt;&lt;/up-text&gt;
+          &lt;/template&gt;
+        &lt;!-- #ifndef APP-NVUE --&gt;
+        &lt;/up-input&gt;
+        &lt;!-- #endif --&gt;
+        &lt;!-- #ifdef APP-NVUE --&gt;
+        &lt;/up-input&gt;
+        &lt;!-- #endif --&gt;
+      &lt;/view&gt;
+      &lt;view
+        class="u-demo-block__content"
+        style="margin-top: 15px;"
+      &gt;
+        &lt;!-- 注意：由于兼容性差异，如果需要使用前后插槽，nvue 下需使用 u--input，非 nvue 下需使用 u-input --&gt;
+        &lt;!-- #ifndef APP-NVUE --&gt;
+        &lt;up-input placeholder="后置插槽"&gt;
+        &lt;!-- #endif --&gt;
+        &lt;!-- #ifdef APP-NVUE --&gt;
+        &lt;up-input placeholder="后置插槽"&gt;
+        &lt;!-- #endif --&gt;
+          &lt;template #suffix&gt;
+            &lt;up-code
+              ref="uCodeRef"
+              @change="codeChange"
+              seconds="20"
+              changeText="X 秒重新获取哈哈哈"
+            &gt;&lt;/up-code&gt;
+            &lt;up-button
+              @tap="getCode"
+              :text="tips"
+              type="success"
+              size="mini"
+            &gt;&lt;/up-button&gt;
+          &lt;/template&gt;
+        &lt;!-- #ifndef APP-NVUE --&gt;
+        &lt;/up-input&gt;
+        &lt;!-- #endif --&gt;
+        &lt;!-- #ifdef APP-NVUE --&gt;
+        &lt;/up-input&gt;
+        &lt;!-- #endif --&gt;
+      &lt;/view&gt;
+    &lt;/view&gt;
+  &lt;/template&gt;
+  
+  &lt;script setup&gt;
+  import { ref, watch } from 'vue';
+  
+  const tips = ref('');
+  const value = ref('');
+  const uCodeRef = ref(null);
+  
+  watch(value, (newValue, oldValue) =&gt; {
+    // console.log('v-model', newValue);
+  });
+  
+  const codeChange = (text) =&gt; {
+    tips.value = text;
+  };
+  
+  const getCode = () =&gt; {
+    if (uCodeRef.canGetCode) {
+      // 模拟向后端请求验证码
+      uni.showLoading({
+        title: '正在获取验证码',
+      });
+      setTimeout(() =&gt; {
+        uni.hideLoading();
+        // 这里此提示会被 start() 方法中的提示覆盖
+        uni.$u.toast('验证码已发送');
+        // 通知验证码组件内部开始倒计时
+        uCodeRef.start();
+      }, 2000);
+    } else {
+      uni.$u.toast('倒计时结束后再发送');
+    }
+  };
+  
+  const change = (e) =&gt; {
+    console.log('change', e);
+  };
+  &lt;/script&gt;
+          </code>
+      </pre>
+
+      <h3>API</h3>
+      <h4>Props</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">modelValue</div>
+          <div class="table-cell">输入的值</div>
+          <div class="table-cell">Number | String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">type</div>
+          <div class="table-cell">输入框类型，见上方说明</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">text</div>
+          <div class="table-cell">number | idcard | digit | password</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">disabled</div>
+          <div class="table-cell">是否禁用输入框</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">disabledColor</div>
+          <div class="table-cell">禁用状态时的背景色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#f5f7fa</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">clearable</div>
+          <div class="table-cell">是否显示清除控件</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">password</div>
+          <div class="table-cell">是否密码类型</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">maxlength</div>
+          <div class="table-cell">
+            最大输入长度，设置为 -1
+            的时候不限制最大长度（在支付宝小程序存在问题不推推荐用 -1）
+          </div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">140</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">placeholder</div>
+          <div class="table-cell">输入框为空时的占位符</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">placeholderClass</div>
+          <div class="table-cell">
+            指定 placeholder 的样式类，注意页面或组件的 style 中写了 scoped
+            时，需要在类名前写 /deep/
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">input-placeholder</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">placeholderStyle</div>
+          <div class="table-cell">
+            指定 placeholder 的样式，字符串/对象形式，如"color: red;"
+          </div>
+          <div class="table-cell">String | Object</div>
+          <div class="table-cell">color: #c0c4cc</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">confirmType</div>
+          <div class="table-cell">
+            设置右下角按钮的文字，兼容性详见 uni-app 文档
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">done</div>
+          <div class="table-cell">send | search | next | go | done</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">confirmHold</div>
+          <div class="table-cell">
+            点击键盘右下角按钮时是否保持键盘不收起，H5 无效
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">holdKeyboard</div>
+          <div class="table-cell">
+            focus 时，点击页面的时候不收起键盘，微信小程序有效
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">focus</div>
+          <div class="table-cell">
+            自动获取焦点，在 H5
+            平台能否聚焦以及软键盘是否跟随弹出，取决于当前浏览器本身的实现。nvue
+            页面不支持，需使用 doFocus()、doBlur() 方法控制焦点
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">autoBlur</div>
+          <div class="table-cell">
+            键盘收起时，是否自动失去焦点，目前仅 App3.0.0+ 有效
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">cursor</div>
+          <div class="table-cell">指定 focus 时光标的位置</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">-1</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">cursorSpacing</div>
+          <div class="table-cell">输入框聚焦时底部与键盘的距离</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">30</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">selectionStart</div>
+          <div class="table-cell">
+            光标起始位置，自动聚集时有效，需与 selection-end 搭配使用
+          </div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">-1</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">selectionEnd</div>
+          <div class="table-cell">
+            光标结束位置，自动聚集时有效，需与 selection-start 搭配使用
+          </div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">-1</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">adjustPosition</div>
+          <div class="table-cell">键盘弹起时，是否自动上推页面</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">inputAlign</div>
+          <div class="table-cell">输入框内容对齐方式</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">left</div>
+          <div class="table-cell">left | center | right</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">fontSize</div>
+          <div class="table-cell">输入框字体的大小</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">15px</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">color</div>
+          <div class="table-cell">输入框字体颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#303133</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">prefixIcon</div>
+          <div class="table-cell">输入框前置图标</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">prefixIconStyle</div>
+          <div class="table-cell">前置图标样式，对象或字符串</div>
+          <div class="table-cell">String | Object</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">suffixIcon</div>
+          <div class="table-cell">输入框后置图标</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">suffixIconStyle</div>
+          <div class="table-cell">后置图标样式，对象或字符串</div>
+          <div class="table-cell">String | Object</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">border</div>
+          <div class="table-cell">
+            边框类型，surround - 四周边框，bottom - 底部边框，none - 无边框
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">surround</div>
+          <div class="table-cell">bottom | none</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">readonly</div>
+          <div class="table-cell">
+            是否只读，与 disabled 不同之处在于 disabled 会置灰组件，而 readonly
+            则不会
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">shape</div>
+          <div class="table-cell">输入框形状，circle - 圆形，square - 方形</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">square</div>
+          <div class="table-cell">circle</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">formatter</div>
+          <div class="table-cell">
+            输入过滤或格式化函数(如需兼容微信小程序，则只能通过 setFormatter
+            方法)
+          </div>
+          <div class="table-cell">Function</div>
+          <div class="table-cell">null</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">customStyle</div>
+          <div class="table-cell">定义需要用到的外部样式</div>
+          <div class="table-cell">Object</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>Events</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+          <div class="table-cell">版本</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">blur</div>
+          <div class="table-cell">输入框失去焦点时触发</div>
+          <div class="table-cell">value：内容值</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">focus</div>
+          <div class="table-cell">输入框聚焦时触发</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">confirm</div>
+          <div class="table-cell">点击完成按钮时触发</div>
+          <div class="table-cell">value：内容值</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">keyboardheightchange</div>
+          <div class="table-cell">键盘高度发生变化的时候触发此事件</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">微信小程序2.7.0+、App 3.1.0+</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">update:modelValue</div>
+          <div class="table-cell">内容发生变化触发此事件</div>
+          <div class="table-cell">value：内容值</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">change</div>
+          <div class="table-cell">内容发生变化触发此事件</div>
+          <div class="table-cell">value：内容值</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">clear</div>
+          <div class="table-cell">点击清空内容</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>Methods</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">方法名</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">setFormatter</div>
+          <div class="table-cell">
+            为兼容微信小程序而暴露的内部方法，见上方说明
+          </div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">doFocus</div>
+          <div class="table-cell">手动聚焦</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">doBlur</div>
+          <div class="table-cell">手动 Blur</div>
+        </div>
+      </div>
+
+      <h4>Slots</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">名称</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">prefix</div>
+          <div class="table-cell">
+            输入框前置内容，nuve 环境需 up-input 有效，非 nvue 都可
+          </div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">suffix</div>
+          <div class="table-cell">
+            输入框后置内容，nuve 环境需 up-input 有效，非 nvue 都可
+          </div>
+        </div>
+      </div>
     </div>
     <div class="right-phone">
       <div class="right-phone-inner">

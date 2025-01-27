@@ -16,7 +16,402 @@
       <ul id="menu"></ul>
     </div>
     <div class="main-content">
-      <!-- 这里放组件的具体文档 -->
+      <h2>DatetimePicker 选择器</h2>
+      <p>此选择器用于时间日期</p>
+      <h3>平台差异说明</h3>
+      <div class="table-like">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+      <h3>基本使用</h3>
+      <p>
+        通过 <code>show</code> 绑定一个布尔值变量，用于控制组件的弹出与收起。
+      </p>
+      <p>通过 <code>mode</code> 配置选择何种日期格式。</p>
+      <pre class="language-html"><code>&lt;template&gt;
+  &lt;view&gt;
+      &lt;up-datetime-picker
+          hasInput
+          :show="show"
+          v-model="value1"
+          mode="datetime"
+      &gt;&lt;/up-datetime-picker&gt;
+      &lt;up-button @click="show = true"&gt;打开&lt;/up-button&gt;
+  &lt;/view&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+import { ref } from 'vue';
+
+const show = ref(false);
+const value1 = ref(Date.now());
+&lt;/script&gt;</code></pre>
+      <h3>年 月 日</h3>
+      <p>此模式通过 <code>mode</code> 设置为 <code>date</code>。</p>
+      <pre class="language-html"><code>&lt;template&gt;
+  &lt;view&gt;
+      &lt;up-datetime-picker
+          hasInput
+          :show="show"
+          v-model="value1"
+          mode="date"
+      &gt;&lt;/up-datetime-picker&gt;
+      &lt;up-button @click="show = true"&gt;打开&lt;/up-button&gt;
+  &lt;/view&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+import { ref } from 'vue';
+
+const show = ref(false);
+const value1 = ref(Date.now());
+&lt;/script&gt;</code></pre>
+      <h3>格式化</h3>
+      <p>
+        如有需要，可以通过 <code>formatter</code> 参数编写自定义格式化规则。
+      </p>
+      <p>
+        <strong>注意</strong>：微信小程序不支持通过
+        <code>props</code> 传递函数参数，所以组件内部暴露了一个
+        <code>setFormatter</code> 方法用于设置格式化方法，注意在页面的
+        <code>onReady</code> 生命周期获取 <code>ref</code> 再操作。
+      </p>
+      <pre class="language-html"><code>&lt;template&gt;
+  &lt;view&gt;
+      &lt;up-datetime-picker
+          ref="datetimePickerRef"
+          :show="show"
+          v-model="value1"
+          mode="datetime"
+          :formatter="formatter"
+      &gt;&lt;/up-datetime-picker&gt;
+      &lt;up-button @click="show = true"&gt;打开&lt;/up-button&gt;
+  &lt;/view&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+import { ref, onMounted } from 'vue';
+import { onReady } from '@dcloud/uni-app';
+
+const show = ref(false);
+const value1 = ref(Date.now());
+const datetimePickerRef = ref(null);
+
+const formatter = (type, value) =&gt; {
+if (type === 'year') {
+  return `${value}年`;
+}
+if (type === 'month') {
+  return `${value}月`;
+}
+if (type === 'day') {
+  return `${value}日`;
+}
+return value;
+};
+
+onReady(() =&gt; {
+// 微信小程序需要用此写法
+datetimePickerRef.value.setFormatter(formatter);
+});
+&lt;/script&gt;</code></pre>
+      <h3>限制最大最小值</h3>
+      <p>
+        参数 <code>minDate</code> 和
+        <code>maxData</code> 可以设置最大值和最小值（传入时间戳）。
+      </p>
+      <pre class="language-html"><code>&lt;template&gt;
+  &lt;view&gt;
+      &lt;up-datetime-picker
+          :show="show"
+          v-model="value1"
+          :minDate="1587524800000"
+          :maxDate="1786778555000"
+          mode="datetime"
+      &gt;&lt;/up-datetime-picker&gt;
+      &lt;up-button @click="show = true"&gt;打开&lt;/up-button&gt;
+  &lt;/view&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+import { ref } from 'vue';
+
+const show = ref(false);
+const value1 = ref(Date.now());
+&lt;/script&gt;</code></pre>
+
+      <h3>API</h3>
+      <h4>Props</h4>
+      <div class="table-like">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">hasInput 3.1.49</div>
+          <div class="table-cell">是否自带input输入框</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">format 3.1.49</div>
+          <div class="table-cell">输入框显示日期格式</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">'YYYY-MM-DD HH:mm'</div>
+          <div class="table-cell"></div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">placeholder 3.1.49</div>
+          <div class="table-cell">输入框placeholder</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">请选择</div>
+          <div class="table-cell"></div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">show</div>
+          <div class="table-cell">用于控制选择器的弹出与收起</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">popupMode</div>
+          <div class="table-cell">用于控制选择器的弹出方向</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">bottom</div>
+          <div class="table-cell">top、bottom、left、right</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">showToolbar</div>
+          <div class="table-cell">是否显示顶部的操作栏</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">v-model</div>
+          <div class="table-cell">绑定值</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">title</div>
+          <div class="table-cell">顶部标题</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">mode</div>
+          <div class="table-cell">展示格式</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">datetime</div>
+          <div class="table-cell">
+            date为日期选择，time为时间选择，year - month为年月选择
+          </div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">maxDate</div>
+          <div class="table-cell">可选的最大时间（时间戳毫秒）</div>
+          <div class="table-cell">Number</div>
+          <div class="table-cell">最大默认值为后10年</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">minDate</div>
+          <div class="table-cell">可选的最小时间（时间戳毫秒）</div>
+          <div class="table-cell">Number</div>
+          <div class="table-cell">最小默认值为前10年</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">minHour</div>
+          <div class="table-cell">可选的最小小时，仅mode=time有效</div>
+          <div class="table-cell">Number</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">maxHour</div>
+          <div class="table-cell">可选的最大小时，仅mode=time有效</div>
+          <div class="table-cell">Number</div>
+          <div class="table-cell">23</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">minMinute</div>
+          <div class="table-cell">可选的最小分钟，仅mode=time有效</div>
+          <div class="table-cell">Number</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">maxMinute</div>
+          <div class="table-cell">可选的最大分钟，仅mode=time有效</div>
+          <div class="table-cell">Number</div>
+          <div class="table-cell">59</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">filter</div>
+          <div class="table-cell">选项过滤函数</div>
+          <div class="table-cell">Function</div>
+          <div class="table-cell">null</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">formatter</div>
+          <div class="table-cell">
+            输入过滤或格式化函数(如需兼容微信小程序，则只能通过setFormatter方法)
+          </div>
+          <div class="table-cell">Function</div>
+          <div class="table-cell">null</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">loading</div>
+          <div class="table-cell">是否显示加载中状态</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">itemHeight</div>
+          <div class="table-cell">各列中，单个选项的高度</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">44</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">cancelText</div>
+          <div class="table-cell">取消按钮的文字</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">取消</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">confirmText</div>
+          <div class="table-cell">确认按钮的文字</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">确认</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">cancelColor</div>
+          <div class="table-cell">取消按钮的颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#909193</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">confirmColor</div>
+          <div class="table-cell">确认按钮的颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#3c9cff</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">visibleItemCount</div>
+          <div class="table-cell">每列中可见选项的数量</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">5</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">closeOnClickOverlay</div>
+          <div class="table-cell">
+            是否允许点击遮罩关闭选择器（注意：关闭事件需要自行处理，只会在开启closeOnClickOverlay后点击遮罩层执行close回调）
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">defaultIndex</div>
+          <div class="table-cell">各列的默认索引</div>
+          <div class="table-cell">Array</div>
+          <div class="table-cell">[]</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+      <h4>Events</h4>
+      <div class="table-like">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+          <div class="table-cell">版本</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">close</div>
+          <div class="table-cell">关闭选择器时触发</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">confirm</div>
+          <div class="table-cell">点击确定按钮，返回当前选择的值</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">change</div>
+          <div class="table-cell">当选择值变化时触发</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">cancel</div>
+          <div class="table-cell">点击取消按钮</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+      <h4>Slots</h4>
+      <div class="table-like">
+        <div class="table-row table-header">
+          <div class="table-cell">名称</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">toolbar-right</div>
+          <div class="table-cell">
+            工具栏右侧内容，自定义右侧内容，因为微信小程序限制，需要同时设置:toolbarRightSlot="true"生效。
+          </div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">toolbar-bottom</div>
+          <div class="table-cell">输入框下方自定义区域</div>
+        </div>
+      </div>
+      <h4>Methods</h4>
+      <div class="table-like">
+        <div class="table-row table-header">
+          <div class="table-cell">方法名</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">setFormatter</div>
+          <div class="table-cell">
+            为兼容微信小程序而暴露的内部方法，见上方说明
+          </div>
+        </div>
+      </div>
     </div>
     <div class="right-phone">
       <div class="right-phone-inner">

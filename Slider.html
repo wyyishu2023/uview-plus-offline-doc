@@ -16,7 +16,272 @@
       <ul id="menu"></ul>
     </div>
     <div class="main-content">
-      <!-- 这里放组件的具体文档 -->
+      <h2>Slider 滑动选择器</h2>
+      <p>该组件一般用于表单中，手动选择一个区间范围的场景。</p>
+
+      <h3>说明</h3>
+      <p>
+        该组件在H5，微信小程序和APP -
+        VUE等平台上使用了WXS技术，在NVUE平台使用了BindingX技术，
+        故在滑动过程中可以获得细腻流畅的跟随效果。
+      </p>
+
+      <h3>平台差异说明</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <p>
+        需要通过
+        <code>v-model</code>
+        绑定一个值，来初始化滑块的选择值(0到100之间)，这个值是双向绑定的，您可以通过这个值，实时地得知内部的滑动结果。
+      </p>
+      <pre class="language-html">
+        <code>
+&lt;template&gt;
+    &lt;up-slider v-model="value"&gt;&lt;/up-slider&gt;
+&lt;/template&gt;
+&lt;script setup&gt;  
+import { ref } from 'vue';  
+  
+// 响应式数据  
+const value = ref(30);  
+&lt;/script&gt;
+        </code>
+      </pre>
+
+      <h3>设置最大和最小值</h3>
+      <p>
+        通过 <code>min</code> 和
+        <code>max</code>，可以设置滑块所能选择的最大和最小值
+      </p>
+      <pre class="language-html">
+        <code>
+&lt;up-slider v-model="value" min="30" max="80"&gt;&lt;/up-slider&gt;
+        </code>
+      </pre>
+
+      <h3>设置步进值</h3>
+      <p>
+        通过
+        <code>step</code>
+        参数设置步进值，这个步进值为每次跳变的值，具体表现请见示例。
+      </p>
+      <p class="tip">
+        需要注意的是，这个 <code>step</code> 必须要被
+        <code>max</code> 值整除，否则会出现无法无法滑动到最大值的情况
+      </p>
+      <pre class="language-html">
+        <code>
+&lt;up-slider v-model="value" step="20" min="30" max="100"&gt;&lt;/up-slider&gt;
+        </code>
+      </pre>
+
+      <h3>在弹窗等初始化不显示的容器中使用</h3>
+      <p class="tip">
+        需要注意的是，在此场景中使用要注意给 <code>slider</code> 同时一个
+        <code>v-if</code>
+        让它随着弹窗的显示再渲染，这样才能计算出滑块的正确尺寸。
+      </p>
+      <pre class="language-html">
+        <code>
+&lt;up-popup v-model:show="popupShow"&gt;
+    &lt;view class="slot-content" style="width: 100%"&gt;
+        &lt;up-slider v-if="popupShow" v-model="sliderValue" min="1" max="4" showValue&gt;&lt;/up-slider&gt;
+    &lt;/view&gt;
+&lt;/up-popup&gt;
+
+&lt;script setup&gt; 
+import { ref } from "vue";
+const popupShow = ref(false);
+const sliderValue = ref(4);
+&lt;/script&gt;
+        </code>
+      </pre>
+
+      <h3>禁用状态</h3>
+      <pre class="language-html">
+        <code>
+&lt;up-slider v-model="value" disabled&gt;&lt;/up-slider&gt;
+        </code>
+      </pre>
+
+      <h3>自定义按钮的内容和样式</h3>
+      <p><code>activeColor</code>，设置进度条的激活部分颜色</p>
+      <p><code>inactiveColor</code>，进度条的背景颜色</p>
+      <p><code>blockColor</code>，滑块的背景颜色</p>
+      <p><code>blockStyle</code>，用户对滑块的自定义样式(颜色)</p>
+      <pre class="language-html">
+        <code>
+&lt;template&gt;
+    &lt;up-slider v-model="value" activeColor="#3c9cff" inactiveColor="#c0c4cc"&gt;
+    &lt;/up-slider&gt;
+&lt;/template&gt;
+&lt;script setup&gt;  
+import { ref } from 'vue';  
+  
+// 响应式数据  
+const value = ref(30);  
+&lt;/script&gt;
+        </code>
+      </pre>
+
+      <h3>自定义滑动选择器整体的样式</h3>
+      <p>通过 <code>inactive-color</code> 配置底部滑动条背景颜色</p>
+      <p>通过 <code>active-color</code> 配置底部选择部分的背景颜色</p>
+      <p>通过 <code>block-width</code> 配置滑块宽度(高等于宽)</p>
+      <p>通过 <code>block-color</code> 配置滑动按钮按钮的颜色</p>
+      <p>通过 <code>height</code> 配置滑块条高度，单位rpx</p>
+      <p>其他更多参数详见底部API</p>
+      <pre class="language-html">
+        <code>
+&lt;up-slider v-model="value" block-width="40" block-color="red"&gt;&lt;/up-slider&gt;
+        </code>
+      </pre>
+
+      <h3>API</h3>
+      <h4>Props</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">modelValue</div>
+          <div class="table-cell">双向绑定滑块选择值</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">blockSize</div>
+          <div class="table-cell">滑块的大小</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">18</div>
+          <div class="table-cell">12 - 28</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">min</div>
+          <div class="table-cell">可选的最小值</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">1</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">max</div>
+          <div class="table-cell">可选的最大值</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">100</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">step</div>
+          <div class="table-cell">选择的步长</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">1</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">activeColor</div>
+          <div class="table-cell">进度条的激活部分颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#2979ff</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">inactiveColor</div>
+          <div class="table-cell">进度条的背景颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#c0c4cc</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">blockColor</div>
+          <div class="table-cell">滑块背景颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#ffffff</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">showValue</div>
+          <div class="table-cell">是否显示当前 value</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">blockStyle</div>
+          <div class="table-cell">滑块按钮自定义样式，对象形式</div>
+          <div class="table-cell">Object | String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">height</div>
+          <div class="table-cell">进度条高度</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">2px</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">isRange 3.3.8</div>
+          <div class="table-cell">开始其双滑快模式</div>
+          <div class="table-cell">Boolen</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">rangeValue 3.3.8</div>
+          <div class="table-cell">双滑快双向绑定值，数组形式</div>
+          <div class="table-cell">Array</div>
+          <div class="table-cell">[0,0]</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>Slider Events</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">update:modelValue</div>
+          <div class="table-cell">更新v-model的（拖动过程中）</div>
+          <div class="table-cell">value：当前值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">changing</div>
+          <div class="table-cell">触发事件（拖动过程中）</div>
+          <div class="table-cell">value：当前值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">update:modelValue</div>
+          <div class="table-cell">更新v-model的</div>
+          <div class="table-cell">value：当前值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">change</div>
+          <div class="table-cell">触发事件</div>
+          <div class="table-cell">value：当前值</div>
+        </div>
+      </div>
     </div>
     <div class="right-phone">
       <div class="right-phone-inner">

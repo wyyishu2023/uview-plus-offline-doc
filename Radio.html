@@ -16,7 +16,452 @@
       <ul id="menu"></ul>
     </div>
     <div class="main-content">
-      <!-- 这里放组件的具体文档 -->
+      <h2>Radio 单选框</h2>
+      <p>单选框用于有一个选择，用户只能选择其中一个的场景。</p>
+
+      <h3>平台差异说明</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <p>
+        该组件需要搭配
+        <code>radioGroup</code>
+        组件使用，以便用户进行操作时，获得当前单选框组的选中情况。通过
+        <code>v-model</code> 给 <code>radioGroup</code> 组件绑定一个变量，对应的
+        <code>name</code> 将会被选中。
+      </p>
+      <pre class="language-html">
+          <code>
+&lt;template&gt;
+&lt;up-radio-group
+  v-model="radiovalue1"
+  placement="column"
+  @change="groupChange"
+&gt;
+  &lt;up-radio
+    :customStyle="{marginBottom: '8px'}"
+    v-for="(item, index) in radiolist1"
+    :key="index"
+    :label="item.name"
+    :name="item.name"
+    @change="radioChange"
+  &gt;
+  &lt;/up-radio&gt;
+&lt;/up-radio-group&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+import { ref,reactive } from 'vue';
+
+// 基本案列数据
+const radiolist1 = reactive([
+{
+  name: '苹果',
+  disabled: false,
+},
+{
+  name: '香蕉',
+  disabled: false,
+},
+{
+  name: '橙子',
+  disabled: false,
+},
+{
+  name: '榴莲',
+  disabled: false,
+},
+]);
+
+// up-radio-group的v-model绑定的值如果设置为某个radio的name，就会被默认选中
+const radiovalue1 = ref('苹果');
+
+const groupChange = (n) =&gt; {
+console.log('groupChange', n);
+};
+
+const radioChange = (n) =&gt; {
+console.log('radioChange', n);
+};
+&lt;/script&gt;
+          </code>
+      </pre>
+
+      <h3>自定义形状</h3>
+      <p>
+        可以通过设置 <code>shape</code> 为 <code>square</code> 或者
+        <code>circle</code>，将单选框设置为方形或者圆形。
+      </p>
+      <pre class="language-html">
+          <code>
+&lt;up-radio-group v-model="value"&gt;
+  &lt;up-radio shape="circle" label="月明人倚楼"&gt;&lt;/up-radio&gt;
+&lt;/up-radio-group&gt;
+          </code>
+      </pre>
+
+      <h3>禁用 radio</h3>
+      <p>
+        设置 <code>disabled</code> 为
+        <code>true</code>，即可禁用某个组件，让用户无法点击。
+      </p>
+      <pre class="language-html">
+          <code>
+&lt;up-radio-group v-model="value"&gt;
+  &lt;up-radio :disabled="true" label="明月几时有"&gt;&lt;/up-radio&gt;
+&lt;/up-radio-group&gt;
+          </code>
+      </pre>
+
+      <h3>是否禁止点击提示语选中复选框</h3>
+      <p>
+        设置 <code>labelDisabled</code> 为
+        <code>true</code>，即可禁止点击提示语选中复选框。
+      </p>
+      <pre class="language-html">
+          <code>
+&lt;up-radio-group v-model="value"&gt;
+  &lt;up-radio :labelDisabled="true" label="明月几时有"&gt;&lt;/up-radio&gt;
+&lt;/up-radio-group&gt;
+          </code>
+      </pre>
+
+      <h3>自定义颜色</h3>
+      <p>
+        此处所指的颜色，为 radio 选中时的背景颜色，参数为
+        <code>activeColor</code>。
+      </p>
+      <pre class="language-html">
+          <code>
+&lt;up-radio-group v-model="value"&gt;
+  &lt;up-radio activeColor="red" label="思悠悠，恨悠悠，恨到归时方始休"&gt;&lt;/up-radio&gt;
+&lt;/up-radio-group&gt;
+          </code>
+      </pre>
+
+      <h3>横向排列形式</h3>
+      <p>
+        可以通过设置 <code>placement</code> 为 <code>row</code> 或者
+        <code>column</code>，将复选框设置为横向排列或者竖向排列。
+      </p>
+      <pre class="language-html">
+          <code>
+&lt;up-radio-group 
+  v-model="value"
+  placement="row"&gt;
+  &lt;up-radio activeColor="red" label="思悠悠，恨悠悠，恨到归时方始休"&gt;&lt;/up-radio&gt;
+&lt;/up-radio-group&gt;
+          </code>
+      </pre>
+
+      <h3>横向两端排列形式</h3>
+      <p>
+        可以通过设置 <code>iconPlacement</code> 为 <code>left</code> 或者
+        <code>right</code>，将复选框勾选图标的对齐设置为左对齐或者右对齐。
+      </p>
+      <pre class="language-html">
+          <code>
+&lt;up-radio-group 
+  v-model="value"
+  iconPlacement="right"&gt;
+  &lt;up-radio activeColor="red" label="思悠悠，恨悠悠，恨到归时方始休"&gt;&lt;/up-radio&gt;
+&lt;/up-radio-group&gt;
+          </code>
+      </pre>
+
+      <h3>API</h3>
+      <h4>Radio Props</h4>
+      <p class="tip">
+        注意：radio 和 radio-group 二者同名参数中，radio 的参数优先级更高。
+      </p>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">name</div>
+          <div class="table-cell">radio 的名称</div>
+          <div class="table-cell">String \ Number</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">shape</div>
+          <div class="table-cell">形状，square 为方形，circle 为圆型</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">square</div>
+          <div class="table-cell">circle</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">disabled</div>
+          <div class="table-cell">是否禁用</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">labelDisabled</div>
+          <div class="table-cell">是否禁止点击提示语选中复选框</div>
+          <div class="table-cell">String \ Boolean</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">activeColor</div>
+          <div class="table-cell">
+            选中状态下的颜色，如设置此值，将会覆盖 parent 的 activeColor 值
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">inactiveColor</div>
+          <div class="table-cell">未选中的颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">iconSize</div>
+          <div class="table-cell">图标的大小，单位 px</div>
+          <div class="table-cell">String \ Number</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">labelSize</div>
+          <div class="table-cell">label 的字体大小，px 单位</div>
+          <div class="table-cell">String \ Number</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">label</div>
+          <div class="table-cell">
+            label 提示文字，因为 nvue 下，直接 slot
+            进来的文字，由于特殊的结构，无法修改样式
+          </div>
+          <div class="table-cell">String \ Number</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">size</div>
+          <div class="table-cell">整体的大小</div>
+          <div class="table-cell">String \ Number</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">iconColor</div>
+          <div class="table-cell">图标颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">labelColor</div>
+          <div class="table-cell">label 的颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>radioGroup Props</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">modelValue</div>
+          <div class="table-cell">绑定的值</div>
+          <div class="table-cell">String\Number\Boolean</div>
+          <div class="table-cell">[]</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">disabled</div>
+          <div class="table-cell">是否禁用全部 radio</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">shape</div>
+          <div class="table-cell">形状，circle - 圆形，square - 方形</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">circle</div>
+          <div class="table-cell">square</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">activeColor</div>
+          <div class="table-cell">
+            选中状态下的颜色，如子 radio 组件设置此值，将会覆盖本值
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#2979ff</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">inactiveColor</div>
+          <div class="table-cell">未选中的颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#c8c9cc</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">name</div>
+          <div class="table-cell">标识符</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">size</div>
+          <div class="table-cell">整个组件的尺寸，默认 px</div>
+          <div class="table-cell">String \ Number</div>
+          <div class="table-cell">18</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">placement</div>
+          <div class="table-cell">布局方式，row - 横向，column - 纵向</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">row</div>
+          <div class="table-cell">column</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">label</div>
+          <div class="table-cell">文本</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">labelColor</div>
+          <div class="table-cell">label 的字体颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#303133</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">labelSize</div>
+          <div class="table-cell">label 的字体大小，px 单位</div>
+          <div class="table-cell">String \ Number</div>
+          <div class="table-cell">14</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">labelDisabled</div>
+          <div class="table-cell">是否禁止点击文本操作</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">iconColor</div>
+          <div class="table-cell">图标颜色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#ffffff</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">iconSize</div>
+          <div class="table-cell">图标的大小，单位 px</div>
+          <div class="table-cell">String \ Number</div>
+          <div class="table-cell">12</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">borderBottom</div>
+          <div class="table-cell">竖向配列时，是否显示下划线</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">iconPlacement</div>
+          <div class="table-cell">
+            勾选图标的对齐方式，left - 左边，right - 右边
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">left</div>
+          <div class="table-cell">right</div>
+        </div>
+      </div>
+
+      <h4>Radio Slot</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">名称</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">icon 3.3.51</div>
+          <div class="table-cell">自定义 icon 内容</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">label 3.3.51</div>
+          <div class="table-cell">自定义 label 内容</div>
+        </div>
+      </div>
+
+      <h4>Radio Event</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+          <div class="table-cell">版本</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">change</div>
+          <div class="table-cell">某个 radio 状态发生变化时触发(选中状态)</div>
+          <div class="table-cell">name: 通过 props 传递的 name 参数</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>radioGroup Event</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+          <div class="table-cell">版本</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">change</div>
+          <div class="table-cell">任一个 radio 状态发生变化时触发</div>
+          <div class="table-cell">
+            name: 值为 radio 通过 props 传递的 name 值
+          </div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
     </div>
     <div class="right-phone">
       <div class="right-phone-inner">

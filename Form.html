@@ -16,7 +16,796 @@
       <ul id="menu"></ul>
     </div>
     <div class="main-content">
-      <!-- 这里放组件的具体文档 -->
+      <h2>Form 表单</h2>
+      <p>
+        此组件一般用于表单场景，可以配置 Input 输入框，Select
+        弹出框，进行表单验证等。
+      </p>
+      <p>
+        <strong>注意</strong>：由于在 nvue 下，u - form 名称被 uni - app
+        官方占用，在 nvue 页面中请使用 up - form 名称，在 vue 页面中使用 up -
+        form 或者 u - form 均可。
+      </p>
+      <h3>平台差异说明</h3>
+      <div class="table-like">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+      <h3>基本使用</h3>
+      <p>
+        此组件一般是用于表单验证使用，每一个表单域由一个 up - form - item
+        组成，表单域中可以放置 up - input、up - checkbox、up - radio、up -
+        switch 等。
+      </p>
+      <p>
+        在表单组中，通过 model 参数绑定一个对象，这个对象的属性为各个 up - form
+        - item 内组件的对应变量。由于表单验证和绑定表单规则时，需要通过 ref
+        操作，故这里需要给 form 组件声明 ref="form1" 属性。关于 up - form - item
+        内其他可能包含的诸如 input、radio 等组件，请见各自组件的相关文档说明。
+      </p>
+      <pre class="language-html"><code>&lt;template&gt;
+  &lt;view&gt;
+      &lt;!-- 注意，如果需要兼容微信小程序，最好通过setRules方法设置rules规则 --&gt;
+      &lt;up - form
+              labelPosition="left"
+              :model="model1"
+              :rules="rules"
+              ref="form1"
+      &gt;
+          &lt;up - form - item
+                  label="姓名"
+                  prop="userInfo.name"
+                  borderBottom
+                  ref="item1"
+          &gt;
+              &lt;up - input
+                      v - model="model1.userInfo.name"
+                      border="none"
+              &gt;&lt;/up - input&gt;
+          &lt;/up - form - item&gt;
+          &lt;up - form - item
+                  label="性别"
+                  prop="userInfo.sex"
+                  borderBottom
+                  @click="showSex = true; hideKeyboard()"
+                  ref="item1"
+          &gt;
+              &lt;up - input
+                  v - model="model1.userInfo.sex"
+                  disabled
+                  disabledColor="#ffffff"
+                  placeholder="请选择性别"
+                  border="none"
+              &gt;&lt;/up - input&gt;
+              &lt;template #right&gt;
+                  &lt;up - icon
+                      name="arrow - right"
+                  &gt;&lt;/up - icon&gt;
+              &lt;/template&gt;
+          &lt;/up - form - item&gt;
+      &lt;/up - form&gt;
+      &lt;up - action - sheet
+              :show="showSex"
+              :actions="actions"
+              title="请选择性别"
+              description="如果选择保密会报错"
+              @close="showSex = false"
+              @select="sexSelect"
+      &gt;
+      &lt;/up - action - sheet&gt;
+  &lt;/view&gt;
+&lt;/template&gt;
+&lt;script setup&gt;  
+import { ref, reactive } from 'vue';  
+
+// 使用 reactive 创建响应式状态  
+const state = reactive({  
+showSex: false,  
+model1: {  
+  userInfo: {  
+    name: 'uview - plus UI',  
+    sex: '',  
+  },  
+},  
+actions: [  
+  { name: '男' },  
+  { name: '女' },  
+  { name: '保密' },  
+],  
+rules: {  
+  'userInfo.name': {  
+    type: 'string',  
+    required: true,  
+    message: '请填写姓名',  
+    trigger: ['blur', 'change'],  
+  },  
+  'userInfo.sex': {  
+    type: 'string',  
+    max: 1,  
+    required: true,  
+    message: '请选择男或女',  
+    trigger: ['blur', 'change'],  
+  },  
+},  
+radio: '',  
+switchVal: false,  
+});  
+
+// 使用 ref 创建响应式引用  
+const formRef = ref(null);  
+
+// 定义方法  
+function sexSelect(e) {  
+state.model1.userInfo.sex = e.name;  
+if (formRef.value) {  
+  formRef.value.validateField('userInfo.sex');  
+}  
+}  
+&lt;/script&gt;</code></pre>
+      <p>
+        从上面的示例我们可以看到，rules 中的属性名和 form
+        的属性名是一致的，同时传递给 u - form - item 的 prop
+        参数绑定的也是相同的属性名，注意这里 prop 参数绑定的是
+        字符串(属性名)，而不是一个变量。
+      </p>
+      <h3>Form - item 组件说明</h3>
+      <p>
+        此组件一般需要搭配 Form 组件使用，也可以单独搭配 Input
+        等组件使用，由于此组件参数较多，这里只对其中参数最简要介绍，其余请见底部的
+        API 说明：
+      </p>
+      <ul>
+        <li>
+          prop 为传入 Form 组件的 model
+          中的属性字段，如果需要表单验证，此属性是必填的。
+        </li>
+        <li>
+          labelPosition 可以配置左侧 "label" 的对齐方式，可选为 left 和 top。
+        </li>
+        <li>
+          borderBottom 是否显示表单域的下划线，如果给 Input
+          组件配置了边框，可以将此属性设置为 false，从而隐藏默认的下划线。
+        </li>
+        <li>
+          如果想在表单域配置左右的图标或小图片，可以通过 leftIcon 和 rightIcon
+          参数实现。
+        </li>
+      </ul>
+      <h3>验证规则</h3>
+      <p>
+        组件验证部分采用了
+        <a href="https://github.com/yiminghe/async-validator" target="_blank"
+          >async - validator</a
+        >，一个字段可以设置多个内置规则，以及自定义规则，触发方式等，
+        每个字段的验证规则为一个数组，数组的每一个元素对象为其中一条规则(一个字段的验证可以配置多个规则)，如下：
+      </p>
+      <pre class="language-html"><code>rules: {
+  'userInfo.name': {
+      type: 'string',
+      required: true,
+      message: '请填写姓名',
+      trigger: ['blur', 'change']
+  },
+  code: {
+      type: 'string',
+      required: true,
+      len: 4,
+      message: '请填写4位验证码',
+      trigger: ['blur']
+  },
+  'userInfo.sex': {
+      type: 'string',
+      max: 1,
+      required: true,
+      message: '请选择男或女',
+      trigger: ['blur', 'change']
+  },
+  radiovalue1: {
+      type: 'string',
+      min: 1,
+      max: 2,
+      message: '生命是美好的，请不要放弃治疗',
+      trigger: ['change']
+  },
+  checkboxValue1: {
+      type: 'array',
+      min: 2,
+      required: true,
+      message: '不能太宅，至少选两项',
+      trigger: ['change']
+  },
+  intro: {
+      type: 'string',
+      min: 3,
+      required: true,
+      message: '不低于3个字',
+      trigger: ['change']
+  },
+  hotel: {
+      type: 'string',
+      min: 2,
+      required: true,
+      message: '请选择住店时间',
+      trigger: ['change']
+  },
+  'userInfo.birthday': {
+      type: 'string',
+      required: true,
+      message: '请选择生日',
+      trigger: ['change']
+  },
+}</code></pre>
+      <h3>验证规则属性</h3>
+      <p>
+        每一个验证规则中，可以配置多个属性，下面对常用的属性进行讲解，更具体的可以查看
+        <a href="https://github.com/yiminghe/async-validator" target="_blank"
+          >async - validator</a
+        >
+        的文档说明：
+      </p>
+      <ul>
+        <li>
+          <strong>trigger{String | Array}</strong>：触发校验的方式有2种：
+          <ul>
+            <li>change：字段值发生变化时校验</li>
+            <li>blur：输入框失去焦点时触发</li>
+          </ul>
+          如果同时监听两种方式，需要写成数组形式：['change', 'blur']
+        </li>
+        <li>
+          <strong>type{String}</strong>
+          内置校验规则，如这些规则无法满足需求，可以使用正则匹配、或者使用
+          validator 自定义方法并结合 uview - plus 自带验证规则。
+          <ul>
+            <li>string：必须是 string 类型，默认类型</li>
+            <li>number：必须是 number 类型</li>
+            <li>boolean：必须是 boolean 类型</li>
+            <li>method：必须是 function 类型</li>
+            <li>
+              regexp：必须是 regexp
+              类型，这里的正则，指的是判断字段的内容是否一个正则表达式，而不是用这个正则去匹配字段值
+            </li>
+            <li>integer：必须是整数类型</li>
+            <li>float：必须是浮点数类型</li>
+            <li>array：必须是 array 类型</li>
+            <li>object：必须是 object 类型</li>
+            <li>enum：必须出现在 enmu 指定的值中</li>
+            <li>date：必须是 date 类型</li>
+            <li>url：必须是 url 类型</li>
+            <li>hex：必须是 16 进制类型</li>
+            <li>email：必须是 email 类型</li>
+            <li>any：任意类型</li>
+          </ul>
+        </li>
+        <li>
+          <strong>required</strong>
+          布尔值，是否必填，配置此参数不会显示输入框左边的必填星号，如需要，请配置
+          u - form - item 的 required 为 true，注意：如需在 swiper
+          标签内显示星号，需要给予 swiper - item 第一个根节点一定的 margin 样式
+        </li>
+        <li>
+          <strong>pattern</strong>
+          要求此参数值为一个正则表达式，如：
+          /\d+/，不能带引号，如："/\d+/"，组件会对字段进行正则判断，返回结果。
+        </li>
+        <li>
+          <strong>min</strong>
+          最小值，如果字段类型为字符串和数组，会取字符串长度与数组长度(length)与
+          min 比较，如果字段是数值，则直接与 min 比较。
+        </li>
+        <li>
+          <strong>max</strong>
+          最大值，规则同 min 参数
+        </li>
+        <li>
+          <strong>len</strong>
+          指定长度，规则同 min，优先级高于 min 和 max
+        </li>
+        <li><strong>enum{Array}</strong> 指定的值，配合 type: 'enum' 使用</li>
+        <li>
+          <strong>whitespace{Boolean}</strong>
+          如果字段值内容都为空格，默认无法通过 required: true
+          校验，如果要允许通过，需要将此参数设置为 true
+        </li>
+        <li>
+          <strong>transform{Function}</strong
+          >，校验前对值进行转换，函数的参数为当前值，返回值为改变后的值，参数如如下：
+          <ul>
+            <li>value：当前校验字段的值</li>
+          </ul>
+        </li>
+        <li>
+          <strong>message</strong>
+          校验不通过时的提示信息
+        </li>
+        <li>
+          <strong>validator{Function}</strong>：自定义同步校验函数，参数如下：
+          <ul>
+            <li>rule：当前校验字段在 rules 中所对应的校验规则</li>
+            <li>value：当前校验字段的值</li>
+            <li>
+              callback：校验完成时的回调，一般无需执行 callback，返回
+              true(校验通过)或者 false(校验失败)即可
+            </li>
+          </ul>
+        </li>
+        <li>
+          <strong>asyncValidator{Function}</strong
+          >：自定义异步校验函数，参数如下：
+          <ul>
+            <li>rule：当前校验字段在 rules 中所对应的校验规则</li>
+            <li>value：当前校验字段的值</li>
+            <li>
+              callback：校验完成时的回调，执行完异步操作(比如向后端请求数据验证)，如果不通过，需要
+              callback(new Error('提示错误信息'))，如果校验通过，执行
+              callback()即可
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h3>uview - plus 自带验证规则</h3>
+      <p>
+        uview - plus 在 JS 板块的 Test
+        规则校验中有大量内置的验证规则，这些规则对表单验证来说，属于自定义规则，故需要用到上方规则属性的
+        validator 自定义验证函数，这里做一个详细说明。
+      </p>
+      <p>
+        我们知道 uview - plus 有自带的判断手机号的验证方法
+        uni.$u.test.mobile(value)，但是
+        <a href="https://github.com/yiminghe/async-validator" target="_blank"
+          >async - validator</a
+        >
+        没有 内置判断手机号的规则，所以将二者结合使用：
+      </p>
+      <pre class="language-html"><code>rules: {
+  // 字段名称
+  mobile: [
+      {
+          required: true, 
+          message: '请输入手机号',
+          trigger: ['change','blur'],
+      },
+      {
+          // 自定义验证函数，见上说明
+          validator: (rule, value, callback) => {
+              // 上面有说，返回true表示校验通过，返回false表示不通过
+              // uni.$u.test.mobile()就是返回true或者false的
+              return uni.$u.test.mobile(value);
+          },
+          message: '手机号码不正确',
+          // 触发器可以同时用blur和change
+          trigger: ['change','blur'],
+      }
+  ]
+}</code></pre>
+      <h3>综合实战</h3>
+      <p>
+        上面讲述了
+        <a href="https://github.com/yiminghe/async-validator" target="_blank"
+          >async - validator</a
+        >
+        的规则和配置，以及 uview - plus 内置规则的结合使用，下面我们进行一个综合
+        实战示例，要入对某一个字段进行如下验证(验证实现有多种方法，下方仅为引导示例，非唯一，或最优做法)：
+      </p>
+      <ul>
+        <li>
+          必填，同时可接受 change 和 blur 触发校验：配置 required 参数为
+          true，同时配置 trigger 为 [change, blur]
+        </li>
+        <li>
+          必须为字母或字符串，校验前先将字段值转为字符串类型：通过 pattern
+          参数配置正则：/^[0 - 9a --zA - Z]*$/g，通过 transform
+          参数在校验前对字段值转换为字符串
+        </li>
+        <li>长度 6 - 8 个字符之间：通过 配置 min 为 6，max 为 8</li>
+        <li>
+          需要包含字母 "A"：使用 uview - plus 的 uni.$u.test.contains()
+          方法，并结合 validator 自定义函数实现
+        </li>
+        <li>
+          异步校验，输入完账号，输入框失去焦点时，向后端请求该账号是否已存在：通过上方的
+          asyncValidator 异步函数进行验证。
+        </li>
+      </ul>
+      <p>综上，我们可以得出如下的一个配置规则(仅为综合演示，非最优做法)：</p>
+      <pre class="language-html"><code>rules: {
+  name: [
+      // 必填规则
+      {
+          required: true,
+          message: '此为必填字段',
+          // blur和change事件触发检验
+          trigger: ['blur', 'change'],
+      },
+      // 正则判断为字母或数字
+      {
+          pattern: /^[0 - 9a --zA - Z]*$/g,
+          // 正则检验前先将值转为字符串
+          transform(value) {
+              return String(value);
+          },
+          message: '只能包含字母或数字'
+      },
+      // 6 - 8个字符之间的判断
+      {
+          min: 6,
+          max: 8,
+          message: '长度在6 - 8个字符之间'
+      },
+      // 自定义规则判断是否包含字母"A"
+      {
+          validator: (rule, value, callback) => {
+              return uni.$u.test.contains(value, "A");
+          },
+          message: '必须包含字母"A"'
+      },
+      // 校验用户是否已存在
+      {
+          asyncValidator: (rule, value, callback) => {
+              uni.$u.http.post('/xxx/xxx', {name: value}).then(res => {
+                  // 如果验证不通过，需要在callback()抛出new Error('错误提示信息')
+                  if (res.error) {
+                      callback(new Error('姓名重复'));
+                  } else {
+                      // 如果校验通过，也要执行callback()回调
+                      callback();
+                  }
+              });
+          },
+          // 如果是异步校验，无需写message属性，错误的信息通过Error抛出即可
+          // message: 'xxx'
+      }
+  ]
+}
+</code></pre>
+      <h3>校验错误提示方式</h3>
+      <p>
+        uview-plus提供了多种校验的错误提示方式，传递给Form组件的errorType参数：
+      </p>
+      <ul>
+        <li>message：默认为输入框下方用文字进行提示</li>
+        <li>none：不会进行任何提示</li>
+        <li>
+          border-bottom：配置作用域底部的下划线显示为红色，要求给form-item设置了borderBottom=true才有效
+        </li>
+        <li>
+          toast：以"toast"提示的方式弹出错误信息，每次只弹出最前面的那个表单域的错误信息
+        </li>
+      </ul>
+      <pre class="language-html"><code>&lt;template&gt;
+  &lt;up-form :errorType="errorType"&gt;
+      ......
+  &lt;/up-form&gt;
+&lt;/template&gt;
+&lt;script setup&gt;  
+import { ref } from 'vue';  
+
+// 使用 ref 创建响应式数据  
+const errorType = ref('message'); // 初始化为 'message' 
+
+// 例如，在一个方法中改变 errorType 的值：  
+function changeErrorType() {  
+errorType.value = 'border-bottom'; // 假设你想要切换到下划线提示  
+}  
+&lt;/script&gt; 
+</code></pre>
+      <h3>校验</h3>
+      <p>
+        进行了上方的配置和讲解后，进入到最后一步，执行验证：需要通过ref调用Form组件的validate方法，该方法回调函数的参数为一个布尔值，true为校验通过，否则反之。
+      </p>
+      <pre class="language-html"><code>&lt;template&gt;
+  &lt;view class=""&gt;
+      &lt;up-form :model="form" ref="uFormRef"&gt;
+          &lt;up-form-item label="姓名" prop="name"&gt;
+              &lt;up-input v-model="form.name" /&gt;
+          &lt;/up-form-item&gt;
+      &lt;/up-form&gt;
+      &lt;up-button @click="submit"&gt;提交&lt;/up-button&gt;
+  &lt;/view&gt;
+&lt;/template&gt;
+&lt;script setup&gt;  
+import { ref } from 'vue';  
+
+// 响应式表单数据  
+const form = ref({  
+name: '',  
+});  
+
+// 校验规则  
+const rules = {  
+name: [  
+  {  
+    required: true,  
+    message: '请输入姓名',  
+    trigger: ['blur', 'change'],  
+  },  
+],  
+};  
+
+// 表单引用  
+const uFormRef = ref(null);  
+
+// 提交方法  
+function submit() {  
+uFormRef.value.validate().then(valid =&gt; {  
+  if (valid) {  
+    uni.$u.toast('校验通过')
+  } else {  
+    uni.$u.toast('校验失败')
+  }  
+}).catch(() =&gt; {  
+  // 处理验证错误  
+  uni.$u.toast('校验失败')
+});  
+}  
+&lt;/script&gt;
+</code></pre>
+
+      <h3>API</h3>
+      <h4>Form Props</h4>
+      <div class="table-like">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">model</div>
+          <div class="table-cell">表单数据对象</div>
+          <div class="table-cell">Object</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">rules</div>
+          <div class="table-cell">
+            通过ref设置，如果rules中有自定义方法等，需要使用setRules方法设置规则，见上方说明
+          </div>
+          <div class="table-cell">Object|Function|Array</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">errorType</div>
+          <div class="table-cell">错误的提示方式，见上方说明</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">message</div>
+          <div class="table-cell">none|toast|border-bottom|none</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">borderBottom</div>
+          <div class="table-cell">是否显示表单域的下划线边框</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">labelPosition</div>
+          <div class="table-cell">
+            表单域提示文字的位置，left-左侧，top-上方
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">left</div>
+          <div class="table-cell">top</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">labelWidth</div>
+          <div class="table-cell">提示文字的宽度，单位px</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">45</div>
+          <div class="table-cell">数值 / auto</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">labelAlign</div>
+          <div class="table-cell">lable字体的对齐方式</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">left</div>
+          <div class="table-cell">center / right</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">labelStyle</div>
+          <div class="table-cell">lable的样式，对象形式</div>
+          <div class="table-cell">Object</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+      <h4>Form Methods</h4>
+      <p>此方法如要通过ref手动调用</p>
+      <div class="table-like">
+        <div class="table-row table-header">
+          <div class="table-cell">名称</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">validate</div>
+          <div class="table-cell">对整个表单进行校验的方法</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">setRules</div>
+          <div class="table-cell">
+            如果rules中有自定义方法等，需要用此方法设置rules规则，否则微信小程序无效
+          </div>
+          <div class="table-cell">Function(rules)</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">validateField</div>
+          <div class="table-cell">对部分表单字段进行校验</div>
+          <div class="table-cell">Function(value, Function(errorsRes))</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">resetFields</div>
+          <div class="table-cell">
+            对整个表单进行重置，将所有字段值重置为初始值并移除校验结果
+          </div>
+          <div class="table-cell">-</div>
+          <div class="table-row">
+            <div class="table-cell">clearValidate</div>
+            <div class="table-cell">清空校验结果</div>
+            <div class="table-cell">Function(props)</div>
+          </div>
+        </div>
+        <h4>Form-item Props</h4>
+        <div class="table-like">
+          <div class="table-row table-header">
+            <div class="table-cell">参数</div>
+            <div class="table-cell">说明</div>
+            <div class="table-cell">类型</div>
+            <div class="table-cell">默认值</div>
+            <div class="table-cell">可选值</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">label</div>
+            <div class="table-cell">左侧提示文字</div>
+            <div class="table-cell">String</div>
+            <div class="table-cell">-</div>
+            <div class="table-cell">-</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">prop</div>
+            <div class="table-cell">
+              表单域model对象的属性名，在使用 validate、resetFields
+              方法的情况下，该属性是必填的
+            </div>
+            <div class="table-cell">String</div>
+            <div class="table-cell">-</div>
+            <div class="table-cell">-</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">rules</div>
+            <div class="table-cell">
+              标单项验证规则，如果rules中有自定义方法等，需要使用setRules方法设置规则，见上方说明
+            </div>
+            <div class="table-cell">Array</div>
+            <div class="table-cell">[]</div>
+            <div class="table-cell">-</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">borderBottom</div>
+            <div class="table-cell">
+              是否显示下边框，如不需要下边框，需同时将u-form的同名参数设置为false
+            </div>
+            <div class="table-cell">String | Boolean</div>
+            <div class="table-cell">true</div>
+            <div class="table-cell">true / false</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">labelPosition</div>
+            <div class="table-cell">
+              表单域提示文字的位置，left-左侧，top-上方
+            </div>
+            <div class="table-cell">String |</div>
+            <div class="table-cell">-</div>
+            <div class="table-cell">-</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">labelWidth</div>
+            <div class="table-cell">
+              提示文字的宽度，单位rpx，如设置，将覆盖u-form的同名参数
+            </div>
+            <div class="table-cell">String | Number</div>
+            <div class="table-cell">-</div>
+            <div class="table-cell">-</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">rightIcon</div>
+            <div class="table-cell">
+              右侧自定义字体图标(限uview-plus内置图标)或图片地址
+            </div>
+            <div class="table-cell">String</div>
+            <div class="table-cell">-</div>
+            <div class="table-cell">-</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">leftIcon</div>
+            <div class="table-cell">
+              左侧自定义字体图标(限uview-plus内置图标)或图片地址
+            </div>
+            <div class="table-cell">String</div>
+            <div class="table-cell">-</div>
+            <div class="table-cell">-</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">leftIconStyle</div>
+            <div class="table-cell">左侧自定义字体图标的样式</div>
+            <div class="table-cell">String | Object</div>
+            <div class="table-cell">-</div>
+            <div class="table-cell">-</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">required</div>
+            <div class="table-cell">
+              是否显示左边的"*"号，这里仅起展示作用，如需校验必填，请通过rules配置必填规则，如需在swiper标签内显示星号，需要给予swiper-item内第一个根节点一定的margin样式
+            </div>
+            <div class="table-cell">Boolean</div>
+            <div class="table-cell">false</div>
+            <div class="table-cell">true</div>
+          </div>
+
+          <h4>Form-item Methods</h4>
+          <p>此方法如要通过ref手动调用</p>
+          <div class="table-like">
+            <div class="table-row table-header">
+              <div class="table-cell">名称</div>
+              <div class="table-cell">说明</div>
+              <div class="table-cell">参数</div>
+            </div>
+            <div class="table-row">
+              <div class="table-cell">setRules</div>
+              <div class="table-cell">
+                如果rules中有自定义方法等，需要用此方法设置rules规则，否则微信小程序无效
+              </div>
+              <div class="table-cell">Function(rules)</div>
+            </div>
+          </div>
+          <h4>Form-item Slot</h4>
+          <div class="table-like">
+            <div class="table-row table-header">
+              <div class="table-cell">名称</div>
+              <div class="table-cell">说明</div>
+            </div>
+            <div class="table-row">
+              <div class="table-cell">-</div>
+              <div class="table-cell">Form Item 的内容</div>
+            </div>
+            <div class="table-row">
+              <div class="table-cell">right</div>
+              <div class="table-cell">
+                右侧自定义内容，可以在此传入一个按钮，用于获取验证码等场景
+              </div>
+            </div>
+          </div>
+          <h4>Form-item Events</h4>
+          <div class="table-like">
+            <div class="table-row table-header">
+              <div class="table-cell">事件名</div>
+              <div class="table-cell">说明</div>
+              <div class="table-cell">回调参数</div>
+              <div class="table-cell">版本</div>
+            </div>
+            <div class="table-row">
+              <div class="table-cell">click</div>
+              <div class="table-cell">点击时触发</div>
+              <div class="table-cell">-</div>
+              <div class="table-cell">-</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="right-phone">
       <div class="right-phone-inner">

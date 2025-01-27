@@ -16,7 +16,253 @@
       <ul id="menu"></ul>
     </div>
     <div class="main-content">
-      <!-- 这里放组件的具体文档 -->
+      <h2>Code 验证码输入框</h2>
+      <p>
+        考虑到用户实际发送验证码的场景，可能是一个按钮，也可能是一段文字，提示语各有不同，所以本组件
+        不提供界面显示，只提供提示语，由用户将提示语嵌入到具体的场景
+      </p>
+
+      <h3>平台差异说明</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <p>通过 <code>ref</code> 获取组件对象，再执行后面的操作，见下方示例。</p>
+      <p>通过 <code>seconds</code> 设置需要倒计的秒数(默认 60)</p>
+      <p>
+        通过 <code>ref</code> 调用组件内部的 <code>start</code> 方法，开始倒计时
+      </p>
+      <p>
+        通过监听
+        <code>change</code>
+        事件(从开始到结束之间，每秒触发一次)获得提示的文字，可能值如"获取验证码|12
+        秒后重新获取|重新获取"，可以自定义
+      </p>
+      <p class="tip">
+        注意：用户可能在倒计时的过程中点击获取验证码的按钮，组件内部提供了通过
+        <code>ref</code> 获取的 <code>canGetCode</code> 变量，在倒计时
+        过程中，该值为 <code>false</code>，如果为
+        <code>false</code> 应该给予提示并不要再次向后端请求验证码，如果为
+        <code>true</code>，则为获取验证码
+        之前，或者倒计结束之后，可以再次向后端请求验证码。
+      </p>
+      <p>以下为完整示例，见如下：</p>
+      <pre class="language-html">
+          <code>
+&lt;template&gt;
+  &lt;view class="wrap"&gt;
+      &lt;up-toast ref="uToastRef"&gt;&lt;/up-toast&gt;
+      &lt;up-code :seconds="seconds" @end="end" @start="start" ref="uCodeRef" 
+      @change="codeChange"&gt;&lt;/up-code&gt;
+      &lt;up-button @tap="getCode"&gt;{{tips}}&lt;/up-button&gt;
+  &lt;/view&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+import { ref } from 'vue';
+
+const tips = ref('');
+const seconds = ref(10);
+const uCodeRef = ref(null);
+
+const codeChange = (text) =&gt; {
+tips.value = text;
+};
+
+const getCode = () =&gt; {
+if (uCodeRef.canGetCode) {
+  // 模拟向后端请求验证码
+  uni.showLoading({
+    title: '正在获取验证码',
+  });
+  setTimeout(() =&gt; {
+    uni.hideLoading();
+    // 这里此提示会被start()方法中的提示覆盖
+    uni.$u.toast('验证码已发送');
+    // 通知验证码组件内部开始倒计时
+    uCodeRef.start();
+  }, 2000);
+} else {
+  uni.$u.toast('倒计时结束后再发送');
+}
+};
+
+const end = () =&gt; {
+uni.$u.toast('倒计时结束');
+};
+
+const start = () =&gt; {
+uni.$u.toast('倒计时开始');
+};
+&lt;/script&gt;
+
+&lt;style lang="scss"&gt;
+ .wrap {
+      padding: 24rpx;
+  }
+&lt;/style&gt;
+          </code>
+      </pre>
+
+      <h3>自定义提示语</h3>
+      <p>
+        组件内部有内置的提示语，如获取验证码前的提示语为"获取验证码"，用户可以通过参数配置自定义的提示：
+      </p>
+      <ul>
+        <li>获取前，参数为 <code>start-text</code>，默认值为"获取验证码"</li>
+        <li>
+          倒计时期间，参数为 <code>change-text</code>，默认为"X
+          秒重新获取"，这里的"x"(大小写均可)，将会被倒计的秒数替代
+        </li>
+        <li>倒计时结束，参数为 <code>end-text</code>，默认值为"重新获取"</li>
+      </ul>
+
+      <h3>保持倒计时</h3>
+      <p>
+        一般情况下，在 H5
+        刷新浏览器，或者各端返回再进入时，倒计时会消失，导致用户可以再次尝试获取验证码，虽然后端还会对此进行进一步的判断。
+      </p>
+      <p>
+        对于这种情况，uview-plus 给出了一个
+        <code>keep-running</code> 参数(默认为 <code>false</code>)，为
+        <code>true</code> 的时候，即使刷新浏览器，或者返回上一个页面，
+        倒计时依然会继续(如果还在倒计时间内的话)。
+      </p>
+      <p class="tip">
+        注意：
+        如果您的一个页面或者多个页面同时使用了多个此组件，为了防止多个组件之间，保存在本地的多个继续倒计时的变量之间互相干扰，可以配置
+        各个组件的 <code>unique-key</code> 为一个不重复的字符串，以作区分：
+      </p>
+      <pre class="language-html">
+          <code>
+/* A.vue */
+&lt;up-verification-code unique-key="page-a"&gt;&lt;/up-verification-code&gt;
+
+/* B.vue */
+&lt;up-verification-code unique-key="page-b"&gt;&lt;/up-verification-code&gt;
+          </code>
+      </pre>
+
+      <h3>API</h3>
+      <h4>Props</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">seconds</div>
+          <div class="table-cell">倒计时所需的秒数</div>
+          <div class="table-cell">Number | String</div>
+          <div class="table-cell">60</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">startText</div>
+          <div class="table-cell">开始前的提示语，见上方说明</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">获取验证码</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">changeText</div>
+          <div class="table-cell">
+            倒计时期间的提示语，必须带有字母"x"，见上方说明
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">X 秒重新获取</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">endText</div>
+          <div class="table-cell">倒计结束的提示语，见上方说明</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">重新获取</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">keepRunning</div>
+          <div class="table-cell">
+            是否在 H5 刷新或各端返回再进入时继续倒计时
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">uniqueKey</div>
+          <div class="table-cell">
+            多个组件之间继续倒计时的区分 key，见上方说明
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>Methods</h4>
+      <p class="tip">
+        需要通过 <code>ref</code> 获取验证码组件才能调用，见上方"基本使用"说明
+      </p>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">名称</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">start</div>
+          <div class="table-cell">开始倒计时</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">reset</div>
+          <div class="table-cell">
+            结束当前正在进行中的倒计时，设置组件为可以重新获取验证码的状态
+          </div>
+        </div>
+      </div>
+
+      <h4>Event</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+          <div class="table-cell">版本</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">change</div>
+          <div class="table-cell">倒计时期间，每秒触发一次</div>
+          <div class="table-cell">text: 当前剩余多少秒的状态，见上方说明</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">start</div>
+          <div class="table-cell">开始倒计时触发</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">end</div>
+          <div class="table-cell">结束倒计时触发</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
     </div>
     <div class="right-phone">
       <div class="right-phone-inner">

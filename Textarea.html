@@ -16,7 +16,350 @@
       <ul id="menu"></ul>
     </div>
     <div class="main-content">
-      <!-- 这里放组件的具体文档 -->
+      <h2>Textarea 文本域</h2>
+      <p>
+        文本域此组件满足了可能出现的表单信息补充，编辑等实际逻辑的功能，内置了字数校验等。
+      </p>
+      <p>注意：</p>
+      <p>
+        由于在 nvue 下，u-textarea 名称被 uni-app 官方占用，在 nvue 页面中请使用
+        up-textarea 名称，在 vue 页面中使用 up-textarea 或者 u-textarea 均可。
+      </p>
+
+      <h3>平台差异说明</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基本使用</h3>
+      <pre class="language-html">
+          <code>
+  &lt;up-textarea v-model="value1" placeholder="请输入内容" &gt;&lt;/up-textarea&gt;
+  &lt;script setup&gt;  
+  import { ref } from 'vue';  
+    
+  // 使用 ref 创建响应式引用  
+  const value1 = ref('');  
+  &lt;/script&gt;
+          </code>
+      </pre>
+
+      <h3>字数统计</h3>
+      <p>设置 count 属性实现字数统计。</p>
+      <pre class="language-html">
+          <code>
+  &lt;up-textarea v-model="value2" placeholder="请输入内容" count &gt;&lt;/up-textarea&gt;
+  import { ref } from 'vue';  
+    
+  // 使用 ref 创建响应式引用  
+  const value2 = ref('统计字数');  
+          </code>
+      </pre>
+
+      <h3>自动增高</h3>
+      <p>设置 autoHeight 属性实现自动增高。</p>
+      <pre class="language-html">
+          <code>
+  &lt;up-textarea v-model="value3" placeholder="请输入内容" autoHeight &gt;&lt;/up-textarea&gt;
+  import { ref } from 'vue';  
+    
+  // 使用 ref 创建响应式引用  
+  const value3 = ref('');  
+          </code>
+      </pre>
+
+      <h3>禁用状态</h3>
+      <p>设置 disabled 属性实现进行禁用，您也可以动态设置是否禁用。</p>
+      <pre class="language-html">
+          <code>
+  &lt;up-textarea v-model="value4" placeholder="文本域已被禁用" disabled count&gt;&lt;/up-textarea&gt;
+  import { ref } from 'vue';  
+    
+  // 使用 ref 创建响应式引用  
+  const value4 = ref('');  
+          </code>
+      </pre>
+
+      <h3>下划线模式</h3>
+      <p>设置 border="bottom" 属性单独设置底部下划线。</p>
+      <pre class="language-html">
+          <code>
+  &lt;up-textarea v-model="value5" placeholder="请输入内容" border="bottom"&gt;&lt;/up-textarea&gt;
+  import { ref } from 'vue';  
+    
+  // 使用 ref 创建响应式引用  
+  const value5 = ref('');  
+          </code>
+      </pre>
+
+      <h3>格式化处理</h3>
+      <p>如有需要，可以通过 formatter 参数编写自定义格式化规则。</p>
+      <p>注意：</p>
+      <p>
+        微信小程序不支持通过 props 传递函数参数，所以组件内部暴露了一个
+        setFormatter 方法用于设置格式化方法，注意在页面的 onReady 生命周期获取
+        ref 再操作。
+      </p>
+      <pre class="language-html">
+          <code>
+  &lt;template&gt;
+      &lt;up-textarea v-model="value" :formatter="formatter" ref="textareaRef"&gt;&lt;/up-textarea&gt;
+  &lt;/template&gt;
+  &lt;script setup&gt;  
+  import { ref, onMounted } from 'vue';  
+  import {
+      onLoad,
+      onShow,
+      onReady
+  } from "@dcloudio/uni-app";
+  
+  // 创建响应式数据  
+  const value = ref('');  
+  const textareaRef = ref(null);
+    
+  // 格式化方法  
+  const formatter = (val) =&gt; {  
+    // 让输入框只能输入数值，过滤其他字符  
+    return val.replace(/[^0 - 9]/ig, "");  
+  };  
+    
+  // 生命周期钩子，使用 onMounted 替代 onReady  
+  onReady(() =&gt; {  
+      textareaRef.value.setFormatter(formatter);  
+  });  
+  &lt;/script&gt;
+          </code>
+      </pre>
+
+      <h3>API</h3>
+      <h4>List Props</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">modelValue</div>
+          <div class="table-cell">输入框的内容</div>
+          <div class="table-cell">String | String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">placeholder</div>
+          <div class="table-cell">输入框为空时占位符</div>
+          <div class="table-cell">Number | String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">height</div>
+          <div class="table-cell">输入框高度</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">70</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">confirmType</div>
+          <div class="table-cell">
+            设置键盘右下角按钮的文字，仅微信小程序，App - vue 和 H5 有效
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">done</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">disabled</div>
+          <div class="table-cell">是否禁用</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">count</div>
+          <div class="table-cell">是否显示统计字数</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">focus</div>
+          <div class="table-cell">
+            是否自动获取焦点，nvue 不支持，H5 取决于浏览器的实现
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">autoHeight</div>
+          <div class="table-cell">是否自动增加高度</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">cursorSpacing</div>
+          <div class="table-cell">指定光标与键盘的距离</div>
+          <div class="table-cell">Number</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">cursor</div>
+          <div class="table-cell">指定 focus 时的光标位置</div>
+          <div class="table-cell">Number | String</div>
+          <div class="table-cell">-</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">selectionStart</div>
+          <div class="table-cell">
+            光标起始位置，自动聚焦时有效，需与 selection - end 搭配使用
+          </div>
+          <div class="table-cell">Number</div>
+          <div class="table-cell">-1</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">selectionEnd</div>
+          <div class="table-cell">
+            光标结束位置，自动聚焦时有效，需与 selection - start 搭配使用
+          </div>
+          <div class="table-cell">Number</div>
+          <div class="table-cell">-1</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">adjustPosition</div>
+          <div class="table-cell">键盘弹起时，是否自动上推页面</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">false</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">maxlength</div>
+          <div class="table-cell">
+            最大输入长度，设置为 - 1 的时候不限制最大长度
+          </div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">140</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">border</div>
+          <div class="table-cell">
+            边框类型，surround - 四周边框，none - 无边框，bottom - 底部边框
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">surround</div>
+          <div class="table-cell">bottom</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">placeholderClass</div>
+          <div class="table-cell">
+            指定 placeholder 的样式类，注意页面或组件的 style 中写了 scoped
+            时，需要在类名前写 /deep/
+          </div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">textarea - placeholder</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">placeholderStyle</div>
+          <div class="table-cell">
+            指定 placeholder 的样式，字符串/对象形式，如"color: red;"
+          </div>
+          <div class="table-cell">String | Object</div>
+          <div class="table-cell">color: #c0c4cc</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">formatter</div>
+          <div class="table-cell">
+            输入过滤或格式化函数(如需兼容微信小程序，则只能通过 setFormatter
+            方法)
+          </div>
+          <div class="table-cell">Function</div>
+          <div class="table-cell">null</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>Methods</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">方法名</div>
+          <div class="table-cell">说明</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">setFormatter</div>
+          <div class="table-cell">
+            为兼容微信小程序而暴露的内部方法，见上方说明
+          </div>
+        </div>
+      </div>
+
+      <h4>List Events</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">focus</div>
+          <div class="table-cell">
+            输入框聚焦时触发，event.detail = { value, height }，height
+            为键盘高度
+          </div>
+          <div class="table-cell">e</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">blur</div>
+          <div class="table-cell">
+            输入框失去焦点时触发，event.detail = {value, cursor}
+          </div>
+          <div class="table-cell">e</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">linechange</div>
+          <div class="table-cell">
+            输入框行数变化时调用，event.detail = {height: 0, heightRpx: 0,
+            lineCount: 0}
+          </div>
+          <div class="table-cell">e</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">update:modelValue</div>
+          <div class="table-cell">当键盘输入时，触发 input 事件</div>
+          <div class="table-cell">e.detail.value</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">confirm</div>
+          <div class="table-cell">点击完成时， 触发 confirm 事件</div>
+          <div class="table-cell">e</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">keyboardheightchange</div>
+          <div class="table-cell">键盘高度发生变化的时候触发此事件</div>
+          <div class="table-cell">e</div>
+        </div>
+      </div>
     </div>
     <div class="right-phone">
       <div class="right-phone-inner">

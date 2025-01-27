@@ -16,7 +16,286 @@
       <ul id="menu"></ul>
     </div>
     <div class="main-content">
-      <!-- 这里放组件的具体文档 -->
+      <h2>Switch 开关选择器</h2>
+      <p>选择开关用于在打开和关闭状态之间进行切换。</p>
+
+      <h3>平台差异说明</h3>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">App（vue）</div>
+          <div class="table-cell">App（nvue）</div>
+          <div class="table-cell">H5</div>
+          <div class="table-cell">小程序</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+          <div class="table-cell">√</div>
+        </div>
+      </div>
+
+      <h3>基础使用</h3>
+      <p>
+        通过
+        <code>v-model</code>
+        绑定一个布尔值变量，这个变量是双向绑定的，当用户开或关选择器的时候，在父组件的该值也会相应的变为
+        <code>true</code> 或者 <code>false</code>，也就是说， 您不用监听
+        <code>change</code> 事件，也能知道选择器当前处于开或者关的状态。
+      </p>
+      <p>
+        我们为其提供了加载中、禁用、自定义尺寸、自定义颜色、自定义样式、异步控制等六种能力，并在以下案例中为您展示
+      </p>
+      <pre class="language-html">
+          <code>
+&lt;up-switch v-model="value" @change="change"&gt;&lt;/up-switch&gt;
+&lt;!-- methods --&gt;
+change(e) {
+  console.log('change', e);
+},
+          </code>
+      </pre>
+
+      <h3>加载中</h3>
+      <p>
+        设置 <code>loading</code> 属性，默认为 <code>true</code>，可以让
+        <code>switch</code> 处于加载中的状态，这时
+        <code>switch</code> 是不可操作的，您可以通过
+        <code>:loading='loading'</code> 以动态设置加载状态
+      </p>
+      <pre class="language-html">
+          <code>
+&lt;up-switch v-model="value3" loading &gt;&lt;/up-switch&gt;
+&lt;up-switch v-model="value4" loading &gt;&lt;/up-switch&gt;
+&lt;!-- data --&gt;
+value3: false,
+value4: true,
+          </code>
+      </pre>
+
+      <h3>禁用 switch</h3>
+      <p>
+        设置 <code>disabled</code> 属性，默认为
+        <code>true</code>，即可禁用某个组件，让用户无法点击，禁用分为两种状态：
+      </p>
+      <ul>
+        <li>一是关闭情况下的禁用，这时只显示一个白色的区域。</li>
+        <li>
+          二是打开后再禁用，这时会在原有的颜色上加一个
+          <code>opacity</code> 透明度，但此时依然是不可操作的。
+        </li>
+      </ul>
+      <pre class="language-html">
+          <code>
+&lt;up-switch v-model="value" disabled &gt;&lt;/up-switch&gt;
+          </code>
+      </pre>
+
+      <h3>自定义尺寸</h3>
+      <p>
+        设置 <code>size</code> 属性，可以让您自定义
+        <code>switch</code> 的尺寸，单位为 <code>px</code>
+      </p>
+      <pre class="language-html">
+          <code>
+&lt;up-switch v-model="value3" size="28" &gt;&lt;/up-switch&gt;
+&lt;up-switch v-model="value4" size="20" &gt;&lt;/up-switch&gt;
+&lt;!-- data --&gt;
+value3: false,
+value4: true,
+          </code>
+      </pre>
+
+      <h3>自定义颜色</h3>
+      <p>
+        设置 <code>activeColor</code> 属性，可以让您自定义
+        <code>switch</code> 的颜色，支持多种设置方式，如：<code
+          >activeColor="#f56c6c"</code
+        >
+        <code>activeColor="red"</code> <code>activeColor="rgb(0,0,0)"</code>
+      </p>
+      <pre class="language-html">
+          <code>
+&lt;up-switch v-model="value" activeColor="#f56c6c" loading &gt;&lt;/up-switch&gt;
+&lt;up-switch v-model="value1" activeColor="#5ac725" loading &gt;&lt;/up-switch&gt;
+&lt;!-- data --&gt;
+value: true,
+value1: true,
+          </code>
+      </pre>
+
+      <h3>自定义样式</h3>
+      <p>
+        同时设置 <code>activeColor</code> 和
+        <code>inactiveColor</code> 属性，可以让您自定义
+        <code>switch</code> 的样式，同样支持多种设置方式
+      </p>
+      <pre class="language-html">
+          <code>
+&lt;up-switch
+  space="2" v-model="value11" activeColor="#f9ae3d" 
+  inactiveColor="rgb(230, 230, 230)"&gt;
+&lt;/up-switch&gt;
+&lt;up-switch
+  space="2" v-model="value12" activeColor="#f9ae3d"
+  inactiveColor="rgb(230, 230, 230)"&gt;
+&lt;/up-switch&gt;
+&lt;!-- data --&gt;
+value11: false,
+value12: true,
+          </code>
+      </pre>
+
+      <h3>异步控制</h3>
+      <p>
+        异步控制场景，一般发生在用户打开或者关闭选择器时，需要本地或者向后端请求判断，是否允许用户打开或者关闭的场景。同时您也可以组合使用，例如根据接口结果添加
+        <code>disabled</code>，<code>loading</code> 属性等
+      </p>
+      <p class="tip">
+        请添加 <code>asyncChange</code> 属性来支持异步控制操作，否则您将先操作
+        <code>v-model</code> 绑定的值，并失去控制效果
+      </p>
+      <pre class="language-html">
+          <code>
+&lt;template&gt;
+  &lt;up-switch v-model="value13" asyncChange @change="asyncChange" &gt;&lt;/up-switch&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+import { ref } from 'vue';
+
+const value13 = ref(true);
+
+const asyncChange = (e) =&gt; {
+uni.showModal({
+  content: e ? '确定要打开吗' : '确定要关闭吗',
+  success: (res) =&gt; {
+    if (res.confirm) {
+      value13.value = e;
+    }
+  },
+});
+};
+&lt;/script&gt;
+          </code>
+      </pre>
+
+      <h3>API</h3>
+      <h4>Switch Props</h4>
+      <p class="tip">
+        需要给 <code>switch</code> 组件通过
+        <code>v-model</code> 绑定一个布尔值，来初始化
+        <code>switch</code> 的状态，随后该值被双向绑定，
+        当用打开选择器时，该值在 <code>switch</code> 组件内部被修改为
+        <code>true</code>，并反映到父组件，否则为
+        <code>false</code>，换言之，您无需监听 <code>switch</code> 的
+        <code>change</code> 事件，也能 知道某一个
+        <code>switch</code> 是否被选中的状态
+      </p>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">参数</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">类型</div>
+          <div class="table-cell">默认值</div>
+          <div class="table-cell">可选值</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">loading</div>
+          <div class="table-cell">是否处于加载中</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">disabled</div>
+          <div class="table-cell">是否禁用</div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">size</div>
+          <div class="table-cell">开关尺寸，单位rpx</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">25</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">activeColor</div>
+          <div class="table-cell">打开时的背景色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#2979ff</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">inactiveColor</div>
+          <div class="table-cell">关闭时的背景色</div>
+          <div class="table-cell">String</div>
+          <div class="table-cell">#ffffff</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">modelValue</div>
+          <div class="table-cell">通过v-model双向绑定的值</div>
+          <div class="table-cell">Boolean | String | Number</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">activeValue</div>
+          <div class="table-cell">switch打开时的值</div>
+          <div class="table-cell">Boolean | String | Number</div>
+          <div class="table-cell">true</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">inactiveValue</div>
+          <div class="table-cell">switch关闭时的值</div>
+          <div class="table-cell">Boolean | String | Number</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">asyncChange</div>
+          <div class="table-cell">
+            是否开启异步变更，开启后需要手动控制输入值
+          </div>
+          <div class="table-cell">Boolean</div>
+          <div class="table-cell">false</div>
+          <div class="table-cell">true</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">space</div>
+          <div class="table-cell">圆点与外边框的距离</div>
+          <div class="table-cell">String | Number</div>
+          <div class="table-cell">0</div>
+          <div class="table-cell">-</div>
+        </div>
+      </div>
+
+      <h4>Switch Event</h4>
+      <div class="table-container">
+        <div class="table-row table-header">
+          <div class="table-cell">事件名</div>
+          <div class="table-cell">说明</div>
+          <div class="table-cell">回调参数</div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">change</div>
+          <div class="table-cell">在switch打开或关闭时触发</div>
+          <div class="table-cell">
+            value：打开时为activeValue值，关闭时为inactiveValue值
+          </div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">update:modelValue</div>
+          <div class="table-cell">在switch打开或关闭时触发（没开启异步）</div>
+          <div class="table-cell">
+            value：打开时为activeValue值，关闭时为inactiveValue值
+          </div>
+        </div>
+      </div>
     </div>
     <div class="right-phone">
       <div class="right-phone-inner">

@@ -1,6 +1,6 @@
 (function () {
   const isProd = false; //本地看和部署线上
-  const BaseUrl = isProd ? "" : "file:///C:/Users/chatg/Desktop";
+  const BaseUrl = isProd ? "" : "file:///C:/Users/chatg/Desktop"; // 自己修改目录地址
   const menuList = [
     {
       title: "FloatButton 悬浮按钮组件",
