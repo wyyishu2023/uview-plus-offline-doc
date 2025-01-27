@@ -1,542 +1,543 @@
 (function () {
   const isProd = true; //本地看和部署线上
   const BaseUrl = isProd ? "" : "file:///C:/Users/chatg/Desktop"; // 自己修改目录地址
+  const prodUrl = isProd ? "/uview-plus-offline-doc" : "/uview-plus";
   const menuList = [
     {
       title: "FloatButton 悬浮按钮组件",
       key: "FloatButton",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsD/floatButton/floatButton",
-      url: "/uview-plus-offline-doc/FloatButton.html",
+      url: prodUrl + "/FloatButton.html",
     },
     {
       title: "CateTab 垂直TAB",
       key: "CateTab",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsD/cateTab/cateTab",
-      url: "/uview-plus-offline-doc/CateTab.html",
+      url: prodUrl + "/CateTab.html",
     },
     {
       title: "Color 色彩",
       key: "Color",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsB/color/color",
-      url: "/uview-plus-offline-doc/Color.html",
+      url: prodUrl + "/Color.html",
     },
     {
       title: "Image 图片",
       key: "Image",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsA/image/image",
-      url: "/uview-plus-offline-doc/Image.html",
+      url: prodUrl + "/Image.html",
     },
     {
       title: "Icon 图标",
       key: "Icon",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsA/icon/icon",
-      url: "/uview-plus-offline-doc/Icon.html",
+      url: prodUrl + "/Icon.html",
     },
     {
       title: "Button 按钮",
       key: "Button",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsA/button/button",
-      url: "/uview-plus-offline-doc/Button.html",
+      url: prodUrl + "/Button.html",
     },
     {
       title: "Text 文本",
       key: "Text",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsC/text/text",
-      url: "/uview-plus-offline-doc/Text.html",
+      url: prodUrl + "/Text.html",
     },
     {
       title: "Layout 布局",
       key: "Layout",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsC/layout/layout",
-      url: "/uview-plus-offline-doc/Layout.html",
+      url: prodUrl + "/Layout.html",
     },
     {
       title: "Cell 单元格",
       key: "Cell",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsA/cell/cell",
-      url: "/uview-plus-offline-doc/Cell.html",
+      url: prodUrl + "/Cell.html",
     },
     {
       title: "Badge 徽标数",
       key: "Badge",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsB/badge/badge",
-      url: "/uview-plus-offline-doc/Badge.html",
+      url: prodUrl + "/Badge.html",
     },
     {
       title: "Tag 标签",
       key: "Tag",
       iframe: "https://uview-plus.jiangruyi.com/h5/#/pages/componentsB/tag/tag",
-      url: "/uview-plus-offline-doc/Tag.html",
+      url: prodUrl + "/Tag.html",
     },
     {
       title: "LoadingIcon 加载动画",
       key: "LoadingIcon",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsA/loading-icon/loading-icon",
-      url: "/uview-plus-offline-doc/LoadingIcon.html",
+      url: prodUrl + "/LoadingIcon.html",
     },
     {
       title: "LoadingPage 加载页",
       key: "LoadingPage",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsA/loading-page/loading-page",
-      url: "/uview-plus-offline-doc/LoadingPage.html",
+      url: prodUrl + "/LoadingPage.html",
     },
     {
       title: "Form 表单",
       key: "Form",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsC/form/form",
-      url: "/uview-plus-offline-doc/Form.html",
+      url: prodUrl + "/Form.html",
     },
     {
       title: "Calendar 日历",
       key: "Calendar",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsC/calendar/calendar",
-      url: "/uview-plus-offline-doc/Calendar.html",
+      url: prodUrl + "/Calendar.html",
     },
     {
       title: "Keyboard 键盘",
       key: "Keyboard",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsB/keyboard/keyboard",
-      url: "/uview-plus-offline-doc/Keyboard.html",
+      url: prodUrl + "/Keyboard.html",
     },
     {
       title: "Picker 选择器",
       key: "Picker",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsC/picker/picker",
-      url: "/uview-plus-offline-doc/Picker.html",
+      url: prodUrl + "/Picker.html",
     },
     {
       title: "DatetimePicker 选择器",
       key: "DatetimePicker",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsC/datetimepicker/datetimepicker",
-      url: "/uview-plus-offline-doc/DatetimePicker.html",
+      url: prodUrl + "/DatetimePicker.html",
     },
     {
       title: "Rate 评分",
       key: "Rate",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsA/rate/rate",
-      url: "/uview-plus-offline-doc/Rate.html",
+      url: prodUrl + "/Rate.html",
     },
     {
       title: "Search 搜索",
       key: "Search",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsB/search/search",
-      url: "/uview-plus-offline-doc/Search.html",
+      url: prodUrl + "/Search.html",
     },
     {
       title: "NumberBox 步进器",
       key: "NumberBox",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsB/numberbox/numberbox",
-      url: "/uview-plus-offline-doc/NumberBox.html",
+      url: prodUrl + "/NumberBox.html",
     },
     {
       title: "Upload 上传",
       key: "Upload",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsB/upload/upload",
-      url: "/uview-plus-offline-doc/Upload.html",
+      url: prodUrl + "/Upload.html",
     },
     {
       title: "Code 验证码输入框",
       key: "Code",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsB/code/code",
-      url: "/uview-plus-offline-doc/Code.html",
+      url: prodUrl + "/Code.html",
     },
     {
       title: "Input 输入框",
       key: "Input",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsC/input/input",
-      url: "/uview-plus-offline-doc/Input.html",
+      url: prodUrl + "/Input.html",
     },
     {
       title: "Textarea 文本域",
       key: "Textarea",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsB/textarea/textarea",
-      url: "/uview-plus-offline-doc/Textarea.html",
+      url: prodUrl + "/Textarea.html",
     },
     {
       title: "Checkbox 复选框",
       key: "Checkbox",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsA/checkbox/checkbox",
-      url: "/uview-plus-offline-doc/Checkbox.html",
+      url: prodUrl + "/Checkbox.html",
     },
     {
       title: "Radio 单选框",
       key: "Radio",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsA/radio/radio",
-      url: "/uview-plus-offline-doc/Radio.html",
+      url: prodUrl + "/Radio.html",
     },
     {
       title: "Switch 开关选择器",
       key: "Switch",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsB/switch/switch",
-      url: "/uview-plus-offline-doc/Switch.html",
+      url: prodUrl + "/Switch.html",
     },
     {
       title: "Slider 滑动选择器",
       key: "Slider",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsB/slider/slider",
-      url: "/uview-plus-offline-doc/Slider.html",
+      url: prodUrl + "/Slider.html",
     },
     {
       title: "Album 相册",
       key: "Album",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsC/album/album",
-      url: "/uview-plus-offline-doc/Album.html",
+      url: prodUrl + "/Album.html",
     },
     {
       title: "List 列表",
       key: "List",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsC/list/list",
-      url: "/uview-plus-offline-doc/List.html",
+      url: prodUrl + "/List.html",
     },
     {
       title: "LineProgress 线形进度条",
       key: "LineProgress",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsB/progress/progress",
-      url: "/uview-plus-offline-doc/LineProgress.html",
+      url: prodUrl + "/LineProgress.html",
     },
     {
       title: "CountDown 倒计时",
       key: "CountDown",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsB/countDown/countDown",
-      url: "/uview-plus-offline-doc/CountDown.html",
+      url: prodUrl + "/CountDown.html",
     },
     {
       title: "CountTo 数字滚动",
       key: "CountTo",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsB/countTo/countTo",
-      url: "/uview-plus-offline-doc/CountTo.html",
+      url: prodUrl + "/CountTo.html",
     },
     {
       title: "Tooltip 长按提示",
       key: "Tooltip",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsC/tooltip/tooltip",
-      url: "/uview-plus-offline-doc/Tooltip.html",
+      url: prodUrl + "/Tooltip.html",
     },
     {
       title: "ActionSheet 操作菜单",
       key: "ActionSheet",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsB/actionsheet/actionsheet",
-      url: "/uview-plus-offline-doc/ActionSheet.html",
+      url: prodUrl + "/ActionSheet.html",
     },
     {
       title: "Alert 警告提示",
       key: "Alert",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsB/alert/alert",
-      url: "/uview-plus-offline-doc/Alert.html",
+      url: prodUrl + "/Alert.html",
     },
     {
       title: "Toast 消息提示",
       key: "Toast",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsB/toast/toast",
-      url: "/uview-plus-offline-doc/Toast.html",
+      url: prodUrl + "/Toast.html",
     },
     {
       title: "NoticeBar 滚动通知",
       key: "NoticeBar",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsB/noticebar/noticebar",
-      url: "/uview-plus-offline-doc/NoticeBar.html",
+      url: prodUrl + "/NoticeBar.html",
     },
     {
       title: "Notify 消息提示",
       key: "Notify",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsB/notify/notify",
-      url: "/uview-plus-offline-doc/Notify.html",
+      url: prodUrl + "/Notify.html",
     },
     {
       title: "SwipeAction 滑动单元格",
       key: "SwipeAction",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsA/swipeaction/swipeaction",
-      url: "/uview-plus-offline-doc/SwipeAction.html",
+      url: prodUrl + "/SwipeAction.html",
     },
     {
       title: "Collapse 折叠面板",
       key: "Collapse",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsB/collapse/collapse",
-      url: "/uview-plus-offline-doc/Collapse.html",
+      url: prodUrl + "/Collapse.html",
     },
     {
       title: "Popup 弹出层",
       key: "Popup",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsA/popup/popup",
-      url: "/uview-plus-offline-doc/Popup.html",
+      url: prodUrl + "/Popup.html",
     },
     {
       title: "Modal 模态框",
       key: "Modal",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsC/modal/modal",
-      url: "/uview-plus-offline-doc/Modal.html",
+      url: prodUrl + "/Modal.html",
     },
     {
       title: "Copy 复制",
       key: "Copy",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsD/copy/copy",
-      url: "/uview-plus-offline-doc/Copy.html",
+      url: prodUrl + "/Copy.html",
     },
     {
       title: "ScrollList 横向滚动列表",
       key: "ScrollList",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsC/scrolllist/scrolllist",
-      url: "/uview-plus-offline-doc/ScrollList.html",
+      url: prodUrl + "/ScrollList.html",
     },
     {
       title: "Line 线条",
       key: "Line",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsA/line/line",
-      url: "/uview-plus-offline-doc/Line.html",
+      url: prodUrl + "/Line.html",
     },
     {
       title: "Card 卡片",
       key: "Card",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsB/card/card",
-      url: "/uview-plus-offline-doc/Card.html",
+      url: prodUrl + "/Card.html",
     },
     {
       title: "Overlay 遮罩层",
       key: "Overlay",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsA/overlay/overlay",
-      url: "/uview-plus-offline-doc/Overlay.html",
+      url: prodUrl + "/Overlay.html",
     },
     {
       title: "NoNetwork 无网络提示",
       key: "NoNetwork",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsC/nonetwork/nonetwork",
-      url: "/uview-plus-offline-doc/NoNetwork.html",
+      url: prodUrl + "/NoNetwork.html",
     },
     {
       title: "Grid 宫格布局",
       key: "Grid",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsA/grid/grid",
-      url: "/uview-plus-offline-doc/Grid.html",
+      url: prodUrl + "/Grid.html",
     },
     {
       title: "Swiper 轮播图",
       key: "Swiper",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsC/swiper/swiper",
-      url: "/uview-plus-offline-doc/Swiper.html",
+      url: prodUrl + "/Swiper.html",
     },
     {
       title: "Skeleton 骨架屏",
       key: "Skeleton",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsC/skeleton/skeleton",
-      url: "/uview-plus-offline-doc/Skeleton.html",
+      url: prodUrl + "/Skeleton.html",
     },
     {
       title: "Sticky 吸顶",
       key: "Sticky",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsA/sticky/sticky",
-      url: "/uview-plus-offline-doc/Sticky.html",
+      url: prodUrl + "/Sticky.html",
     },
     {
       title: "Waterfall 瀑布流",
       key: "Waterfall",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsB/waterfall/waterfall",
-      url: "/uview-plus-offline-doc/Waterfall.html",
+      url: prodUrl + "/Waterfall.html",
     },
     {
       title: "Box 盒子",
       key: "Box",
       iframe: "https://uview-plus.jiangruyi.com/h5/#/pages/componentsD/box/box",
-      url: "/uview-plus-offline-doc/Box.html",
+      url: prodUrl + "/Box.html",
     },
     {
       title: "Divider 分割线",
       key: "Divider",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsA/divider/divider",
-      url: "/uview-plus-offline-doc/Divider.html",
+      url: prodUrl + "/Divider.html",
     },
     {
       title: "Dropdown 下拉菜单",
       key: "Dropdown",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsB/dropdown/dropdown",
-      url: "/uview-plus-offline-doc/Dropdown.html",
+      url: prodUrl + "/Dropdown.html",
     },
     {
       title: "Tabbar 底部导航栏",
       key: "Tabbar",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsB/tabbar/tabbar",
-      url: "/uview-plus-offline-doc/Tabbar.html",
+      url: prodUrl + "/Tabbar.html",
     },
     {
       title: "BackTop 返回顶部",
       key: "BackTop",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsA/backtop/backtop",
-      url: "/uview-plus-offline-doc/BackTop.html",
+      url: prodUrl + "/BackTop.html",
     },
     {
       title: "Navbar 自定义导航栏",
       key: "Navbar",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsC/navbar/navbar",
-      url: "/uview-plus-offline-doc/Navbar.html",
+      url: prodUrl + "/Navbar.html",
     },
     {
       title: "NavbarMini 迷你导航栏",
       key: "NavbarMini",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsD/navbarmini/navbarmini",
-      url: "/uview-plus-offline-doc/NavbarMini.html",
+      url: prodUrl + "/NavbarMini.html",
     },
     {
       title: "Tabs 标签",
       key: "Tabs",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsC/tabs/tabs",
-      url: "/uview-plus-offline-doc/Tabs.html",
+      url: prodUrl + "/Tabs.html",
     },
     {
       title: "Subsection 分段器",
       key: "Subsection",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsC/subsection/subsection",
-      url: "/uview-plus-offline-doc/Subsection.html",
+      url: prodUrl + "/Subsection.html",
     },
     {
       title: "IndexList 索引列表",
       key: "IndexList",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsC/indexlist/indexlist",
-      url: "/uview-plus-offline-doc/IndexList.html",
+      url: prodUrl + "/IndexList.html",
     },
     {
       title: "Steps 步骤条",
       key: "Steps",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsC/steps/steps",
-      url: "/uview-plus-offline-doc/Steps.html",
+      url: prodUrl + "/Steps.html",
     },
     {
       title: "Empty 内容为空",
       key: "Empty",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsA/empty/empty",
-      url: "/uview-plus-offline-doc/Empty.html",
+      url: prodUrl + "/Empty.html",
     },
     {
       title: "Parse 富文本解析器",
       key: "Parse",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsB/parse/parse",
-      url: "/uview-plus-offline-doc/Parse.html",
+      url: prodUrl + "/Parse.html",
     },
     {
       title: "CodeInput 验证码输入",
       key: "CodeInput",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsC/codeinput/codeinput",
-      url: "/uview-plus-offline-doc/CodeInput.html",
+      url: prodUrl + "/CodeInput.html",
     },
     {
       title: "LoadMore 加载更多",
       key: "LoadMore",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsC/loadmore/loadmore",
-      url: "/uview-plus-offline-doc/LoadMore.html",
+      url: prodUrl + "/LoadMore.html",
     },
     {
       title: "ReadMore 展开阅读更多",
       key: "ReadMore",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsC/readmore/readmore",
-      url: "/uview-plus-offline-doc/ReadMore.html",
+      url: prodUrl + "/ReadMore.html",
     },
     {
       title: "LazyLoad 图片懒加载",
       key: "LazyLoad",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsA/lazyload/lazyload",
-      url: "/uview-plus-offline-doc/LazyLoad.html",
+      url: prodUrl + "/LazyLoad.html",
     },
     {
       title: "Gap 间隔槽",
       key: "Gap",
       iframe: "https://uview-plus.jiangruyi.com/h5/#/pages/componentsA/gap/gap",
-      url: "/uview-plus-offline-doc/Gap.html",
+      url: prodUrl + "/Gap.html",
     },
     {
       title: "Avatar 头像",
       key: "Avatar",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsC/avatar/avatar",
-      url: "/uview-plus-offline-doc/Avatar.html",
+      url: prodUrl + "/Avatar.html",
     },
     {
       title: "Link 超链接",
       key: "Link",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsA/link/link",
-      url: "/uview-plus-offline-doc/Link.html",
+      url: prodUrl + "/Link.html",
     },
     {
       title: "Transition 动画",
       key: "Transition",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsA/transition/transition",
-      url: "/uview-plus-offline-doc/Transition.html",
+      url: prodUrl + "/Transition.html",
     },
     {
       title: "Qrcode 二维码",
       key: "Qrcode",
       iframe:
         "https://uview-plus.jiangruyi.com/h5/#/pages/componentsD/qrcode/qrcode",
-      url: "/uview-plus-offline-doc/Qrcode.html",
+      url: prodUrl + "/Qrcode.html",
     },
   ];
 
