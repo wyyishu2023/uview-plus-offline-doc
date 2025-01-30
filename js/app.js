@@ -1,5 +1,5 @@
 (function () {
-  const isProd = true; //本地看和部署线上
+  const isProd = false; //本地看和部署线上
   const BaseUrl = isProd ? "" : "file:///C:/Users/chatg/Desktop"; // 自己修改目录地址
   const prodUrl = isProd ? "/uview-plus-offline-doc" : "/uview-plus";
   const menuList = [
@@ -732,6 +732,206 @@
   }
 `;
   document.head.appendChild(style);
+
+  // 配置项
+  const counterConfig = [
+    { type: "site_uv", label: "访客数" },
+    { type: "site_pv", label: "总访问量" },
+    { type: "page_pv", label: "阅读量" },
+  ];
+
+  // 创建单行统计容器
+  function createCompactCounter() {
+    const container = document.createElement("div");
+    container.id = "busuanzi-compact-container";
+
+    // 定位样式
+    Object.assign(container.style, {
+      position: "fixed",
+      bottom: "10px",
+      right: "10px",
+      zIndex: "9999",
+      background: "rgba(255, 255, 255, 0.9)",
+      padding: "6px 12px",
+      borderRadius: "6px",
+      boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+      display: "none", // 默认隐藏
+      alignItems: "center",
+      gap: "12px",
+      fontSize: "12px",
+      whiteSpace: "nowrap",
+    });
+
+    // 动态添加统计项
+    counterConfig.forEach((config) => {
+      const item = document.createElement("span");
+      item.className = "busuanzi-compact-item";
+      item.innerHTML = `
+      <span class="compact-label">${config.label}</span>
+      <span id="busuanzi_value_${config.type}" class="compact-value">0</span>
+    `;
+      container.appendChild(item);
+    });
+
+    document.body.appendChild(container);
+    return container;
+  }
+
+  // 修改后的加载函数
+  function loadBusuanzi() {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src =
+        "https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
+      script.async = true;
+
+      script.onload = () => {
+        console.log("Busuanzi 加载成功");
+        showCompactCounter();
+        resolve();
+      };
+
+      script.onerror = () => {
+        console.warn("主源加载失败，尝试备用源...");
+        const backupScript = script.cloneNode();
+        backupScript.src =
+          "https://cdn.busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
+
+        backupScript.onload = () => {
+          showCompactCounter();
+          resolve();
+        };
+
+        backupScript.onerror = (err) => {
+          console.error("所有源均失败");
+          showCompactFallback();
+          reject(err);
+        };
+
+        document.head.appendChild(backupScript);
+      };
+
+      document.head.appendChild(script);
+    });
+  }
+
+  // 显示统计容器
+  function showCompactCounter() {
+    const container = document.getElementById("busuanzi-compact-container");
+    if (container) {
+      container.style.display = "flex";
+      container.animate(
+        [
+          { opacity: 0, transform: "translateY(20px)" },
+          { opacity: 1, transform: "translateY(0)" },
+        ],
+        { duration: 300 }
+      );
+    }
+  }
+
+  // 降级处理
+  function showCompactFallback() {
+    const container = document.getElementById("busuanzi-compact-container");
+    if (container) {
+      container.innerHTML = "统计服务暂不可用";
+      container.style.display = "flex";
+    }
+  }
+
+  // 初始化入口
+  function initBusuanzi() {
+    try {
+      const container = createCompactCounter();
+
+      // 添加微型关闭按钮
+      const closeBtn = document.createElement("div");
+      closeBtn.innerHTML = "×";
+      closeBtn.style.cssText = `
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        cursor: pointer;
+        color: #999;
+        font-size: 12px;
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        text-align: center;
+        background: rgba(255,255,255,0.9);
+        border-radius: 50%;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        display: none; /* 默认隐藏 */
+      `;
+
+      // 悬停显示关闭按钮
+      container.addEventListener("mouseenter", () => {
+        closeBtn.style.display = "block";
+      });
+      container.addEventListener("mouseleave", () => {
+        closeBtn.style.display = "none";
+      });
+
+      // 关闭功能
+      closeBtn.onclick = (e) => {
+        e.stopPropagation();
+        container.style.display = "none";
+        localStorage.setItem("busuanzi-closed", "true");
+      };
+
+      container.appendChild(closeBtn);
+
+      // 检查关闭状态
+      if (!localStorage.getItem("busuanzi-closed")) {
+        loadBusuanzi().catch(() => {
+          showCompactFallback();
+        });
+      }
+    } catch (err) {
+      console.error("初始化失败:", err);
+      showCompactFallback();
+    }
+  }
+
+  // 自动初始化
+  const compactStyle = document.createElement("style");
+  compactStyle.textContent = `
+  .busuanzi-compact-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .compact-label {
+    color: #666;
+  }
+  .compact-value {
+    color: #2c3e50;
+    font-weight: 500;
+    min-width: 30px;
+    text-align: center;
+  }
+  @media (max-width: 480px) {
+    #busuanzi-compact-container {
+      font-size: 10px !important;
+      gap: 8px !important;
+      padding: 4px 8px !important;
+      bottom: 5px !important;
+      right: 5px !important;
+    }
+  }
+    #busuanzi-compact-container:hover {
+   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+   transform: translateY(0px);
+   transition: all 0.3s ease;
+ }
+`;
+  document.head.appendChild(compactStyle);
+
+  if (document.readyState === "complete") {
+    initBusuanzi();
+  } else {
+    window.addEventListener("load", initBusuanzi);
+  }
 
   // 自动为所有代码块添加复制按钮
   document.querySelectorAll("pre").forEach((pre) => {
