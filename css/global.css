@@ -66,9 +66,9 @@ code {
   color: #409eff;
 }
 .main-content {
-  width: calc(100% - 620px); /* 修改 main-content 的宽度 */
+  width: calc(100% - 570px); /* 修改 main-content 的宽度 */
   padding: 20px;
-  margin-right: 360px;
+  margin-right: 350px;
 }
 .main-content h4 {
   margin-top: 20px;
