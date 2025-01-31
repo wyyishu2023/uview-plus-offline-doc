@@ -1,5 +1,5 @@
 (function () {
-  const isProd = true; //本地看和部署线上
+  const isProd = false; //本地看和部署线上
   const BaseUrl = isProd ? "" : "file:///C:/Users/chatg/Desktop"; // 自己修改目录地址
   const prodUrl = isProd ? "/uview-plus-offline-doc" : "/uview-plus";
   const menuList = [
@@ -548,11 +548,7 @@
 
   // 创建搜索框容器
   const searchContainer = document.createElement("div");
-  searchContainer.style.position = "fixed";
-  searchContainer.style.top = "20px";
-  searchContainer.style.right = "20px";
-  searchContainer.style.zIndex = "1000";
-  searchContainer.style.width = "300px";
+  searchContainer.className = "search-menu";
   document.body.appendChild(searchContainer);
 
   // 创建搜索框
@@ -625,7 +621,7 @@
 
   // 高亮当前选项
   function setActiveItem(index) {
-    const items = dropdown.getElementsByTagName("li");
+    const items = dropdown.getElementsByTagName("a");
     Array.from(items).forEach((item, i) => {
       item.classList.toggle("active", i === index);
       if (i === index) item.scrollIntoView({ block: "nearest" });
@@ -641,7 +637,7 @@
 
   // 监听键盘事件
   searchInput.addEventListener("keydown", (e) => {
-    const items = dropdown.getElementsByTagName("li");
+    const items = dropdown.getElementsByTagName("a");
 
     // 下箭头
     if (e.key === "ArrowDown") {
@@ -683,25 +679,28 @@
       );
 
       matchedItems.forEach((item, index) => {
-        const li = document.createElement("li");
-        li.textContent = item.title;
-        li.style.padding = "10px 15px";
-        li.style.cursor = "pointer";
-        li.style.fontSize = "14px";
-        li.style.color = "#333";
-        li.style.borderBottom = "1px solid #eee";
-        li.style.transition = "background 0.2s";
+        const aLink = document.createElement("a");
+        aLink.textContent = item.title;
+        aLink.style.padding = "10px 15px";
+        aLink.style.cursor = "pointer";
+        aLink.style.display = "block";
+        aLink.style.textDecoration = "none";
+        aLink.style.fontSize = "14px";
+        aLink.style.color = "#333";
+        aLink.style.borderBottom = "1px solid #eee";
+        aLink.style.transition = "background 0.2s";
+        aLink.href = BaseUrl + matchedItems[index].url;
 
         // 鼠标交互
-        li.addEventListener("mouseover", () => {
+        aLink.addEventListener("mouseover", () => {
           currentFocusIndex = index;
           setActiveItem(index);
         });
-        li.addEventListener("click", () => {
+        aLink.addEventListener("click", () => {
           navigateToItem(index);
         });
 
-        dropdown.appendChild(li);
+        dropdown.appendChild(aLink);
       });
 
       // 自动聚焦首个选项
